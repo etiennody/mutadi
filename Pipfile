@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+psycopg2 = "*"
+
+[dev-packages]
+pylint = "*"
+flake8 = "*"
+flake8-isort = "*"
+coverage = "*"
+black = "==20.8b1"
+pylint-django = "*"
+django-extensions = "*"
+ipdb = "*"
+
+[requires]
+python_version = "3.8"
