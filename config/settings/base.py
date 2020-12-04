@@ -21,14 +21,17 @@ APPS_DIR = BASE_DIR / "mutadi"
 # Application definition
 
 INSTALLED_APPS = [
+    "mutadi.posts",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "mutadi.posts.apps.PostsConfig",
+    "django.contrib.sites",
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
