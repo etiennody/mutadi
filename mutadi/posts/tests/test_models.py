@@ -1,9 +1,8 @@
 """Unit tests for posts app models
 """
 import pytest
-from mutadi.posts.models import Category, Comment, Post
 from django.contrib.auth.models import User
-
+from mutadi.posts.models import Category, Comment, Post
 
 pytestmark = pytest.mark.django_db
 
