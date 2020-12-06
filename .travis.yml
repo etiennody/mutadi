@@ -5,6 +5,9 @@ python:
 services:
   - postgresql
 
+before_install:
+  - cp .env.example .env
+
 install:
   - pip install pipenv
   - pipenv install --dev
@@ -14,7 +17,6 @@ env:
 
 before_script:
   - psql -c 'create database db_test;' -U postgres
-  - cp .env.example .env
 
 script:
   - coverage run -a --source=".." -m pytest -vv
