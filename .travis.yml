@@ -7,7 +7,6 @@ services:
 
 install:
   - pip install pipenv
-  - pipenv shell
   - pipenv install --dev
 
 env:
