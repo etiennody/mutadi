@@ -14,7 +14,7 @@ env:
 
 before_script:
   - psql -c 'create database db_test;' -U postgres
-  - cd .env.example .env
+  - cp .env.example .env
 
 script:
   - coverage run -a --source=".." -m pytest -vv
