@@ -1,0 +1,21 @@
+language: python
+python:
+  - "3.8"
+
+services:
+  - postgresql
+
+install:
+  - pip install pipenv
+  - pipenv shell
+  - pipenv install --dev
+
+env:
+  - DJANGO_SETTINGS_MODULE="config.settings.test"
+
+before_script:
+  - psql -c 'create database db_test;' -U postgres
+  - cd .env.example .env
+
+script:
+  - coverage run -a --source=".." -m pytest -vv
