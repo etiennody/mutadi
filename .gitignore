@@ -254,6 +254,3 @@ tags
 ### Project template
 mutadi/media/
 .pytest_cache/
-
-# production settings
-config/settings/production.py
