@@ -19,4 +19,4 @@ before_script:
   - psql -c 'create database db_test;' -U postgres
 
 script:
-  - coverage run -a --source=".." -m pytest -vv
+  - pipenv run pytest -vv
