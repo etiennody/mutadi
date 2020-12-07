@@ -2,57 +2,65 @@
 """
 import pytest
 from django.contrib.auth.models import User
+from model_bakery import baker
 from mutadi.posts.models import Category, Comment, Post
 
 pytestmark = pytest.mark.django_db
 
 
-class TestCategoryClass:
-    """Group multiple tests in Category class"""
+class TestCategoryModel:
+    """Group multiple tests in Category model"""
 
-    def test___str__category_model(self):
-        """Test __str__() method in Category model"""
-        category = Category.objects.create(title="Bricolage")
-        assert category.__str__() == "Bricolage"
-        assert str(category) == "Bricolage"
+    @pytest.fixture
+    def category(self):
+        """Fixture for baked Category model."""
+        return baker.make(Category)
+
+    def test_using_category(self, category):
+        """Test function using fixture of baked model."""
+        assert isinstance(category, Category)
+
+    def test___str__category_model(self, category):
+        """Test __str__() method in Category model."""
+        assert category.__str__() == category.title
+        assert str(category) == category.title
 
     def test_verbose_name_plural_categories(self):
-        """Test verbose_name_plural for categories"""
+        """Test verbose_name_plural for categories."""
         assert Category._meta.verbose_name_plural == "categories"
 
 
-class TestCommentClass:
-    """Group multiple tests in Comment class"""
+class TestCommentModel:
+    """Group multiple tests in Comment Model"""
 
-    def test___str__comment_model(self):
-        """Test __str__() method in Category model"""
-        user = User.objects.create(username="Bob")
-        post = Post.objects.create(
-            title="Post1",
-            overview="This an overview1",
-            content="This a content1",
-            featured=True,
-            author=user,
-        )
-        comment = Comment.objects.create(
-            content="This a content", user=user, post=post
-        )
-        assert comment.__str__() == "Bob"
-        assert str(comment) == "Bob"
+    @pytest.fixture
+    def comment(self):
+        """Fixture for baked Category model."""
+        return baker.make(Comment)
+
+    def test_using_comment(self, comment):
+        """Test function using fixture of baked model."""
+        assert isinstance(comment, Comment)
+
+    def test___str__comment_model(self, comment):
+        """Test __str__() method in Comment model."""
+        assert comment.__str__() == comment.user.username
+        assert str(comment) == comment.user.username
 
 
-class TestPostClass:
-    """Group multiple tests in Post class"""
+class TestPostModel:
+    """Group multiple tests in Post Model"""
 
-    def test___str__post_model(self):
-        """Test __str__() method in Category model"""
-        user = User.objects.create(username="Bob")
-        post = Post.objects.create(
-            title="Post2",
-            overview="This an overview2",
-            content="This a content2",
-            featured=True,
-            author=user,
-        )
-        assert post.__str__() == "Post2 | Bob"
-        assert str(post) == "Post2 | Bob"
+    @pytest.fixture
+    def post(self):
+        """Fixture for baked Post model."""
+        return baker.make(Post, make_m2m=True)
+
+    def test_using_post(self, post):
+        """Test function using fixture of baked model."""
+        assert isinstance(post, Post)
+
+    def test__str__post_model(self, post):
+        """Test __str__() method in Post model."""
+        assert post.__str__() == post.title + " | " + str(post.author)
+        assert str(post) == post.title + " | " + str(post.author)
