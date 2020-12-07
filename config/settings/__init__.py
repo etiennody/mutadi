@@ -1,7 +1,8 @@
 import os
 
-ENV = os.getenv('ENV', 'local')
+ENV = os.getenv("ENV", "local")
 if ENV == "local":
     from .local import *
 else:
-    from .production import *
+    # from .production import *
+    pass
