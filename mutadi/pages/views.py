@@ -1,4 +1,4 @@
-from django.shortcuts import render
+"""pages Views Configuration"""
 from django.views.generic import TemplateView
 
 
