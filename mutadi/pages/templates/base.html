@@ -69,7 +69,7 @@
               <a href="\post" class="nav-link">Mon profil</a>
             </li>
             {% if user.is_authenticated %}
-            <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Se déconnecter</a></li>
+            <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Se déconnecter</a></li>
             {% else %}
             <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Se connecter</a></li>
             {% endif %}
