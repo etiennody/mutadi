@@ -22,6 +22,7 @@ APPS_DIR = BASE_DIR / "mutadi"
 INSTALLED_APPS = [
     "mutadi.pages",
     "mutadi.posts",
+    "mutadi.members",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
