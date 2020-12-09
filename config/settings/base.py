@@ -121,3 +121,5 @@ MEDIA_ROOT = os.path.join(APPS_DIR, "media")
 
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
+
+MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
