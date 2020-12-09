@@ -9,7 +9,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("mutadi.pages.urls")),
     path("members/", include("django.contrib.auth.urls")),
-    path("members/", include("members.urls")),
+    path("members/", include("mutadi.members.urls")),
 ]
 
 if settings.DEBUG:
