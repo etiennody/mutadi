@@ -8,6 +8,7 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("mutadi.pages.urls")),
+    path("members/", include("mutadi.members.urls")),
 ]
 
 if settings.DEBUG:

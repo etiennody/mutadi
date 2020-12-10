@@ -22,6 +22,7 @@ APPS_DIR = BASE_DIR / "mutadi"
 INSTALLED_APPS = [
     "mutadi.pages",
     "mutadi.posts",
+    "mutadi.members",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -117,3 +118,8 @@ MEDIA_URL = "/media/"
 STATICFILES_DIRS = (os.path.join(APPS_DIR, "static"),)
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_ROOT = os.path.join(APPS_DIR, "media")
+
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
+
+MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"

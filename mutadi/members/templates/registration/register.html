@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+S'inscrire
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 col-xl-9 mx-auto">
+            <div class="card card-signup flex-row my-5">
+                <div class="card-body">
+                    <h4 class="card-title text-center">Créer un compte</h4>
+                    <form class="form-signup" method="POST">
+                        {% csrf_token %}
+                        <fieldset class="form-group">
+                            {{ form.as_p }}
+                        </fieldset>
+                        <div class="form-group">
+                            <button class="btn btn-lg btn-primary btn-block text-uppercase"
+                                type="submit">S'inscrire</button>
+                        </div>
+                    </form>
+                    <div class="card-info border-top pt-3">
+                        <small class="text-muted">
+                            <a href="{% url 'login' %}">Vous avez déjà un compte ?</a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
