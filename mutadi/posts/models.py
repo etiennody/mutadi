@@ -29,7 +29,6 @@ STATUS = ((0, "Non publié"), (1, "Publié"))
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     categories = models.ManyToManyField(Category)
     updated_on = models.DateTimeField(auto_now=True)

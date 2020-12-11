@@ -1,11 +1,13 @@
 """pages Views Configuration"""
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
+from mutadi.posts.models import Post
 
 
-class HomeView(TemplateView):
+class HomeView(ListView):
     """Home page view"""
 
     template_name = "pages/home.html"
+    queryset = Post.objects.filter(featured=True)
 
 
 home_view = HomeView.as_view()
