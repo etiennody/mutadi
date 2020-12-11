@@ -9,6 +9,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("mutadi.pages.urls")),
     path("members/", include("mutadi.members.urls")),
+    path("posts/", include("mutadi.posts.urls")),
 ]
 
 if settings.DEBUG:

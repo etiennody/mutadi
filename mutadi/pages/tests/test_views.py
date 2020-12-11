@@ -1,4 +1,4 @@
-"""Unit tests for posts app views
+"""Unit tests for pages app views
 """
 import pytest
 from django.urls import reverse
