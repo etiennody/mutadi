@@ -42,7 +42,7 @@ class TestPostDetailViews:
     @pytest.fixture
     def proto_post(self):
         """Fixture for baked User model."""
-        return baker.make(Post)
+        return baker.make(Post, _create_files=True)
 
     def test_view_url_post_detail_page_exists_at_desired_location(
         self, client, proto_post
@@ -65,7 +65,7 @@ class TestPostDetailViews:
     def test_valid_post_detail_page_title_with_client(
         self, client, proto_post
     ):
-        """post_detail page should contain "Publications"."""
+        """post_detail page should contain the title of the post."""
         url = reverse(
             "post_detail",
             args=[
@@ -73,7 +73,7 @@ class TestPostDetailViews:
             ],
         )
         response = client.get(url)
-        assert "Publications" in str(response.content)
+        assert proto_post.title in str(response.content)
 
     def test_view_post_detail_page_uses_correct_template(
         self, client, proto_post
