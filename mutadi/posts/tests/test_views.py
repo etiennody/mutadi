@@ -4,7 +4,7 @@ import pytest
 from django.urls import reverse
 from model_bakery import baker
 from mutadi.posts.models import Post
-from pytest_django.asserts import assertTemplateUsed
+from pytest_django.asserts import assertTemplateUsed, assertRedirects
 
 pytestmark = pytest.mark.django_db
 
@@ -41,7 +41,7 @@ class TestPostDetailViews:
 
     @pytest.fixture
     def proto_post(self):
-        """Fixture for baked User model."""
+        """Fixture for baked Post model."""
         return baker.make(Post, _create_files=True)
 
     def test_view_url_post_detail_page_exists_at_desired_location(
@@ -88,3 +88,31 @@ class TestPostDetailViews:
         response = client.get(url)
         assert response.status_code == 200
         assertTemplateUsed(response, "post_detail.html")
+
+
+class TestAddPostViews:
+    """Group multiple tests in AddPost views"""
+
+    def test_view_url_add_post_page_exists_at_desired_location(self, client):
+        """add_post page should exist at desired location."""
+        response = client.get("/posts/add_post/")
+        assert response.status_code == 200
+
+    def test_view_url_accessible_by_name(self, client):
+        """add_post page should be accessible by name."""
+        url = reverse("add_post")
+        response = client.get(url)
+        assert response.status_code == 200
+
+    def test_valid_add_post_page_title_with_client(self, client):
+        """add_post page should contain the title of the creation post."""
+        url = reverse("add_post")
+        response = client.get(url)
+        assert "Ajouter une publication" in str(response.content)
+
+    def test_view_add_post_page_uses_correct_template(self, client):
+        """add_post page should use add_post.html template."""
+        url = reverse("add_post")
+        response = client.get(url)
+        assert response.status_code == 200
+        assertTemplateUsed(response, "add_post.html")
