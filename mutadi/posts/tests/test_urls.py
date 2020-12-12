@@ -21,7 +21,7 @@ class TestPostsUrls:
         assert reverse("post_list") == "/posts/post_list/"
 
     def test_post_list_resolve(self):
-        """/posts/register/ should resolve to post_list."""
+        """/posts/post_list/ should resolve to post_list."""
         assert resolve("/posts/post_list/").view_name == "post_list"
 
     def test_post_detail_reverse(self, proto_post):
@@ -42,3 +42,11 @@ class TestPostsUrls:
             resolve(f"/posts/post_detail/{proto_post.pk}").view_name
             == "post_detail"
         )
+
+    def test_add_post_reverse(self):
+        """add_post should reverse to /posts/add_post/."""
+        assert reverse("add_post") == "/posts/add_post/"
+
+    def test_add_post_resolve(self):
+        """/posts/add_post/ should resolve to add_post."""
+        assert resolve("/posts/add_post/").view_name == "add_post"
