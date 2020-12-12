@@ -1,4 +1,5 @@
 """posts Views Configuration"""
+from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, DetailView, ListView
 
 from .models import Post
@@ -24,12 +25,13 @@ class PostDetailView(DetailView):
 post_detail_view = PostDetailView.as_view()
 
 
-class AddPostView(CreateView):
+class AddPostView(SuccessMessageMixin, CreateView):
     """Add post view"""
 
     model = Post
     template_name = "add_post.html"
     fields = "__all__"
+    success_message = "La publication a été créée avec succès !"
 
 
 add_post_view = AddPostView.as_view()
