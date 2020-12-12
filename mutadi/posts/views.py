@@ -1,5 +1,5 @@
 """posts Views Configuration"""
-from django.views.generic import DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView
 
 from .models import Post
 
@@ -22,3 +22,14 @@ class PostDetailView(DetailView):
 
 
 post_detail_view = PostDetailView.as_view()
+
+
+class AddPostView(CreateView):
+    """Add post view"""
+
+    model = Post
+    template_name = "add_post.html"
+    fields = "__all__"
+
+
+add_post_view = AddPostView.as_view()
