@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Créer une publication{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <!-- Add Post -->
+        <main class="post add_post col-lg-12">
+            <h1>Ajouter une publication</h1>
+            <br>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-primary">Ajouter</button>
+            </form>
+        </main>
+    </div>
+</div>
+
+{% endblock content %}
