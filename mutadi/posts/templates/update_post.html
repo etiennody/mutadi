@@ -8,13 +8,13 @@
 
 <div class="container">
     <div class="row">
-        <!-- Add Post -->
-        <main class="post add_post col-lg-8">
+        <!-- Update Post -->
+        <main class="post update_post col-lg-8">
             <h1>Modifier une publication</h1>
             <br>
             <div class="form-group">
                 {{ form.media }}
-                <form method="POST" action="." enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <button class="btn btn-primary">Modifier</button>
