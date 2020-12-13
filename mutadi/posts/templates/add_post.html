@@ -9,15 +9,17 @@
 <div class="container">
     <div class="row">
         <!-- Add Post -->
-        <main class="post add_post col-lg-12">
+        <main class="post add_post col-lg-8">
             <h1>Ajouter une publication</h1>
             <br>
-            {{ form.media }}
-            <form method="POST" action="." enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button class="btn btn-primary">Ajouter</button>
-            </form>
+            <div class="form-group">
+                {{ form.media }}
+                <form method="POST" action="." enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-primary">Ajouter</button>
+                </form>
+            </div>
         </main>
     </div>
 </div>
