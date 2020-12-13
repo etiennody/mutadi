@@ -2,6 +2,7 @@
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, DetailView, ListView
 
+from .forms import PostForm
 from .models import Post
 
 
@@ -29,8 +30,8 @@ class AddPostView(SuccessMessageMixin, CreateView):
     """Add post view"""
 
     model = Post
+    form_class = PostForm
     template_name = "add_post.html"
-    fields = "__all__"
     success_message = "La publication a été créée avec succès !"
 
 
