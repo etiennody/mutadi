@@ -1,8 +1,8 @@
 """posts Views Configuration"""
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
-from .forms import PostForm
+from .forms import EditForm, PostForm
 from .models import Post
 
 
@@ -36,3 +36,15 @@ class AddPostView(SuccessMessageMixin, CreateView):
 
 
 add_post_view = AddPostView.as_view()
+
+
+class UpdatePostView(SuccessMessageMixin, UpdateView):
+    """Update post view"""
+
+    model = Post
+    form_class = EditForm
+    template_name = "update_post.html"
+    success_message = "La publication a été mise à jour avec succès !"
+
+
+update_post_view = UpdatePostView.as_view()
