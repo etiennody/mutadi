@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Supprimer une publication{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <!-- Supprimer Post -->
+        <main class="post delete_post col-lg-8">
+            <h3>Supression de la publication : {{ post.title }}</h3>
+            <div class="form-group">
+                <form method="POST">
+                    {% csrf_token %}
+                    <strong>Etes-vous sûr de vouloir supprimer cette publication ?</strong>
+                    <br>
+                    <br>
+                    <button class="btn btn-danger">Supprimer</button>
+                </form>
+            </div>
+        </main>
+    </div>
+</div>
+
+{% endblock content %}
