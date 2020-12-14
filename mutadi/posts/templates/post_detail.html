@@ -24,9 +24,12 @@
             </div>
             <h1>
               {{ post.title}}
-              {% comment %} <a href="#"><i class="fa fa-bookmark-o"></i></a> {% endcomment %}
-              <span><a href="{% url "update_post" post.pk %}"> <i class="far fa-edit"></i></a></span>
+              <a href="#"><i class="fa fa-bookmark-o"></i></a>
             </h1>
+            <div class="d-grid gap-2 d-flex justify-content-around">
+              <a href="{% url "update_post" post.pk %}"><i class="fas fa-edit"></i></a>
+              <a href="{% url "delete_post" post.pk %}"><i class="fas fa-trash"></i></a>
+            </div>
             <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
               <a href="#" class="author d-flex align-items-center flex-wrap">
                 <div class="avatar">
