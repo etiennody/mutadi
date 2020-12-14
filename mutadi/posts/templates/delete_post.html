@@ -8,9 +8,9 @@
 
 <div class="container">
     <div class="row">
-        <!-- Supprimer Post -->
+        <!-- Delete Post -->
         <main class="post delete_post col-lg-8">
-            <h3>Supression de la publication : {{ post.title }}</h3>
+            <h3>Suppression : {{ post.title }}</h3>
             <div class="form-group">
                 <form method="POST">
                     {% csrf_token %}
