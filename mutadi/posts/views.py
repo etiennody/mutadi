@@ -1,7 +1,13 @@
 """posts Views Configuration"""
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
-
+from django.views.generic import (
+    CreateView,
+    DetailView,
+    ListView,
+    UpdateView,
+    DeleteView,
+)
+from django.urls import reverse_lazy
 from .forms import EditForm, PostForm
 from .models import Post
 
@@ -48,3 +54,15 @@ class UpdatePostView(SuccessMessageMixin, UpdateView):
 
 
 update_post_view = UpdatePostView.as_view()
+
+
+class DeletePostView(SuccessMessageMixin, DeleteView):
+    """Delete post view"""
+
+    model = Post
+    template_name = "delete_post.html"
+    success_url = reverse_lazy("home")
+    success_message = "La publication a été supprimée avec succès !"
+
+
+delete_post_view = DeletePostView.as_view()
