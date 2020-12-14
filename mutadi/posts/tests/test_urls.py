@@ -69,3 +69,22 @@ class TestPostsUrls:
             resolve(f"/posts/post_detail/edit/{proto_post.pk}").view_name
             == "update_post"
         )
+
+    def test_delete_post_reverse(self, proto_post):
+        """delete_post should reverse to /posts/delete_post/post.pk."""
+        assert (
+            reverse(
+                "delete_post",
+                args=[
+                    f"{proto_post.pk}",
+                ],
+            )
+            == f"/posts/post_detail/{proto_post.pk}/remove"
+        )
+
+    def test_delete_post_resolve(self, proto_post):
+        """/posts/delete_post/post.pk should resolve to delete_post."""
+        assert (
+            resolve(f"/posts/post_detail/{proto_post.pk}/remove").view_name
+            == "delete_post"
+        )

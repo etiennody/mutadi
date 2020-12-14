@@ -170,3 +170,62 @@ class TestUpdatePostViews:
         response = client.get(url)
         assert response.status_code == 200
         assertTemplateUsed(response, "update_post.html")
+
+
+class TestDeletePostViews:
+    """Group multiple tests in DeletePost views"""
+
+    @pytest.fixture
+    def proto_post(self):
+        """Fixture for baked Post model."""
+        return baker.make(Post, _create_files=True)
+
+    def test_view_url_delete_post_page_exists_at_desired_location(
+        self, client, proto_post
+    ):
+        """delete_post page should exist at desired location."""
+        response = client.get(f"/posts/post_detail/{proto_post.pk}/remove")
+        assert response.status_code == 200
+
+    def test_view_url_accessible_by_name(self, client, proto_post):
+        """delete_post page should be accessible by name."""
+        url = reverse(
+            "delete_post",
+            args=[
+                f"{proto_post.pk}",
+            ],
+        )
+        response = client.get(url)
+        assert response.status_code == 200
+
+    def test_valid_delete_post_page_title_with_client(
+        self, client, proto_post
+    ):
+        """delete_post page should contain the title of the post."""
+        url = reverse(
+            "delete_post",
+            args=[
+                f"{proto_post.pk}",
+            ],
+        )
+        response = client.get(url)
+        assert proto_post.title in str(response.content)
+
+    def test_view_delete_post_page_uses_correct_template(
+        self, client, proto_post
+    ):
+        """delete_post page should use delete_post.html template."""
+        url = reverse(
+            "delete_post",
+            args=[
+                f"{proto_post.pk}",
+            ],
+        )
+        response = client.get(url)
+        assert response.status_code == 200
+        assertTemplateUsed(response, "delete_post.html")
+
+    def test_delete_post_success_url(self, client, proto_post):
+        response = client.post(f"/posts/post_detail/{proto_post.pk}/remove")
+        assert response.status_code == 302
+        assertRedirects(response, "/")
