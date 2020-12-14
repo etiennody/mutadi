@@ -1,21 +1,13 @@
 """Unit tests for posts form
 """
 
-import base64
-from io import BytesIO
-from unittest import mock
-import os
-import tempfile
-
 
 import pytest
 from django.contrib.auth.models import User
-from django.core.files.base import ContentFile, File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from model_bakery import baker
 from mutadi.posts.forms import PostForm
 from mutadi.posts.models import Category, Post
-from PIL import Image
 
 pytestmark = pytest.mark.django_db
 
