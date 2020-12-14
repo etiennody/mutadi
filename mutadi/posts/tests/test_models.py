@@ -89,3 +89,6 @@ class TestPostModel:
         """Max length for title field should be 100."""
         max_length = post._meta.get_field("title").max_length
         assert max_length == 100
+
+    def test_get_absolute_url(self, post):
+        assert post.get_absolute_url() == "/"

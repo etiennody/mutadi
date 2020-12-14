@@ -23,7 +23,9 @@
               </div>
             </div>
             <h1>
-              {{ post.title}}<a href="#"><i class="fa fa-bookmark-o"></i></a>
+              {{ post.title}}
+              {% comment %} <a href="#"><i class="fa fa-bookmark-o"></i></a> {% endcomment %}
+              <span><a href="{% url "update_post" post.pk %}"> <i class="far fa-edit"></i></a></span>
             </h1>
             <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
               <a href="#" class="author d-flex align-items-center flex-wrap">
