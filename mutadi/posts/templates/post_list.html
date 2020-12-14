@@ -31,7 +31,10 @@
                   {{post.title}}
                 </h3>
               </a>
-              <small><a href="{% url "update_post" post.pk %}"><i class="fas fa-edit"></i></a></small>
+              <div class="d-grid gap-2 d-flex justify-content-around">
+                <a href="{% url "update_post" post.pk %}"><i class="fas fa-edit"></i></a>
+                <a href="{% url "delete_post" post.pk %}"><i class="fas fa-trash"></i></a>
+              </div>
               <p class="text-muted">
                 {{ post.overview }}
               </p>
