@@ -1,10 +1,11 @@
 """Unit tests for posts app views
 """
 import pytest
+from django.contrib.auth.models import User
 from django.urls import reverse
 from model_bakery import baker
 from mutadi.posts.models import Post
-from pytest_django.asserts import assertTemplateUsed, assertRedirects
+from pytest_django.asserts import assertRedirects, assertTemplateUsed
 
 pytestmark = pytest.mark.django_db
 
@@ -93,6 +94,14 @@ class TestPostDetailViews:
 class TestAddPostViews:
     """Group multiple tests in AddPost views"""
 
+    @pytest.fixture
+    def proto_user(self):
+        """Fixture for baked User model."""
+        self.proto_user = baker.make(User)
+        self.proto_user.set_password("m=9UaK^C,Tbq9N=T")
+        self.proto_user.save()
+        return self.proto_user
+
     def test_view_url_add_post_page_exists_at_desired_location(self, client):
         """add_post page should exist at desired location."""
         response = client.get("/posts/add_post/")
@@ -104,8 +113,12 @@ class TestAddPostViews:
         response = client.get(url)
         assert response.status_code == 200
 
-    def test_valid_add_post_page_title_with_client(self, client):
+    def test_valid_add_post_page_with_title_in_html(self, client, proto_user):
         """add_post page should contain the title of the creation post."""
+        client.login(
+            username=f"{proto_user.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
         url = reverse("add_post")
         response = client.get(url)
         assert "Ajouter une publication" in str(response.content)
@@ -120,6 +133,14 @@ class TestAddPostViews:
 
 class TestUpdatePostViews:
     """Group multiple tests in UpdatePost views"""
+
+    @pytest.fixture
+    def proto_user(self):
+        """Fixture for baked User model."""
+        self.proto_user = baker.make(User)
+        self.proto_user.set_password("m=9UaK^C,Tbq9N=T")
+        self.proto_user.save()
+        return self.proto_user
 
     @pytest.fixture
     def proto_post(self):
@@ -144,10 +165,14 @@ class TestUpdatePostViews:
         response = client.get(url)
         assert response.status_code == 200
 
-    def test_valid_update_post_page_title_with_client(
-        self, client, proto_post
+    def test_valid_update_post_page_with_post_title_as_reminder(
+        self, client, proto_post, proto_user
     ):
         """update_post page should contain the title of the post."""
+        client.login(
+            username=f"{proto_user.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
         url = reverse(
             "update_post",
             args=[
@@ -155,6 +180,7 @@ class TestUpdatePostViews:
             ],
         )
         response = client.get(url)
+        print(response.content)
         assert proto_post.title in str(response.content)
 
     def test_view_update_post_page_uses_correct_template(
@@ -174,6 +200,14 @@ class TestUpdatePostViews:
 
 class TestDeletePostViews:
     """Group multiple tests in DeletePost views"""
+
+    @pytest.fixture
+    def proto_user(self):
+        """Fixture for baked User model."""
+        self.proto_user = baker.make(User)
+        self.proto_user.set_password("m=9UaK^C,Tbq9N=T")
+        self.proto_user.save()
+        return self.proto_user
 
     @pytest.fixture
     def proto_post(self):
@@ -198,10 +232,14 @@ class TestDeletePostViews:
         response = client.get(url)
         assert response.status_code == 200
 
-    def test_valid_delete_post_page_title_with_client(
-        self, client, proto_post
+    def test_valid_delete_post_page_with_post_title_as_reminder(
+        self, client, proto_post, proto_user
     ):
         """delete_post page should contain the title of the post."""
+        client.login(
+            username=f"{proto_user.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
         url = reverse(
             "delete_post",
             args=[

@@ -1,5 +1,5 @@
 """pages Views Configuration"""
-from django.views.generic import TemplateView, ListView
+from django.views.generic import ListView, TemplateView
 from mutadi.posts.models import Post
 
 
