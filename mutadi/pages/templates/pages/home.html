@@ -66,8 +66,14 @@
                 </h2>
               </a>
             </header>
+            {% if user.is_authenticated %}
+            <div class="d-grid gap-2 d-flex justify-content-around">
+              <a href="{% url "update_post" post.pk %}"><i class="fas fa-edit"></i></a>
+              <a href="{% url "delete_post" post.pk %}"><i class="fas fa-trash"></i></a>
+            </div>
+            {% endif %}
             <p>
-              {{ post.overview }}
+              {{ post.overview|slice:":200" }}
             </p>
             <footer class="post-footer d-flex align-items-center">
               <a href="#" class="author d-flex align-items-center flex-wrap">
