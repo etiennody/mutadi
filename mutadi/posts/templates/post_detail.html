@@ -27,10 +27,12 @@
               <a href="#"><i class="fa fa-bookmark-o"></i></a>
             </h1>
             {% if user.is_authenticated %}
-            <div class="d-grid gap-2 d-flex justify-content-around">
-              <a href="{% url "update_post" post.pk %}"><i class="fas fa-edit"></i></a>
+            {% if user.id == post.author.id %}
+            <div class="d-grid gap-2 d-flex justify-content-end">
+              <a href="{% url "update_post" post.pk %}" class="mr-5"><i class="fas fa-edit"></i></a>
               <a href="{% url "delete_post" post.pk %}"><i class="fas fa-trash"></i></a>
             </div>
+            {% endif %}
             {% endif %}
             <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
               <a href="#" class="author d-flex align-items-center flex-wrap">

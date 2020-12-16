@@ -165,10 +165,11 @@ class TestUpdatePostViews:
         response = client.get(url)
         assert response.status_code == 200
 
-    def test_valid_update_post_page_with_post_title_as_reminder(
+    def test_valid_update_post_page_with_post_title_as_reminder_with_correct_user(
         self, client, proto_post, proto_user
     ):
         """update_post page should contain the title of the post."""
+        proto_post_a = baker.make(Post, author=proto_user)
         client.login(
             username=f"{proto_user.username}",
             password="m=9UaK^C,Tbq9N=T",
@@ -176,12 +177,31 @@ class TestUpdatePostViews:
         url = reverse(
             "update_post",
             args=[
-                f"{proto_post.pk}",
+                f"{proto_post_a.pk}",
             ],
         )
         response = client.get(url)
         print(response.content)
-        assert proto_post.title in str(response.content)
+        assert proto_post_a.title in str(response.content)
+
+    def test_invalid_update_post_page_with_post_title_as_reminder_with_wrong_user(
+        self, client, proto_post, proto_user
+    ):
+        """update_post page should contain the title of the post."""
+        proto_user_a = baker.make(User)
+        proto_post_b = baker.make(Post, author=proto_user_a)
+        client.login(
+            username=f"{proto_user.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
+        url = reverse(
+            "update_post",
+            args=[
+                f"{proto_post_b.pk}",
+            ],
+        )
+        response = client.get(url)
+        assert not proto_post_b.title in str(response.content)
 
     def test_view_update_post_page_uses_correct_template(
         self, client, proto_post
@@ -232,10 +252,11 @@ class TestDeletePostViews:
         response = client.get(url)
         assert response.status_code == 200
 
-    def test_valid_delete_post_page_with_post_title_as_reminder(
+    def test_valid_delete_post_page_with_post_title_as_reminder_with_correct_user(
         self, client, proto_post, proto_user
     ):
         """delete_post page should contain the title of the post."""
+        proto_post_a = baker.make(Post, author=proto_user)
         client.login(
             username=f"{proto_user.username}",
             password="m=9UaK^C,Tbq9N=T",
@@ -243,11 +264,30 @@ class TestDeletePostViews:
         url = reverse(
             "delete_post",
             args=[
-                f"{proto_post.pk}",
+                f"{proto_post_a.pk}",
             ],
         )
         response = client.get(url)
-        assert proto_post.title in str(response.content)
+        assert proto_post_a.title in str(response.content)
+
+    def test_invalid_delete_post_page_with_post_title_as_reminder_with_wrong_user(
+        self, client, proto_post, proto_user
+    ):
+        """delete_post page should contain the title of the post."""
+        proto_user_a = baker.make(User)
+        proto_post_c = baker.make(Post, author=proto_user_a)
+        client.login(
+            username=f"{proto_user.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
+        url = reverse(
+            "delete_post",
+            args=[
+                f"{proto_post_c.pk}",
+            ],
+        )
+        response = client.get(url)
+        assert not proto_post_c.title in str(response.content)
 
     def test_view_delete_post_page_uses_correct_template(
         self, client, proto_post
