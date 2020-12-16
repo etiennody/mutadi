@@ -39,6 +39,9 @@ class TestRegisterViews:
             reverse("register"),
             {
                 "username": proto_user.username,
+                "first_name": proto_user.first_name,
+                "last_name": proto_user.last_name,
+                "email": proto_user.email,
                 "password1": "dhjO0iZxt}!;",
                 "password2": "dhjO0iZxt}!;",
                 "robot": True,
