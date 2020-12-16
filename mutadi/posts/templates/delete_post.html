@@ -18,7 +18,10 @@
                     <strong>Etes-vous sûr de vouloir supprimer cette publication ?</strong>
                     <br>
                     <br>
-                    <button class="btn btn-danger">Supprimer</button>
+                    <div class="d-grid gap-2 d-md-block">
+                        <button class="btn btn-danger">Supprimer</button>
+                        <a class="btn btn-outline-secondary" href={% url "home" %} role="button">Annuler</a>
+                    </div>
                 </form>
             </div>
         </main>

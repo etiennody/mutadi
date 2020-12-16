@@ -3,7 +3,7 @@
 import pytest
 from django.urls import resolve, reverse
 from model_bakery import baker
-from mutadi.posts.models import Post
+from mutadi.posts.models import Category, Post
 
 pytestmark = pytest.mark.django_db
 
@@ -12,8 +12,13 @@ class TestPostsUrls:
     """Group multiple tests for Posts urls"""
 
     @pytest.fixture
+    def proto_category(self):
+        """Fixture for baked Category model."""
+        return baker.make(Category)
+
+    @pytest.fixture
     def proto_post(self):
-        """Fixture for baked User model."""
+        """Fixture for baked Post model."""
         return baker.make(Post)
 
     def test_post_list_reverse(self):
@@ -87,4 +92,23 @@ class TestPostsUrls:
         assert (
             resolve(f"/posts/post_detail/{proto_post.pk}/remove").view_name
             == "delete_post"
+        )
+
+    def test_category_posts_reverse(self, proto_category):
+        """category should reverse to /posts/category/proto_post.categories__title."""
+        assert (
+            reverse(
+                "category",
+                args=[
+                    f"{proto_category.title}",
+                ],
+            )
+            == f"/posts/category/{proto_category.title}/"
+        )
+
+    def test_category_posts_resolve(self, proto_category):
+        """/posts/category/proto_post.categories__title should resolve to category."""
+        assert (
+            resolve(f"/posts/category/{proto_category.title}/").view_name
+            == "category"
         )

@@ -4,7 +4,7 @@ import pytest
 from django.contrib.auth.models import User
 from django.urls import reverse
 from model_bakery import baker
-from mutadi.posts.models import Post
+from mutadi.posts.models import Category, Post
 from pytest_django.asserts import assertRedirects, assertTemplateUsed
 
 pytestmark = pytest.mark.django_db
@@ -264,6 +264,62 @@ class TestDeletePostViews:
         assertTemplateUsed(response, "delete_post.html")
 
     def test_delete_post_success_url(self, client, proto_post):
+        """delete_post page should redirect to home page template."""
         response = client.post(f"/posts/post_detail/{proto_post.pk}/remove")
         assert response.status_code == 302
         assertRedirects(response, "/")
+
+
+class TestCategoryViews:
+    """Group multiple tests in Category views"""
+
+    @pytest.fixture
+    def proto_category(self):
+        """Fixture for baked Category model."""
+        return baker.make(Category)
+
+    def test_view_url_category_page_exists_at_desired_location(
+        self, client, proto_category
+    ):
+        """category page should exist at desired location."""
+        response = client.get(f"/posts/category/{proto_category.title}/")
+        assert response.status_code == 200
+
+    def test_view_url_accessible_by_name(self, client, proto_category):
+        """category page should be accessible by name."""
+        url = reverse(
+            "category",
+            args=[
+                f"{proto_category.title}",
+            ],
+        )
+        response = client.get(url)
+        assert response.status_code == 200
+
+    def test_valid_categories_page_title_with_client(
+        self, client, proto_category
+    ):
+        """category page should contain the title of the category."""
+        url = reverse(
+            "category",
+            args=[
+                f"{proto_category.title}",
+            ],
+        )
+        response = client.get(url)
+        print(str(response.content))
+        assert proto_category.title in str(response.content)
+
+    def test_view_categories_page_uses_correct_template(
+        self, client, proto_category
+    ):
+        """category page should use categories.html template."""
+        url = reverse(
+            "category",
+            args=[
+                f"{proto_category.title}",
+            ],
+        )
+        response = client.get(url)
+        assert response.status_code == 200
+        assertTemplateUsed(response, "categories.html")

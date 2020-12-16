@@ -13,7 +13,7 @@
       <div class="container">
         <div class="row">
           <!-- post -->
-          {% for post in object_list %}
+          {% for post in most_recent %}
           <div class="post col-xl-6">
             <div class="post-thumbnail">
               <a href="{% url "post_detail" post.pk %}"><img src="{{ post.thumbnail.url}}" alt="..."
@@ -21,10 +21,11 @@
             </div>
             <div class="post-details">
               <div class="post-meta d-flex justify-content-between">
-                <div class="date meta-last">20 May | 2016</div>
-                {% for cat in post.categories.all %}
-                <div class="category"><a href="#">{{ cat }}</a></div>
-                {% endfor %}
+                <div class="category">
+                  {% for cat in post.categories.all %}
+                  <a href="{% url "category" cat %}">{{ cat }}</a>
+                  {% endfor %}
+                </div>
               </div>
               <a href="{% url "post_detail" post.pk %}">
                 <h3 class="h4">
@@ -47,14 +48,15 @@
                   </div>
                   <div class="title"><span>{{ post.author }}</span></div>
                 </a>
-                <div class="date"><i class="icon-clock"></i> {{ post.created_on|timesince }}</div>
+                <div class="date">
+                  <i class="icon-clock"></i> {{ post.created_on|timesince }}
+                </div>
                 <div class="comments meta-last">
                   <i class="icon-comment"></i>12
                 </div>
               </footer>
             </div>
           </div>
-
           {% endfor %}
           <!-- Pagination -->
           <nav aria-label="Page navigation example">
@@ -76,91 +78,7 @@
           </nav>
         </div>
     </main>
-    <aside class="col-lg-4">
-      <!-- Widget [Search Bar Widget]-->
-      <div class="widget search">
-        <header>
-          <h3 class="h6">Search the blog</h3>
-        </header>
-        <form action="#" class="search-form">
-          <div class="form-group">
-            <input type="search" placeholder="What are you looking for?" />
-            <button type="submit" class="submit">
-              <i class="icon-search"></i>
-            </button>
-          </div>
-        </form>
-      </div>
-      <!-- Widget [Latest Posts Widget]        -->
-      <div class="widget latest-posts">
-        <header>
-          <h3 class="h6">Latest Posts</h3>
-        </header>
-        <div class="blog-posts">
-          <a href="#">
-            <div class="item d-flex align-items-center">
-              <div class="image">
-                <img src="{% static 'img/small-thumbnail-1.jpg' %}" alt="..." class="img-fluid" />
-              </div>
-              <div class="title">
-                <strong>Alberto Savoia Can Teach You About</strong>
-                <div class="d-flex align-items-center">
-                  <div class="views"><i class="icon-eye"></i> 500</div>
-                  <div class="comments"><i class="icon-comment"></i>12</div>
-                </div>
-              </div>
-            </div>
-          </a><a href="#">
-            <div class="item d-flex align-items-center">
-              <div class="image">
-                <img src="{% static 'img/small-thumbnail-2.jpg' %}" alt="..." class="img-fluid" />
-              </div>
-              <div class="title">
-                <strong>Alberto Savoia Can Teach You About</strong>
-                <div class="d-flex align-items-center">
-                  <div class="views"><i class="icon-eye"></i> 500</div>
-                  <div class="comments"><i class="icon-comment"></i>12</div>
-                </div>
-              </div>
-            </div>
-          </a><a href="#">
-            <div class="item d-flex align-items-center">
-              <div class="image">
-                <img src="{% static 'img/small-thumbnail-3.jpg' %}" alt="..." class="img-fluid" />
-              </div>
-              <div class="title">
-                <strong>Alberto Savoia Can Teach You About</strong>
-                <div class="d-flex align-items-center">
-                  <div class="views"><i class="icon-eye"></i> 500</div>
-                  <div class="comments"><i class="icon-comment"></i>12</div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-      <!-- Widget [Categories Widget]-->
-      <div class="widget categories">
-        <header>
-          <h3 class="h6">Categories</h3>
-        </header>
-        <div class="item d-flex justify-content-between">
-          <a href="#">Growth</a><span>12</span>
-        </div>
-        <div class="item d-flex justify-content-between">
-          <a href="#">Local</a><span>25</span>
-        </div>
-        <div class="item d-flex justify-content-between">
-          <a href="#">Sales</a><span>8</span>
-        </div>
-        <div class="item d-flex justify-content-between">
-          <a href="#">Tips</a><span>17</span>
-        </div>
-        <div class="item d-flex justify-content-between">
-          <a href="#">Local</a><span>25</span>
-        </div>
-      </div>
-    </aside>
+    {% include "sidebar.html" with most_recent=most_recent category_count=category_count %}
   </div>
 </div>
 

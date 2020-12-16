@@ -40,9 +40,6 @@ class Post(models.Model):
     featured = models.BooleanField()
     status = models.IntegerField(choices=STATUS, default=0)
 
-    class Meta:
-        ordering = ["-created_on"]
-
     def __str__(self):
         return self.title + " | " + str(self.author)
 
