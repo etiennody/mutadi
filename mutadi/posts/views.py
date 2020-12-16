@@ -1,4 +1,5 @@
 """posts Views Configuration"""
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count
 from django.shortcuts import render
@@ -60,13 +61,17 @@ class PostDetailView(DetailView):
 post_detail_view = PostDetailView.as_view()
 
 
-class AddPostView(SuccessMessageMixin, CreateView):
+class AddPostView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     """Add post view"""
 
     model = Post
     form_class = PostForm
     template_name = "add_post.html"
     success_message = "La publication a été créée avec succès !"
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
 add_post_view = AddPostView.as_view()
