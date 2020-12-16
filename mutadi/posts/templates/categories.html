@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Catégories{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <!-- Categories -->
+        <main class="post-listing col-lg-8">
+            <div class="container">
+                <div class="row">
+                    <h1>Publications pour : {{ cats }}</h1>
+                    <!-- category post -->
+                    {% for post in category_posts %}
+                    <div class="post col-xl-6">
+                        <div class="post-thumbnail">
+                            <a href="{% url "post_detail" post.pk %}">
+                                <img src="{{ post.thumbnail.url}}" alt="..." class="img-fluid" />
+                            </a>
+                        </div>
+                        <div class="post-details">
+                            <a href="{% url "post_detail" post.pk %}">
+                                <h3 class="h4">
+                                    {{post.title}}
+                                </h3>
+                            </a>
+                            {% if user.is_authenticated %}
+                            <div class="d-grid gap-2 d-flex justify-content-around">
+                                <a href="{% url "update_post" post.pk %}"><i class="fas fa-edit"></i></a>
+                                <a href="{% url "delete_post" post.pk %}"><i class="fas fa-trash"></i></a>
+                            </div>
+                            {% endif %}
+                            <p class="text-muted">
+                                {{ post.overview|slice:":200" }}
+                            </p>
+                            <footer class="post-footer d-flex align-items-center">
+                                <a href="#" class="author d-flex align-items-center flex-wrap">
+                                    <div class="avatar">
+                                        <img src="{{ post.author.profile_picture }}" alt="..." class="img-fluid" />
+                                    </div>
+                                    <div class="title"><span>{{ post.author }}</span></div>
+                                </a>
+                                <div class="date">
+                                    <i class="icon-clock"></i> {{ post.created_on|timesince }}
+                                </div>
+                                <div class="comments meta-last">
+                                    <i class="icon-comment"></i>12
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination pagination-template d-flex justify-content-center">
+                            <li class="page-item">
+                                <a href="#" class="page-link">
+                                    <i class="fa fa-angle-left"></i></a>
+                            </li>
+                            <li class="page-item">
+                                <a href="#" class="page-link active">1</a>
+                            </li>
+                            <li class="page-item"><a href="#" class="page-link">2</a></li>
+                            <li class="page-item"><a href="#" class="page-link">3</a></li>
+                            <li class="page-item">
+                                <a href="#" class="page-link">
+                                    <i class="fa fa-angle-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+{% endblock content %}
