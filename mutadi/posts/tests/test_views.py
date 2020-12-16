@@ -102,13 +102,23 @@ class TestAddPostViews:
         self.proto_user.save()
         return self.proto_user
 
-    def test_view_url_add_post_page_exists_at_desired_location(self, client):
+    def test_view_url_add_post_page_exists_at_desired_location(
+        self, client, proto_user
+    ):
         """add_post page should exist at desired location."""
+        client.login(
+            username=f"{proto_user.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
         response = client.get("/posts/add_post/")
         assert response.status_code == 200
 
-    def test_view_url_accessible_by_name(self, client):
+    def test_view_url_accessible_by_name(self, client, proto_user):
         """add_post page should be accessible by name."""
+        client.login(
+            username=f"{proto_user.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
         url = reverse("add_post")
         response = client.get(url)
         assert response.status_code == 200
@@ -123,8 +133,14 @@ class TestAddPostViews:
         response = client.get(url)
         assert "Ajouter une publication" in str(response.content)
 
-    def test_view_add_post_page_uses_correct_template(self, client):
+    def test_view_add_post_page_uses_correct_template(
+        self, client, proto_user
+    ):
         """add_post page should use add_post.html template."""
+        client.login(
+            username=f"{proto_user.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
         url = reverse("add_post")
         response = client.get(url)
         assert response.status_code == 200
