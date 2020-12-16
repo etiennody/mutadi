@@ -8,10 +8,17 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = "__all__"
+        fields = (
+            "title",
+            "categories",
+            "overview",
+            "content",
+            "thumbnail",
+            "featured",
+            "status",
+        )
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
-            "author": forms.Select(attrs={"class": "form-control"}),
             "categories": forms.CheckboxSelectMultiple,
             "overview": forms.TextInput(attrs={"class": "form-control"}),
             "content": forms.Textarea(attrs={"class": "form-control"}),
@@ -20,7 +27,6 @@ class PostForm(forms.ModelForm):
         }
         labels = {
             "title": "Titre",
-            "author": "Auteur",
             "categories": "Catégories",
             "overview": "Présentation",
             "content": "Contenu",
