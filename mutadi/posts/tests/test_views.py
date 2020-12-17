@@ -2,12 +2,18 @@
 """
 import pytest
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import RequestFactory
 from django.urls import reverse
 from model_bakery import baker
 from mutadi.posts.models import Category, Post
+from mutadi.posts.views import add_post_view
 from pytest_django.asserts import assertRedirects, assertTemplateUsed
 
 pytestmark = pytest.mark.django_db
+
+
+factory = RequestFactory()
 
 
 class TestPostlistViews:
@@ -145,6 +151,32 @@ class TestAddPostViews:
         response = client.get(url)
         assert response.status_code == 200
         assertTemplateUsed(response, "add_post.html")
+
+    def test_form_valid_on_add_post_view(self, proto_user):
+        """form_valid function should be valid the add post view"""
+        testfile = (
+            b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04"
+            b"\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02"
+            b"\x02\x4c\x01\x00\x3b"
+        )
+        data = {
+            "title": "This is the title",
+            "categories": [1, 2],
+            "overview": "This is the overview",
+            "content": "This is the content",
+            "featured": False,
+            "status": 1,
+            "thumbnail": SimpleUploadedFile(
+                "small.gif",
+                testfile,
+                content_type="image/gif",
+            ),
+        }
+        user = proto_user
+        request = factory.post("/add_post/", data=data)
+        request.user = user
+        response = add_post_view(request)
+        assert response
 
 
 class TestUpdatePostViews:
