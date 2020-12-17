@@ -1,6 +1,8 @@
+"""posts Models Configuration"""
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+from ckeditor.fields import RichTextField
 
 
 class Category(models.Model):
@@ -33,8 +35,8 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     categories = models.ManyToManyField(Category)
     updated_on = models.DateTimeField(auto_now=True)
-    overview = models.TextField()
-    content = models.TextField()
+    overview = models.CharField(max_length=255)
+    content = RichTextField()
     created_on = models.DateTimeField(auto_now_add=True)
     thumbnail = models.ImageField()
     featured = models.BooleanField()
@@ -44,4 +46,5 @@ class Post(models.Model):
         return self.title + " | " + str(self.author)
 
     def get_absolute_url(self):
+        """get_absolute_url function allows to redirect to the home page."""
         return reverse("home")
