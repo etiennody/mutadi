@@ -8,6 +8,7 @@ django = "*"
 psycopg2 = "*"
 pillow = "*"
 pytest-django = "*"
+django-ckeditor = "*"
 
 [dev-packages]
 pylint = "*"

@@ -49,7 +49,11 @@ class TestPostDetailViews:
     @pytest.fixture
     def proto_post(self):
         """Fixture for baked Post model."""
-        return baker.make(Post, _create_files=True)
+        return baker.make(
+            Post,
+            content="Ipsum nulla aute irure sint consequat consequat proident irure voluptate.",
+            _create_files=True,
+        )
 
     def test_view_url_post_detail_page_exists_at_desired_location(
         self, client, proto_post
@@ -163,7 +167,7 @@ class TestAddPostViews:
             "title": "This is the title",
             "categories": [1, 2],
             "overview": "This is the overview",
-            "content": "This is the content",
+            "content": "Culpa est et aliquip non tempor mollit exercitation cillum et.",
             "featured": False,
             "status": 1,
             "thumbnail": SimpleUploadedFile(
@@ -193,7 +197,11 @@ class TestUpdatePostViews:
     @pytest.fixture
     def proto_post(self):
         """Fixture for baked Post model."""
-        return baker.make(Post, _create_files=True)
+        return baker.make(
+            Post,
+            content="Ex anim do nostrud cupidatat id nostrud ad.",
+            _create_files=True,
+        )
 
     def test_view_url_update_post_page_exists_at_desired_location(
         self, client, proto_post
@@ -217,7 +225,9 @@ class TestUpdatePostViews:
         self, client, proto_post, proto_user
     ):
         """update_post page should contain the title of the post."""
-        proto_post_a = baker.make(Post, author=proto_user)
+        proto_post_a = baker.make(
+            Post, content="Eiusmod eu ipsum id pariatur.", author=proto_user
+        )
         client.login(
             username=f"{proto_user.username}",
             password="m=9UaK^C,Tbq9N=T",
@@ -237,7 +247,14 @@ class TestUpdatePostViews:
     ):
         """update_post page should contain the title of the post."""
         proto_user_a = baker.make(User)
-        proto_post_b = baker.make(Post, author=proto_user_a)
+        proto_post_b = baker.make(
+            Post,
+            content=(
+                "Qui do anim tempor aliqua dolor non voluptate "
+                "fugiat exercitation veniam nulla reprehenderit."
+            ),
+            author=proto_user_a,
+        )
         client.login(
             username=f"{proto_user.username}",
             password="m=9UaK^C,Tbq9N=T",
@@ -280,7 +297,11 @@ class TestDeletePostViews:
     @pytest.fixture
     def proto_post(self):
         """Fixture for baked Post model."""
-        return baker.make(Post, _create_files=True)
+        return baker.make(
+            Post,
+            content="Consequat aliqua non qui veniam sit voluptate.",
+            _create_files=True,
+        )
 
     def test_view_url_delete_post_page_exists_at_desired_location(
         self, client, proto_post
@@ -304,7 +325,9 @@ class TestDeletePostViews:
         self, client, proto_post, proto_user
     ):
         """delete_post page should contain the title of the post."""
-        proto_post_a = baker.make(Post, author=proto_user)
+        proto_post_a = baker.make(
+            Post, content="Cupidatat ex eu excepteur magna.", author=proto_user
+        )
         client.login(
             username=f"{proto_user.username}",
             password="m=9UaK^C,Tbq9N=T",
@@ -323,7 +346,11 @@ class TestDeletePostViews:
     ):
         """delete_post page should contain the title of the post."""
         proto_user_a = baker.make(User)
-        proto_post_c = baker.make(Post, author=proto_user_a)
+        proto_post_c = baker.make(
+            Post,
+            content="Cillum fugiat consequat est non sunt excepteur reprehenderit minim non nisi.",
+            author=proto_user_a,
+        )
         client.login(
             username=f"{proto_user.username}",
             password="m=9UaK^C,Tbq9N=T",

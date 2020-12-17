@@ -19,7 +19,9 @@ class PostForm(forms.ModelForm):
         )
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
-            "categories": forms.CheckboxSelectMultiple,
+            "categories": forms.CheckboxSelectMultiple(
+                attrs={"class": "list-unstyled"}
+            ),
             "overview": forms.TextInput(attrs={"class": "form-control"}),
             "content": forms.Textarea(attrs={"class": "form-control"}),
             "featured": forms.CheckboxInput,
@@ -52,7 +54,9 @@ class EditForm(forms.ModelForm):
         )
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
-            "categories": forms.CheckboxSelectMultiple,
+            "categories": forms.CheckboxSelectMultiple(
+                attrs={"class": "list-unstyled"}
+            ),
             "overview": forms.TextInput(attrs={"class": "form-control"}),
             "content": forms.Textarea(attrs={"class": "form-control"}),
             "featured": forms.CheckboxInput,

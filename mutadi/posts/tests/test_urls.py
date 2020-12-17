@@ -19,7 +19,13 @@ class TestPostsUrls:
     @pytest.fixture
     def proto_post(self):
         """Fixture for baked Post model."""
-        return baker.make(Post)
+        return baker.make(
+            Post,
+            content=(
+                "Cupidatat duis commodo aliqua adipisicing "
+                "mollit consequat mollit cupidatat ad adipisicing."
+            ),
+        )
 
     def test_post_list_reverse(self):
         """post_list should reverse to /posts/post_list/."""

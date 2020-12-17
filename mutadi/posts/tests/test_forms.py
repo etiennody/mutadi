@@ -17,17 +17,24 @@ class TestPostForm:
 
     @pytest.fixture()
     def proto_user(self):
+        """Fixture for baked User model."""
         return baker.make(User)
 
     @pytest.fixture()
     def proto_category(self):
+        """Fixture for baked Category model."""
         categories_set = baker.prepare(Category, _quantity=5)
         return categories_set
 
     @pytest.fixture()
     def proto_post(self, proto_category):
+        """Fixture for baked Post model."""
         return baker.make(
-            Post, categories=proto_category, make_m2m=True, _create_files=True
+            Post,
+            content="Aute non ex nostrud amet ipsum.",
+            categories=proto_category,
+            make_m2m=True,
+            _create_files=True,
         )
 
     def test_valid_add_post_form(self, proto_post, proto_user):
@@ -38,11 +45,11 @@ class TestPostForm:
             b"\x02\x4c\x01\x00\x3b"
         )
         data = {
-            "title": "This is the title",
+            "title": "This is the added title",
             "author": proto_user,
             "categories": [1, 2],
-            "overview": "This is the overview",
-            "content": "This is the content",
+            "overview": "This is the added overview",
+            "content": "This is the added content",
             "featured": True,
             "status": 1,
         }
@@ -68,11 +75,11 @@ class TestPostForm:
             b"\x02\x4c\x01\x00\x3b"
         )
         data = {
-            "title": "This is the title",
+            "title": "This is the added title",
             "author": proto_user,
             "categories": [6, 7],
-            "overview": "This is the overview",
-            "content": "This is the content",
+            "overview": "This is the added overview",
+            "content": "This is the added content",
             "featured": True,
             "status": 0,
         }
@@ -102,8 +109,8 @@ class TestPostForm:
             "title": "",
             "author": proto_user,
             "categories": [11, 12],
-            "overview": "This is the overview",
-            "content": "This is the content",
+            "overview": "This is the added overview",
+            "content": "This is the added content",
             "featured": True,
             "status": 1,
         }
@@ -132,11 +139,11 @@ class TestPostForm:
             b"\x02\x4c\x01\x00\x3b"
         )
         data = {
-            "title": "This is the title",
+            "title": "This is the added title",
             "author": proto_user,
             "categories": [],
-            "overview": "This is the overview",
-            "content": "This is the content",
+            "overview": "This is the added overview",
+            "content": "This is the added content",
             "featured": True,
             "status": 1,
         }
@@ -160,11 +167,11 @@ class TestPostForm:
         """Add post form should be refused with image missing."""
 
         data = {
-            "title": "This is the title",
+            "title": "This is the added title",
             "author": proto_user,
             "categories": [21, 22],
-            "overview": "This is the overview",
-            "content": "This is the content",
+            "overview": "This is the added overview",
+            "content": "This is the added content",
             "featured": True,
             "status": 1,
         }
@@ -184,11 +191,11 @@ class TestPostForm:
             b"\x02\x4c\x01\x00\x3b"
         )
         data = {
-            "title": "This is the title",
+            "title": "This is the added title",
             "author": proto_user,
             "categories": [26, 27],
-            "overview": "This is the overview",
-            "content": "This is the content",
+            "overview": "This is the added overview",
+            "content": "This is the added content",
             "featured": False,
             "status": 1,
         }
@@ -210,17 +217,26 @@ class TestUpdatePostForm:
 
     @pytest.fixture()
     def proto_user(self):
+        """Fixture for baked User model."""
         return baker.make(User)
 
     @pytest.fixture()
     def proto_category(self):
+        """Fixture for baked Category model."""
         categories_set = baker.prepare(Category, _quantity=5)
         return categories_set
 
     @pytest.fixture()
     def proto_post(self, proto_category):
         return baker.make(
-            Post, categories=proto_category, make_m2m=True, _create_files=True
+            Post,
+            content=(
+                "Aliquip excepteur qui mollit labore nulla et culpa "
+                "minim et commodo reprehenderit consequat sint."
+            ),
+            categories=proto_category,
+            make_m2m=True,
+            _create_files=True,
         )
 
     def test_valid_update_post_form(self, proto_post, proto_user):
@@ -231,10 +247,10 @@ class TestUpdatePostForm:
             b"\x02\x4c\x01\x00\x3b"
         )
         data = {
-            "title": "This is the title",
+            "title": "This is the modified title",
             "categories": [31, 32],
-            "overview": "This is the overview",
-            "content": "This is the content",
+            "overview": "This is the modified overview",
+            "content": "This is the modified content",
             "featured": True,
             "status": 1,
         }
@@ -261,10 +277,10 @@ class TestUpdatePostForm:
             b"\x02\x4c\x01\x00\x3b"
         )
         data = {
-            "title": "This is the title",
+            "title": "This is the modified title",
             "categories": [36, 37],
-            "overview": "This is the overview",
-            "content": "This is the content",
+            "overview": "This is the modified overview",
+            "content": "This is the modified content",
             "featured": True,
             "status": 0,
         }
@@ -293,8 +309,8 @@ class TestUpdatePostForm:
         data = {
             "title": "",
             "categories": [41, 42],
-            "overview": "This is the overview",
-            "content": "This is the content",
+            "overview": "This is the modified overview",
+            "content": "This is the modified content",
             "featured": True,
             "status": 1,
         }
@@ -323,10 +339,10 @@ class TestUpdatePostForm:
             b"\x02\x4c\x01\x00\x3b"
         )
         data = {
-            "title": "This is the title",
+            "title": "This is the modified title",
             "categories": [],
-            "overview": "This is the overview",
-            "content": "This is the content",
+            "overview": "This is the modified overview",
+            "content": "This is the modified content",
             "featured": True,
             "status": 1,
         }
@@ -350,10 +366,10 @@ class TestUpdatePostForm:
         """Update post form should be refused with image missing."""
 
         data = {
-            "title": "This is the title",
+            "title": "This is the modified title",
             "categories": [51, 52],
-            "overview": "This is the overview",
-            "content": "This is the content",
+            "overview": "This is the modified overview",
+            "content": "This is the modified content",
             "featured": True,
             "status": 1,
         }
@@ -373,10 +389,10 @@ class TestUpdatePostForm:
             b"\x02\x4c\x01\x00\x3b"
         )
         data = {
-            "title": "This is the title",
+            "title": "This is the modified title",
             "categories": [56, 57],
-            "overview": "This is the overview",
-            "content": "This is the content",
+            "overview": "This is the modified overview",
+            "content": "This is the modified content",
             "featured": False,
             "status": 1,
         }

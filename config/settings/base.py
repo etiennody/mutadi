@@ -20,9 +20,6 @@ APPS_DIR = BASE_DIR / "mutadi"
 # Application definition
 
 INSTALLED_APPS = [
-    "mutadi.pages",
-    "mutadi.posts",
-    "mutadi.members",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -30,6 +27,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    "mutadi.pages",
+    "mutadi.posts",
+    "mutadi.members",
+    "ckeditor",
 ]
 
 SITE_ID = 1

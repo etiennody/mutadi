@@ -44,9 +44,16 @@ class TestCommentModel:
     """Group multiple tests in Comment Model"""
 
     @pytest.fixture
-    def comment(self):
+    def post(self):
         """Fixture for baked Category model."""
-        return baker.make(Comment)
+        return baker.make(
+            Post, content="Reprehenderit tempor laboris incididunt occaecat."
+        )
+
+    @pytest.fixture
+    def comment(self, post):
+        """Fixture for baked Category model."""
+        return baker.make(Comment, post=post)
 
     def test_using_comment(self, comment):
         """Function should be using fixture of Comment baked model."""
@@ -69,7 +76,11 @@ class TestPostModel:
     @pytest.fixture
     def post(self):
         """Fixture for baked Post model."""
-        return baker.make(Post, make_m2m=True)
+        return baker.make(
+            Post,
+            make_m2m=True,
+            content="Amet amet ea excepteur veniam et do elit irure.",
+        )
 
     def test_using_post(self, post):
         """Function should be using fixture of Post baked model."""
@@ -91,4 +102,5 @@ class TestPostModel:
         assert max_length == 100
 
     def test_get_absolute_url(self, post):
+        """get_absolute_url() should be reirected to home page."""
         assert post.get_absolute_url() == "/"
