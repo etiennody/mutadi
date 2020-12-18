@@ -32,3 +32,11 @@ class TestMembersUrls:
     def test_logout_resolve(self):
         """/members/logout/ should resolve to logout."""
         assert resolve("/members/logout/").view_name == "logout"
+
+    def test_edit_profile_reverse(self):
+        """edit_profile should reverse to /members/edit_profile/."""
+        assert reverse("edit_profile") == "/members/edit_profile/"
+
+    def test_edit_profile_resolve(self):
+        """/members/edit_profile/ should resolve to edit_profile."""
+        assert resolve("/members/edit_profile/").view_name == "edit_profile"

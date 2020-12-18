@@ -3,7 +3,7 @@
 import pytest
 from django.contrib.auth.models import User
 from model_bakery import baker
-from mutadi.members.forms import SignUpForm
+from mutadi.members.forms import EditProfileForm, SignUpForm
 
 pytestmark = pytest.mark.django_db
 
@@ -133,3 +133,65 @@ class TestSignUpForm:
         assert not form.is_valid()
         assert len(form.errors) == 1
         assert "password2" in form.errors
+
+
+class TestEditProfileForm:
+    """Group multiple tests for EditProfileForm"""
+
+    @pytest.fixture
+    def proto_user(self):
+        """Fixture for baked User model."""
+        self.proto_user = baker.make(User)
+        self.proto_user.set_password("m=9UaK^C,Tbq9N=T")
+        self.proto_user.save()
+        return self.proto_user
+
+    def test_edit_profile_form_for_new_user(self):
+        """edit_profile form should be valid for new user."""
+
+        form = EditProfileForm(
+            {
+                "username": "Bob123",
+                "first_name": "Bob",
+                "last_name": "Robert",
+                "email": "bobrobert@test.fr",
+                "is_actif": True,
+            }
+        )
+        assert form.is_valid()
+
+    def test_invalid_edit_profile_form_for_existing_user(self, proto_user):
+        """
+        edit_profile form should inform in existing user
+        and user cannot be created twice.
+        """
+
+        form = EditProfileForm(
+            {
+                "username": proto_user.username,
+                "first_name": proto_user.first_name,
+                "last_name": proto_user.last_name,
+                "email": proto_user.email,
+            }
+        )
+        assert not form.is_valid()
+        assert len(form.errors) == 4
+        assert "username" in form.errors
+
+    def test_invalid_edit_profile_form_for_wrong_email(self):
+        """
+        edit_profile form should inform for different passwords
+        and user cannot be created.
+        """
+
+        form = EditProfileForm(
+            {
+                "username": "Alice",
+                "first_name": "Alice",
+                "last_name": "Robert",
+                "email": "alicerobert@",
+            }
+        )
+        assert not form.is_valid()
+        assert len(form.errors) == 1
+        assert "email" in form.errors
