@@ -23,7 +23,7 @@ class UserEditView(SuccessMessageMixin, generic.UpdateView):
     form_class = EditProfileForm
     template_name = "registration/edit_profile.html"
     success_url = reverse_lazy("home")
-    success_message = "Le profil a été modifiéé avec succès !"
+    success_message = "Le profil a été modifié avec succès !"
 
     def get_object(self):
         return self.request.user
