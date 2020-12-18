@@ -69,11 +69,11 @@ class EditProfileForm(UserChangeForm):
         widget=forms.TextInput(attrs={"class": "form-control"}),
         label="Nom",
     )
-    is_actif = forms.CharField(
-        max_length=100,
-        widget=forms.CheckboxInput(attrs={"class": "form-check"}),
-        label="Actif",
-    )
+    # is_actif = forms.CharField(
+    #     max_length=100,
+    #     widget=forms.CheckboxInput(attrs={"class": "form-check"}),
+    #     label="Actif",
+    # )
 
     class Meta:
         model = User
@@ -83,5 +83,5 @@ class EditProfileForm(UserChangeForm):
             "last_name",
             "email",
             "password",
-            "is_actif",
+            # "is_actif",
         )

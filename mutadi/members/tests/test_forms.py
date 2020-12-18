@@ -155,7 +155,6 @@ class TestEditProfileForm:
                 "first_name": "Bob",
                 "last_name": "Robert",
                 "email": "bobrobert@test.fr",
-                "is_actif": True,
             }
         )
         assert form.is_valid()

@@ -203,7 +203,6 @@ class TestUserEditViews:
             "first_name": proto_user.first_name,
             "last_name": proto_user.last_name,
             "email": proto_user.email,
-            "is_actif": True,
         }
         user = proto_user
         request = factory.post("/edit_profile/", data=data)
@@ -212,26 +211,3 @@ class TestUserEditViews:
         assert response
         assert str(proto_user.username) == "UsernameModified"
         assert User.objects.all().count() == 1
-        # assert User.objects.filter(username=proto_user.username).exists()
-
-    # def test_valid_edit_profile_modify_infos(self, client, proto_user):
-    #     """edit_profile if prototype user is in db after registration."""
-    #     client.login(
-    #         username=f"{proto_user.username}",
-    #         password="m=9UaK^C,Tbq9N=T",
-    #     )
-    #     response = client.post(
-    #         reverse("edit_profile"),
-    #         {
-    #             "username": "UsernameModified",
-    #             "first_name": proto_user.first_name,
-    #             "last_name": proto_user.last_name,
-    #             "email": proto_user.email,
-    #             "is_actif": True,
-    #         },
-    #         follow=True,
-    #     )
-    #     assert response.status_code == 200
-    #     print(proto_user.username)
-    #     assert User.objects.filter(proto_user.username).exists()
-    #     assert User.objects.all().count() == 1
