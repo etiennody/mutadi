@@ -101,7 +101,10 @@ class TestPostsUrls:
         )
 
     def test_category_posts_reverse(self, proto_category):
-        """category should reverse to /posts/category/proto_post.categories__title."""
+        """
+        category should reverse to
+        /posts/category/proto_post.categories__title.
+        """
         assert (
             reverse(
                 "category",
@@ -113,7 +116,10 @@ class TestPostsUrls:
         )
 
     def test_category_posts_resolve(self, proto_category):
-        """/posts/category/proto_post.categories__title should resolve to category."""
+        """
+        /posts/category/proto_post.categories__title
+        should resolve to category.
+        """
         assert (
             resolve(f"/posts/category/{proto_category.title}/").view_name
             == "category"
