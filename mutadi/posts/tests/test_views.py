@@ -12,7 +12,6 @@ from pytest_django.asserts import assertRedirects, assertTemplateUsed
 
 pytestmark = pytest.mark.django_db
 
-
 factory = RequestFactory()
 
 
@@ -51,7 +50,10 @@ class TestPostDetailViews:
         """Fixture for baked Post model."""
         return baker.make(
             Post,
-            content="Ipsum nulla aute irure sint consequat consequat proident irure voluptate.",
+            content=(
+                "Ipsum nulla aute irure sint consequat "
+                "consequat proident irure voluptate."
+            ),
             _create_files=True,
         )
 
@@ -167,7 +169,10 @@ class TestAddPostViews:
             "title": "This is the title",
             "categories": [1, 2],
             "overview": "This is the overview",
-            "content": "Culpa est et aliquip non tempor mollit exercitation cillum et.",
+            "content": (
+                "Culpa est et aliquip non tempor "
+                "mollit exercitation cillum et."
+            ),
             "featured": False,
             "status": 1,
             "thumbnail": SimpleUploadedFile(
@@ -221,7 +226,7 @@ class TestUpdatePostViews:
         response = client.get(url)
         assert response.status_code == 200
 
-    def test_valid_update_post_page_with_post_title_as_reminder_with_correct_user(
+    def test_valid_update_post_page_with_correct_user(
         self, client, proto_post, proto_user
     ):
         """update_post page should contain the title of the post."""
@@ -242,7 +247,7 @@ class TestUpdatePostViews:
         print(response.content)
         assert proto_post_a.title in str(response.content)
 
-    def test_invalid_update_post_page_with_post_title_as_reminder_with_wrong_user(
+    def test_invalid_update_post_page_with_wrong_user(
         self, client, proto_post, proto_user
     ):
         """update_post page should contain the title of the post."""
@@ -266,7 +271,7 @@ class TestUpdatePostViews:
             ],
         )
         response = client.get(url)
-        assert not proto_post_b.title in str(response.content)
+        assert proto_post_b.title not in str(response.content)
 
     def test_view_update_post_page_uses_correct_template(
         self, client, proto_post
@@ -321,7 +326,7 @@ class TestDeletePostViews:
         response = client.get(url)
         assert response.status_code == 200
 
-    def test_valid_delete_post_page_with_post_title_as_reminder_with_correct_user(
+    def test_valid_delete_post_page_with_correct_user(
         self, client, proto_post, proto_user
     ):
         """delete_post page should contain the title of the post."""
@@ -341,14 +346,17 @@ class TestDeletePostViews:
         response = client.get(url)
         assert proto_post_a.title in str(response.content)
 
-    def test_invalid_delete_post_page_with_post_title_as_reminder_with_wrong_user(
+    def test_invalid_delete_post_page_with_wrong_user(
         self, client, proto_post, proto_user
     ):
         """delete_post page should contain the title of the post."""
         proto_user_a = baker.make(User)
         proto_post_c = baker.make(
             Post,
-            content="Cillum fugiat consequat est non sunt excepteur reprehenderit minim non nisi.",
+            content=(
+                "Cillum fugiat consequat est non sunt "
+                "excepteur reprehenderit minim non nisi."
+            ),
             author=proto_user_a,
         )
         client.login(
@@ -362,7 +370,7 @@ class TestDeletePostViews:
             ],
         )
         response = client.get(url)
-        assert not proto_post_c.title in str(response.content)
+        assert proto_post_c.title not in str(response.content)
 
     def test_view_delete_post_page_uses_correct_template(
         self, client, proto_post
