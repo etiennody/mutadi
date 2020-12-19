@@ -1,14 +1,16 @@
 """Unit tests for members views
 """
 import pytest
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.test import RequestFactory
 from django.urls import reverse
 from model_bakery import baker
-from mutadi.members.views import user_edit_view
+from mutadi.members.views import change_password_view, user_edit_view
 from pytest_django.asserts import assertRedirects, assertTemplateUsed
 
 pytestmark = pytest.mark.django_db
+
+User = get_user_model()
 
 factory = RequestFactory()
 
@@ -211,3 +213,52 @@ class TestUserEditViews:
         assert response
         assert str(proto_user.username) == "UsernameModified"
         assert User.objects.all().count() == 1
+
+
+class TestChangePassword:
+    """Change Password Test view"""
+
+    @pytest.fixture
+    def proto_user(self):
+        """Fixture for baked User model."""
+        self.proto_user = baker.make(User)
+        self.proto_user.set_password("m=9UaK^C,Tbq9N=T")
+        self.proto_user.save()
+        return self.proto_user
+
+    def test_root_url_resolves_to_change_password_view(
+        self, client, proto_user
+    ):
+        """Valid the status code 200 and the template used to change password"""
+        client.login(
+            username=f"{proto_user.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
+        response = client.get(reverse("change_password"))
+        assert response.status_code == 200
+        assertTemplateUsed(response, "registration/change_password.html")
+
+    def test_change_password_returns_correct_html(self, client, proto_user):
+        """Valid html document and the html title in change password page"""
+        client.login(
+            username=f"{proto_user.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
+        response = client.get(reverse("change_password"))
+        html = response.content.decode("utf8")
+        assert html.startswith("\n\n<!DOCTYPE html>")
+        assert "<title>Changer de mot de passe :: Mutadi</title>" in html
+        assert html.endswith("</html>")
+
+    def test_valid_form_on_change_password_view(self, proto_user):
+        """It should be valid change password view"""
+        data = {
+            "old_password": "m=9UaK^C,Tbq9N=T",
+            "new_password1": "/GiLnni.9H{^A?3+",
+            "new_password2": "/GiLnni.9H{^A?3+",
+        }
+        user = proto_user
+        request = factory.post("/password/", data=data)
+        request.user = user
+        response = change_password_view(request)
+        assert response
