@@ -1,8 +1,11 @@
 """members Views Configuration"""
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-from .forms import SignUpForm, EditProfileForm
+
+from .forms import EditProfileForm, PasswordChangingForm, SignUpForm
 
 
 class UserRegisterView(SuccessMessageMixin, generic.CreateView):
@@ -30,3 +33,18 @@ class UserEditView(SuccessMessageMixin, generic.UpdateView):
 
 
 user_edit_view = UserEditView.as_view()
+
+
+class ChangePasswordView(PasswordChangeView):
+    """Password change view"""
+
+    form_class = PasswordChangingForm
+    template_name = "registration/change_password.html"
+    success_url = reverse_lazy("change_password_success")
+
+
+change_password_view = ChangePasswordView.as_view()
+
+
+def change_password_success(request):
+    return render(request, "registration/change_password_success.html", {})
