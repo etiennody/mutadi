@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 
-{% comment %} {% load crispy_forms_tags %} {% endcomment %}
-
-{% block title %}
-Connexion
-{% endblock title %}
+{% block title %}Connexion{% endblock title %}
 
 {% block content %}
 <div class="container">
@@ -26,7 +22,8 @@ Connexion
                     </form>
                     <div class="card-info border-top pt-3">
                         <small class="text-muted">
-                            Besoin d'un compte ? <a href="{% url 'register' %}" class="ml-2">S'incrire maintenant</a>
+                            Besoin d'un compte ?
+                            <a href="{% url 'register' %}" class="ml-2">S'inscrire maintenant</a>
                         </small>
                     </div>
                 </div>

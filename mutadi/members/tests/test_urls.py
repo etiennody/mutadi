@@ -40,3 +40,25 @@ class TestMembersUrls:
     def test_edit_profile_resolve(self):
         """/members/edit_profile/ should resolve to edit_profile."""
         assert resolve("/members/edit_profile/").view_name == "edit_profile"
+
+    def test_change_password_reverse(self):
+        """change_password should reverse to /members/password/."""
+        assert reverse("change_password") == "/members/password/"
+
+    def test_change_password_resolve(self):
+        """/members/change_password/ should resolve to change_password."""
+        assert resolve("/members/password/").view_name == "change_password"
+
+    def test_change_password_success_reverse(self):
+        """change_password_success should reverse to /members/password/."""
+        assert (
+            reverse("change_password_success")
+            == "/members/change_password_success/"
+        )
+
+    def test_change_password_success_resolve(self):
+        """/members/change_password_success/ should resolve to change_password_success."""
+        assert (
+            resolve("/members/change_password_success/").view_name
+            == "change_password_success"
+        )

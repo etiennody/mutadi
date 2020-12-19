@@ -1,7 +1,13 @@
 """members Foms Configuration"""
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.contrib.auth.models import User
 from django import forms
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import (
+    PasswordChangeForm,
+    UserChangeForm,
+    UserCreationForm,
+)
+
+User = get_user_model()
 
 
 class SignUpForm(UserCreationForm):
@@ -69,11 +75,6 @@ class EditProfileForm(UserChangeForm):
         widget=forms.TextInput(attrs={"class": "form-control"}),
         label="Nom",
     )
-    # is_actif = forms.CharField(
-    #     max_length=100,
-    #     widget=forms.CheckboxInput(attrs={"class": "form-check"}),
-    #     label="Actif",
-    # )
 
     class Meta:
         model = User
@@ -83,5 +84,33 @@ class EditProfileForm(UserChangeForm):
             "last_name",
             "email",
             "password",
-            # "is_actif",
         )
+
+
+class PasswordChangingForm(PasswordChangeForm):
+    """Password changing form"""
+
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={"class": "form-control", "type": "password"}
+        ),
+        label="Ancien mot de passe",
+    )
+    new_password1 = forms.CharField(
+        max_length=128,
+        widget=forms.PasswordInput(
+            attrs={"class": "form-control", "type": "password"}
+        ),
+        label="Nouveau mot de passe",
+    )
+    new_password2 = forms.CharField(
+        max_length=128,
+        widget=forms.PasswordInput(
+            attrs={"class": "form-control", "type": "password"}
+        ),
+        label="Confirmation du nouveau mot de passe",
+    )
+
+    class Meta:
+        model = User
+        fields = ("old_password", "new_password1", "new_password2")
