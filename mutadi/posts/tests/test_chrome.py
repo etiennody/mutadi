@@ -1,7 +1,6 @@
-"""Functional tests for users app
+"""Functional tests for posts app
 """
 import time
-import urllib.parse
 
 import pytest
 from django.contrib.auth import get_user_model
@@ -18,7 +17,9 @@ pytestmark = pytest.mark.django_db
 User = get_user_model()
 
 
-class TestChangePasswordSelenium(LiveServerTestCase):
+class TestDeletePostsSelenium(LiveServerTestCase):
+    """Selenium functional tests for deletion of post"""
+
     serialized_rollback = True
 
     def setUp(self):
