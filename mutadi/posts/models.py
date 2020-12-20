@@ -1,8 +1,10 @@
 """posts Models Configuration"""
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from ckeditor.fields import RichTextField
+
+User = get_user_model()
 
 
 class Category(models.Model):
@@ -13,6 +15,16 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "categories"
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    profile_pic = models.ImageField(
+        null=True, blank=True, upload_to="images/profile/"
+    )
+
+    def __str__(self):
+        return str(self.user)
 
 
 class Comment(models.Model):
