@@ -37,7 +37,8 @@
             <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
               <a href="#" class="author d-flex align-items-center flex-wrap">
                 <div class="avatar">
-                  <img src="{{ post.author.profile_picture.url}}" alt="{{ post.author }}" class="img-fluid" />
+                  <img src="{{ post.author.profile.profile_pic.url}}" alt="{{ post.author }}" max-width=100%
+                    height=100% />
                 </div>
                 <div class="title"><span>{{ post.author }}</span></div>
               </a>

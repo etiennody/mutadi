@@ -12,8 +12,8 @@
     <main class="posts-listing col-lg-8">
       <div class="container">
         <div class="row">
-          <!-- post -->
           {% for post in most_recent %}
+          <!-- post -->
           <div class="post col-xl-6">
             <div class="post-thumbnail">
               <a href="{% url "post_detail" post.pk %}"><img src="{{ post.thumbnail.url}}" alt="..."
@@ -38,7 +38,7 @@
                 <a href="{% url "update_post" post.pk %}" class="mr-5"><i class="fas fa-edit"></i></a>
                 <a href="{% url "delete_post" post.pk %}"><i class="fas fa-trash"></i></a>
               </div>
-              {%endif %}
+              {% endif %}
               {% endif %}
               <p class="text-muted">
                 {{ post.overview|slice:":200" }}
@@ -46,7 +46,7 @@
               <footer class="post-footer d-flex align-items-center">
                 <a href="#" class="author d-flex align-items-center flex-wrap">
                   <div class="avatar">
-                    <img src="{{ post.author.profile_picture }}" alt="..." class="img-fluid" />
+                    <img src="{{ post.author.profile.profile_pic.url }}" alt="..." class="img-fluid" />
                   </div>
                   <div class="title"><span>{{ post.author }}</span></div>
                 </a>
@@ -60,25 +60,26 @@
             </div>
           </div>
           {% endfor %}
-          <!-- Pagination -->
-          <nav aria-label="Page navigation example">
-            <ul class="pagination pagination-template d-flex justify-content-center">
-              <li class="page-item">
-                <a href="#" class="page-link">
-                  <i class="fa fa-angle-left"></i></a>
-              </li>
-              <li class="page-item">
-                <a href="#" class="page-link active">1</a>
-              </li>
-              <li class="page-item"><a href="#" class="page-link">2</a></li>
-              <li class="page-item"><a href="#" class="page-link">3</a></li>
-              <li class="page-item">
-                <a href="#" class="page-link">
-                  <i class="fa fa-angle-right"></i></a>
-              </li>
-            </ul>
-          </nav>
         </div>
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+          <ul class="pagination pagination-template d-flex justify-content-center">
+            <li class="page-item">
+              <a href="#" class="page-link">
+                <i class="fa fa-angle-left"></i></a>
+            </li>
+            <li class="page-item">
+              <a href="#" class="page-link active">1</a>
+            </li>
+            <li class="page-item"><a href="#" class="page-link">2</a></li>
+            <li class="page-item"><a href="#" class="page-link">3</a></li>
+            <li class="page-item">
+              <a href="#" class="page-link">
+                <i class="fa fa-angle-right"></i></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </main>
     {% include "sidebar.html" with most_recent=most_recent category_count=category_count %}
   </div>
