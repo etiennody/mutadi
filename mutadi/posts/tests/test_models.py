@@ -2,8 +2,7 @@
 """
 import pytest
 from model_bakery import baker
-
-from mutadi.posts.models import Category, Comment, Post
+from mutadi.posts.models import Category, Comment, Post, Profile
 
 pytestmark = pytest.mark.django_db
 
@@ -104,3 +103,40 @@ class TestPostModel:
     def test_get_absolute_url(self, post):
         """get_absolute_url() should be reirected to home page."""
         assert post.get_absolute_url() == "/"
+
+
+class TestProfileModel:
+    """Group multiple tests in Category model"""
+
+    @pytest.fixture
+    def profile(self):
+        """Fixture for baked Category model."""
+        return baker.make(Profile)
+
+    def test_using_profile(self, profile):
+        """Function should be using fixture of profile baked model."""
+        assert isinstance(profile, Profile)
+
+    def test___str__profile_model(self, profile):
+        """__str__() method should be the profile title."""
+        assert profile.__str__() == str(profile.user)
+        assert str(profile) == str(profile.user)
+
+    def test_verbose_name_plural_profiles(self, profile):
+        """verbose_name_plural should be categories."""
+        assert profile._meta.verbose_name_plural == "profiles"
+
+    def test_profile_picture_label(self, profile):
+        """Title label profile picture should be profile_pic."""
+        field_label = profile._meta.get_field("profile_pic").verbose_name
+        assert field_label == "profile pic"
+
+    def test_profile_pic_blank(self, profile):
+        """Blank for profile picture field should be True."""
+        blank = profile._meta.get_field("profile_pic").blank
+        assert blank
+
+    def test_profile_pic_null(self, profile):
+        """Nullable for profile picture field should be True."""
+        null = profile._meta.get_field("profile_pic").null
+        assert null
