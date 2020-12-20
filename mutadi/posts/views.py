@@ -4,6 +4,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.contrib import messages
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -96,6 +97,10 @@ class DeletePostView(SuccessMessageMixin, DeleteView):
     template_name = "delete_post.html"
     success_url = reverse_lazy("home")
     success_message = "La publication a été supprimée avec succès !"
+
+    def delete(self, request, *args, **kwargs):
+        messages.warning(self.request, self.success_message)
+        return super(DeletePostView, self).delete(request, *args, **kwargs)
 
 
 delete_post_view = DeletePostView.as_view()
