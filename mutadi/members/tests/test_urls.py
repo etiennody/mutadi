@@ -1,13 +1,25 @@
 """Unit tests for members app urls
 """
 import pytest
+from django.contrib.auth import get_user_model
 from django.urls import resolve, reverse
+from model_bakery import baker
+from mutadi.posts.models import Profile
 
 pytestmark = pytest.mark.django_db
+
+User = get_user_model()
 
 
 class TestMembersUrls:
     """Group multiple tests for Members urls"""
+
+    @pytest.fixture
+    def proto_profile(self):
+        """Fixture for baked User model."""
+        proto_user = baker.make(User)
+        self.proto_profile = baker.make(Profile, user=proto_user)
+        return self.proto_profile
 
     def test_register_reverse(self):
         """register should reverse to /members/register/."""
@@ -61,4 +73,23 @@ class TestMembersUrls:
         assert (
             resolve("/members/change_password_success/").view_name
             == "change_password_success"
+        )
+
+    def test_show_profile_page_reverse(self, proto_profile):
+        """show_profile_page should reverse to /members/{profile.pk}/profile/."""
+        assert (
+            reverse(
+                "show_profile_page",
+                args=[
+                    f"{proto_profile.pk}",
+                ],
+            )
+            == f"/members/{proto_profile.pk}/profile/"
+        )
+
+    def test_show_profile_page_resolve(self, proto_profile):
+        """/members/{profile.pk}/profile/ should resolve to show_profile_page."""
+        assert (
+            resolve(f"/members/{proto_profile.pk}/profile/").view_name
+            == "show_profile_page"
         )

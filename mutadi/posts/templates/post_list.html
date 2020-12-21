@@ -44,7 +44,8 @@
                 {{ post.overview|slice:":200" }}
               </p>
               <footer class="post-footer d-flex align-items-center">
-                <a href="#" class="author d-flex align-items-center flex-wrap">
+                <a href="{% url "show_profile_page" post.author.profile.id %}"
+                  class="author d-flex align-items-center flex-wrap">
                   <div class="avatar">
                     {% if post.author.profile.profile_pic %}
                     <img src="{{ post.author.profile.profile_pic.url }}" alt="..." class="img-fluid" />

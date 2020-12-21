@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory
 from django.urls import reverse
 from model_bakery import baker
-from mutadi.posts.models import Category, Post
+from mutadi.posts.models import Category, Post, Profile
 from mutadi.posts.views import add_post_view
 from pytest_django.asserts import assertRedirects, assertTemplateUsed
 
@@ -46,10 +46,18 @@ class TestPostDetailViews:
     """Group multiple tests in PostDetail views"""
 
     @pytest.fixture
-    def proto_post(self):
+    def proto_profile(self):
+        """Fixture for baked User model."""
+        proto_user = baker.make(User)
+        self.proto_profile = baker.make(Profile, user=proto_user)
+        return self.proto_profile
+
+    @pytest.fixture
+    def proto_post(self, proto_profile):
         """Fixture for baked Post model."""
         return baker.make(
             Post,
+            author=proto_profile.user,
             content=(
                 "Ipsum nulla aute irure sint consequat "
                 "consequat proident irure voluptate."

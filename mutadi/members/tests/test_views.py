@@ -6,6 +6,7 @@ from django.test import RequestFactory
 from django.urls import reverse
 from model_bakery import baker
 from mutadi.members.views import change_password_view, user_edit_view
+from mutadi.posts.models import Profile
 from pytest_django.asserts import assertRedirects, assertTemplateUsed
 
 pytestmark = pytest.mark.django_db
@@ -262,3 +263,60 @@ class TestChangePassword:
         request.user = user
         response = change_password_view(request)
         assert response
+
+
+class TestShowProfilePageViews:
+    """Group multiple tests in Show Profile Page views"""
+
+    @pytest.fixture
+    def proto_profile(self):
+        """Fixture for baked User model."""
+        proto_user = baker.make(User)
+        self.proto_profile = baker.make(Profile, user=proto_user)
+        return self.proto_profile
+
+    def test_view_url_show_profile_page_exists_at_desired_location(
+        self, client, proto_profile
+    ):
+        """Show Profile Page should exist at desired location."""
+        response = client.get(f"/members/{proto_profile.pk}/profile/")
+        assert response.status_code == 200
+
+    def test_view_url_accessible_by_name(self, client, proto_profile):
+        """Show Profile Page should be accessible by name."""
+        url = reverse(
+            "show_profile_page",
+            args=[
+                f"{proto_profile.pk}",
+            ],
+        )
+        response = client.get(url)
+        assert response.status_code == 200
+
+    def test_valid_show_profile_page_title_with_client(
+        self, client, proto_profile
+    ):
+        """Show Profile Page should contain Mon Profil."""
+        url = reverse(
+            "show_profile_page",
+            args=[
+                f"{proto_profile.pk}",
+            ],
+        )
+        response = client.get(url)
+        assert "Mon profil" in str(response.content)
+
+    def test_view_show_profile_page_uses_correct_template(
+        self, client, proto_profile
+    ):
+        """Show Profile Page should use registration/user_profile.html template."""
+        response = client.get(
+            reverse(
+                "show_profile_page",
+                args=[
+                    f"{proto_profile.pk}",
+                ],
+            )
+        )
+        assert response.status_code == 200
+        assertTemplateUsed(response, "registration/user_profile.html")
