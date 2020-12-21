@@ -6,7 +6,12 @@ from django.urls import reverse_lazy
 from django.views import generic
 from mutadi.posts.models import Profile
 
-from .forms import EditUserSettingsForm, PasswordChangingForm, SignUpForm
+from .forms import (
+    EditUserSettingsForm,
+    EditUserProfileForm,
+    PasswordChangingForm,
+    SignUpForm,
+)
 
 
 class UserRegisterView(SuccessMessageMixin, generic.CreateView):
@@ -67,3 +72,16 @@ class ShowProfilePageView(generic.DetailView):
 
 
 show_profile_page_view = ShowProfilePageView.as_view()
+
+
+class UserProfileEditView(SuccessMessageMixin, generic.UpdateView):
+    """User settings edit view"""
+
+    model = Profile
+    template_name = "registration/edit_user_profile.html"
+    fields = ["bio", "profile_pic"]
+    success_url = reverse_lazy("home")
+    success_message = "Le profil utilisateur a été modifié avec succès !"
+
+
+user_profile_edit_view = UserProfileEditView.as_view()
