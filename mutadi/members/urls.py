@@ -5,6 +5,7 @@ from django.urls import include, path
 from .views import (
     change_password_success,
     change_password_view,
+    show_profile_page_view,
     user_edit_view,
     user_register_view,
 )
@@ -18,5 +19,10 @@ urlpatterns = [
         "change_password_success/",
         change_password_success,
         name="change_password_success",
+    ),
+    path(
+        "<int:pk>/profile/",
+        show_profile_page_view,
+        name="show_profile_page",
     ),
 ]
