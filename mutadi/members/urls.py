@@ -6,8 +6,9 @@ from .views import (
     change_password_success,
     change_password_view,
     show_profile_page_view,
-    user_settings_edit_view,
+    user_profile_edit_view,
     user_register_view,
+    user_settings_edit_view,
 )
 
 urlpatterns = [
@@ -28,5 +29,10 @@ urlpatterns = [
         "<int:pk>/profile/",
         show_profile_page_view,
         name="show_profile_page",
+    ),
+    path(
+        "<int:pk>/edit_user_profile/",
+        user_profile_edit_view,
+        name="edit_user_profile",
     ),
 ]
