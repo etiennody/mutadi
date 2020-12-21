@@ -35,7 +35,8 @@
             {% endif %}
             {% endif %}
             <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
-              <a href="#" class="author d-flex align-items-center flex-wrap">
+              <a href="{% url "show_profile_page" post.author.profile.id %}"
+                class="author d-flex align-items-center flex-wrap">
                 <div class="avatar">
                   {% if post.author.profile.profile_pic %}
                   <img src="{{ post.author.profile.profile_pic.url }}" alt="..." class="img-fluid" />
@@ -43,7 +44,7 @@
                   <img src={% static 'img/default_profile_icon.jpg' %} alt="..." class="img-fluid" />
                   {% endif %}
                 </div>
-                <div class="title"><span>{{ post.author }}</span></div>
+                <div class="title"><span>{{ post.author }} - id: {{ post.author.profile.id }}</span></div>
               </a>
               <div class="d-flex align-items-center flex-wrap">
                 <div class="date">
