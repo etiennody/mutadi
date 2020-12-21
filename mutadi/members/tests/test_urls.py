@@ -97,23 +97,23 @@ class TestMembersUrls:
             == "show_profile_page"
         )
 
-    # def test_edit_profile_page_reverse(self, proto_profile):
-    #     """edit_profile_page should reverse to /members/{profile.pk}/edit_profile_page/."""
-    #     assert (
-    #         reverse(
-    #             "edit_profile_page",
-    #             args=[
-    #                 f"{proto_profile.pk}",
-    #             ],
-    #         )
-    #         == f"/members/{proto_profile.pk}/edit_profile_page/"
-    #     )
+    def test_edit_user_profile_reverse(self, proto_profile):
+        """edit_user_profile should reverse to /members/{profile.pk}/edit_user_profile/."""
+        assert (
+            reverse(
+                "edit_user_profile",
+                args=[
+                    f"{proto_profile.pk}",
+                ],
+            )
+            == f"/members/{proto_profile.pk}/edit_user_profile/"
+        )
 
-    # def test_edit_profile_page_resolve(self, proto_profile):
-    #     """/members/{profile.pk}/edit_profile_page/ should resolve to edit_profile_page."""
-    #     assert (
-    #         resolve(
-    #             f"/members/{proto_profile.pk}/edit_profile_page/"
-    #         ).view_name
-    #         == "edit_profile_page"
-    #     )
+    def test_edit_user_profile_resolve(self, proto_profile):
+        """/members/{profile.pk}/edit_user_profile/ should resolve to edit_user_profile."""
+        assert (
+            resolve(
+                f"/members/{proto_profile.pk}/edit_user_profile/"
+            ).view_name
+            == "edit_user_profile"
+        )
