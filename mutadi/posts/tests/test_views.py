@@ -45,11 +45,6 @@ class TestPostlistViews:
 class TestPostDetailViews:
     """Group multiple tests in PostDetail views"""
 
-    # @pytest.fixture
-    # def proto_user(self):
-    #     """Fixture for baked User model."""
-    #     return baker.make(User)
-
     @pytest.fixture
     def proto_profile(self):
         """Fixture for baked User model."""
