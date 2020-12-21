@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.test import RequestFactory
 from django.urls import reverse
 from model_bakery import baker
-from mutadi.members.views import change_password_view, user_edit_view
+from mutadi.members.views import change_password_view, user_settings_edit_view
 from mutadi.posts.models import Profile
 from pytest_django.asserts import assertRedirects, assertTemplateUsed
 
@@ -154,8 +154,8 @@ class TestLogoutViews:
         assertRedirects(response, "/")
 
 
-class TestUserEditViews:
-    """Group multiple tests for user edit views"""
+class TestUserSettingsEditViews:
+    """Group multiple tests for user settings edit views"""
 
     @pytest.fixture
     def proto_user(self):
@@ -165,42 +165,42 @@ class TestUserEditViews:
         self.proto_user.save()
         return self.proto_user
 
-    def test_view_url_edit_profile_page_exists_at_desired_location(
+    def test_view_url_edit_user_settings_page_exists_at_desired_location(
         self, client, proto_user
     ):
-        """edit_profile page should exist at desired location."""
+        """edit_user_settings page should exist at desired location."""
         client.login(
             username=f"{proto_user.username}",
             password="m=9UaK^C,Tbq9N=T",
         )
-        response = client.get("/members/edit_profile/")
+        response = client.get("/members/edit_user_settings/")
         assert response.status_code == 200
 
-    def test_view_url_edit_profile_accessible_by_name(
+    def test_view_url_edit_user_settings_accessible_by_name(
         self, client, proto_user
     ):
-        """edit_profile page should be accessible by name."""
+        """edit_user_settings page should be accessible by name."""
         client.login(
             username=f"{proto_user.username}",
             password="m=9UaK^C,Tbq9N=T",
         )
-        response = client.get(reverse("edit_profile"))
+        response = client.get(reverse("edit_user_settings"))
         assert response.status_code == 200
 
-    def test_view_edit_profile_page_uses_correct_template(
+    def test_view_edit_user_settings_page_uses_correct_template(
         self, client, proto_user
     ):
-        """Home page should use registration/edit_profile.html template."""
+        """Home page should use registration/edit_user_settings.html template."""
         client.login(
             username=f"{proto_user.username}",
             password="m=9UaK^C,Tbq9N=T",
         )
-        response = client.get(reverse("edit_profile"))
+        response = client.get(reverse("edit_user_settings"))
         assert response.status_code == 200
-        assertTemplateUsed(response, "registration/edit_profile.html")
+        assertTemplateUsed(response, "registration/edit_user_settings.html")
 
-    def test_valid_form_on_edit_profile_view(self, proto_user):
-        """form_valid function should be valid the edit profile view"""
+    def test_valid_form_on_edit_user_settings_view(self, proto_user):
+        """form_valid function should be valid the edit user_settings view"""
         data = {
             "username": "UsernameModified",
             "first_name": proto_user.first_name,
@@ -208,9 +208,9 @@ class TestUserEditViews:
             "email": proto_user.email,
         }
         user = proto_user
-        request = factory.post("/edit_profile/", data=data)
+        request = factory.post("/edit_user_settings/", data=data)
         request.user = user
-        response = user_edit_view(request)
+        response = user_settings_edit_view(request)
         assert response
         assert str(proto_user.username) == "UsernameModified"
         assert User.objects.all().count() == 1
@@ -320,3 +320,72 @@ class TestShowProfilePageViews:
         )
         assert response.status_code == 200
         assertTemplateUsed(response, "registration/user_profile.html")
+
+
+# class TestUserEditProfilePageViews:
+#     """Group multiple tests for user edit profile page views"""
+
+#     @pytest.fixture
+#     def proto_user(self):
+#         """Fixture for baked User model."""
+#         self.proto_user = baker.make(User)
+#         self.proto_user.set_password("m=9UaK^C,Tbq9N=T")
+#         self.proto_user.save()
+#         return self.proto_user
+
+#     @pytest.fixture
+#     def proto_profile(self):
+#         """Fixture for baked User model."""
+#         proto_user = baker.make(User)
+#         self.proto_profile = baker.make(Profile, user=proto_user)
+#         return self.proto_profile
+
+#     def test_view_url_edit_profile_page_exists_at_desired_location(
+#         self, client, proto_user, proto_profile
+#     ):
+#         """edit_profile page should exist at desired location."""
+#         client.login(
+#             username=f"{proto_user.username}",
+#             password="m=9UaK^C,Tbq9N=T",
+#         )
+#         response = client.get(f"/members/{proto_profile.pk}/edit_profile_page/")
+#         assert response.status_code == 200
+
+#     def test_view_url_edit_profile_accessible_by_name(
+#         self, client, proto_user
+#     ):
+#         """edit_profile page should be accessible by name."""
+#         client.login(
+#             username=f"{proto_user.username}",
+#             password="m=9UaK^C,Tbq9N=T",
+#         )
+#         response = client.get(reverse("edit_profile"))
+#         assert response.status_code == 200
+
+#     def test_view_edit_profile_page_uses_correct_template(
+#         self, client, proto_user
+#     ):
+#         """Home page should use registration/edit_profile.html template."""
+#         client.login(
+#             username=f"{proto_user.username}",
+#             password="m=9UaK^C,Tbq9N=T",
+#         )
+#         response = client.get(reverse("edit_profile"))
+#         assert response.status_code == 200
+#         assertTemplateUsed(response, "registration/edit_profile.html")
+
+#     def test_valid_form_on_edit_profile_view(self, proto_user):
+#         """form_valid function should be valid the edit profile view"""
+#         data = {
+#             "username": "UsernameModified",
+#             "first_name": proto_user.first_name,
+#             "last_name": proto_user.last_name,
+#             "email": proto_user.email,
+#         }
+#         user = proto_user
+#         request = factory.post("/edit_profile/", data=data)
+#         request.user = user
+#         response = user_edit_view(request)
+#         assert response
+#         assert str(proto_user.username) == "UsernameModified"
+#         assert User.objects.all().count() == 1
