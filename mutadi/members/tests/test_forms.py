@@ -3,7 +3,7 @@
 import pytest
 from django.contrib.auth.models import User
 from model_bakery import baker
-from mutadi.members.forms import EditProfileForm, SignUpForm
+from mutadi.members.forms import EditUserSettingsForm, SignUpForm
 
 pytestmark = pytest.mark.django_db
 
@@ -135,8 +135,8 @@ class TestSignUpForm:
         assert "password2" in form.errors
 
 
-class TestEditProfileForm:
-    """Group multiple tests for EditProfileForm"""
+class TestEditUserSettingsForm:
+    """Group multiple tests for EditUserSettingsForm"""
 
     @pytest.fixture
     def proto_user(self):
@@ -146,10 +146,10 @@ class TestEditProfileForm:
         self.proto_user.save()
         return self.proto_user
 
-    def test_edit_profile_form_for_new_user(self):
-        """edit_profile form should be valid for new user."""
+    def test_edit_user_settings_form_for_new_user(self):
+        """edit_user_settings form should be valid for new user."""
 
-        form = EditProfileForm(
+        form = EditUserSettingsForm(
             {
                 "username": "Bob123",
                 "first_name": "Bob",
@@ -159,13 +159,15 @@ class TestEditProfileForm:
         )
         assert form.is_valid()
 
-    def test_invalid_edit_profile_form_for_existing_user(self, proto_user):
+    def test_invalid_edit_user_settings_form_for_existing_user(
+        self, proto_user
+    ):
         """
-        edit_profile form should inform in existing user
+        edit_user_settings form should inform in existing user
         and user cannot be created twice.
         """
 
-        form = EditProfileForm(
+        form = EditUserSettingsForm(
             {
                 "username": proto_user.username,
                 "first_name": proto_user.first_name,
@@ -177,13 +179,13 @@ class TestEditProfileForm:
         assert len(form.errors) == 4
         assert "username" in form.errors
 
-    def test_invalid_edit_profile_form_for_wrong_email(self):
+    def test_invalid_edit_user_settings_form_for_wrong_email(self):
         """
-        edit_profile form should inform for different passwords
+        edit_user_settings form should inform for different passwords
         and user cannot be created.
         """
 
-        form = EditProfileForm(
+        form = EditUserSettingsForm(
             {
                 "username": "Alice",
                 "first_name": "Alice",

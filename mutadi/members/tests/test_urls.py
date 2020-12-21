@@ -45,13 +45,16 @@ class TestMembersUrls:
         """/members/logout/ should resolve to logout."""
         assert resolve("/members/logout/").view_name == "logout"
 
-    def test_edit_profile_reverse(self):
-        """edit_profile should reverse to /members/edit_profile/."""
-        assert reverse("edit_profile") == "/members/edit_profile/"
+    def test_edit_user_settings_reverse(self):
+        """edit_user_settings should reverse to /members/edit_user_settings/."""
+        assert reverse("edit_user_settings") == "/members/edit_user_settings/"
 
-    def test_edit_profile_resolve(self):
-        """/members/edit_profile/ should resolve to edit_profile."""
-        assert resolve("/members/edit_profile/").view_name == "edit_profile"
+    def test_edit_user_settings_resolve(self):
+        """/members/edit_user_settings/ should resolve to edit_user_settings."""
+        assert (
+            resolve("/members/edit_user_settings/").view_name
+            == "edit_user_settings"
+        )
 
     def test_change_password_reverse(self):
         """change_password should reverse to /members/password/."""
@@ -92,4 +95,25 @@ class TestMembersUrls:
         assert (
             resolve(f"/members/{proto_profile.pk}/profile/").view_name
             == "show_profile_page"
+        )
+
+    def test_edit_user_profile_reverse(self, proto_profile):
+        """edit_user_profile should reverse to /members/{profile.pk}/edit_user_profile/."""
+        assert (
+            reverse(
+                "edit_user_profile",
+                args=[
+                    f"{proto_profile.pk}",
+                ],
+            )
+            == f"/members/{proto_profile.pk}/edit_user_profile/"
+        )
+
+    def test_edit_user_profile_resolve(self, proto_profile):
+        """/members/{profile.pk}/edit_user_profile/ should resolve to edit_user_profile."""
+        assert (
+            resolve(
+                f"/members/{proto_profile.pk}/edit_user_profile/"
+            ).view_name
+            == "edit_user_profile"
         )

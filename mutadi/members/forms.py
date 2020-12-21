@@ -1,4 +1,4 @@
-"""members Foms Configuration"""
+"""members Forms Configuration"""
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import (
@@ -51,8 +51,8 @@ class SignUpForm(UserCreationForm):
         self.fields["password2"].label = "Confirmation du mot de passe"
 
 
-class EditProfileForm(UserChangeForm):
-    """Edit profile form"""
+class EditUserSettingsForm(UserChangeForm):
+    """Edit user settings form"""
 
     username = forms.CharField(
         max_length=100,

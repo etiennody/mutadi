@@ -66,8 +66,33 @@
             <li class="nav-item">
               <a href="{% url "add_post" %}" class="nav-link">Ajouter une publication</a>
             </li>
-            <li class="nav-item">
-              <a href="{% url "edit_profile" %}" class="nav-link">Mon profil</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-expanded="false">
+                Mon profil
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="{% url "edit_user_settings" %}">Réglages utilisateur</a>
+                </li>
+                {% if user.profile.id %}
+                <li>
+                  <a class="dropdown-item" href="{% url "edit_user_profile" user.profile.id %}">Modifier mon
+                    profil</a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url "show_profile_page" user.profile.id %}">Voir mon profil</a>
+                </li>
+                {% else %}
+                <hr class="dropdown-divider">
+                <li>
+                  <a class="dropdown-item" href="#">Créer mon profil</a>
+                </li>
+                {% endif %}
+              </ul>
             </li>
             <li class="nav-item">
               <a href="{% url 'logout' %}" class="nav-link">Se déconnecter</a>
