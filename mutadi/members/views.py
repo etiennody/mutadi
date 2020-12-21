@@ -8,7 +8,6 @@ from mutadi.posts.models import Profile
 
 from .forms import (
     EditUserSettingsForm,
-    EditUserProfileForm,
     PasswordChangingForm,
     SignUpForm,
 )
