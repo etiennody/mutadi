@@ -6,6 +6,7 @@ from django.contrib.auth.forms import (
     UserChangeForm,
     UserCreationForm,
 )
+from mutadi.posts.models import Profile
 
 User = get_user_model()
 
@@ -114,3 +115,18 @@ class PasswordChangingForm(PasswordChangeForm):
     class Meta:
         model = User
         fields = ("old_password", "new_password1", "new_password2")
+
+
+class CreateUserProfileForm(forms.ModelForm):
+    """Create user profile form"""
+
+    class Meta:
+        model = Profile
+        fields = ("bio", "profile_pic")
+        widgets = {
+            "bio": forms.TextInput(attrs={"class": "form-control"}),
+        }
+        labels = {
+            "bio": "Présentez-vous",
+            "profile_pic": "Photo de profil",
+        }
