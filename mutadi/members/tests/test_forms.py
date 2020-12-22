@@ -3,7 +3,12 @@
 import pytest
 from django.contrib.auth.models import User
 from model_bakery import baker
-from mutadi.members.forms import EditUserSettingsForm, SignUpForm
+from mutadi.members.forms import (
+    CreateUserProfileForm,
+    EditUserSettingsForm,
+    SignUpForm,
+)
+from mutadi.posts.models import Profile
 
 pytestmark = pytest.mark.django_db
 
@@ -196,3 +201,67 @@ class TestEditUserSettingsForm:
         assert not form.is_valid()
         assert len(form.errors) == 1
         assert "email" in form.errors
+
+
+class TestCreateUserProfileForm:
+    """Group multiple tests for CreateUserProfileForm"""
+
+    @pytest.fixture
+    def proto_user(self):
+        """Fixture for baked User model."""
+        self.proto_user = baker.make(User)
+        self.proto_user.set_password("m=9UaK^C,Tbq9N=T")
+        self.proto_user.save()
+        return self.proto_user
+
+    @pytest.fixture
+    def proto_profile(self):
+        """Fixture for baked User model."""
+        proto_user = baker.make(User)
+        self.proto_profile = baker.make(Profile, user=proto_user)
+        return self.proto_profile
+
+    def test_create_user_profile_form_for_new_user(self, proto_profile):
+        """create_user_profile form should be valid for new user."""
+
+        form = CreateUserProfileForm(
+            {
+                "bio": proto_profile.bio,
+            }
+        )
+        assert form.is_valid()
+
+    def test_invalid_create_user_profile_form_with_no_bio(self):
+        """
+        create_user_profile form should inform in existing user
+        and user cannot be created twice.
+        """
+
+        form = CreateUserProfileForm(
+            {
+                "bio": "",
+            }
+        )
+        assert not form.is_valid()
+        assert len(form.errors) == 1
+        assert "bio" in form.errors
+
+    # def test_invalid_create_user_profile_form_with_personal_informations(self):
+    #     """
+    #     create_user_profile form should inform for personal informations entries
+    #     and user cannot be created twice.
+    #     """
+
+    #     form = CreateUserProfileForm(
+    #         {
+    #             "username": "Alice123",
+    #             "first_name": "Alice",
+    #             "last_name": "Robert",
+    #             "email": "alicerobert@test.fr",
+    #             "password1": "Alice",
+    #             "password2": "Alice",
+    #         }
+    #     )
+    #     assert not form.is_valid()
+    #     assert len(form.errors) == 1
+    #     assert "password2" in form.errors

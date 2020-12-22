@@ -117,3 +117,19 @@ class TestMembersUrls:
             ).view_name
             == "edit_user_profile"
         )
+
+    def test_create_user_profile_reverse(self):
+        """create_user_profile should reverse to /members/create_user_profile/."""
+        assert (
+            reverse(
+                "create_user_profile",
+            )
+            == "/members/create_user_profile/"
+        )
+
+    def test_create_user_profile_resolve(self):
+        """/members/create_user_profile/ should resolve to create_user_profile."""
+        assert (
+            resolve("/members/create_user_profile/").view_name
+            == "create_user_profile"
+        )

@@ -27,6 +27,10 @@ class Profile(models.Model):
     def __str__(self):
         return str(self.user)
 
+    def get_absolute_url(self):
+        """get_absolute_url function allows to redirect to the home page."""
+        return reverse("home")
+
 
 class Comment(models.Model):
     content = models.TextField()

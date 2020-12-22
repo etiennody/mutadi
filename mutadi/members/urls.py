@@ -5,6 +5,7 @@ from django.urls import include, path
 from .views import (
     change_password_success,
     change_password_view,
+    create_user_profile_view,
     show_profile_page_view,
     user_profile_edit_view,
     user_register_view,
@@ -34,5 +35,10 @@ urlpatterns = [
         "<int:pk>/edit_user_profile/",
         user_profile_edit_view,
         name="edit_user_profile",
+    ),
+    path(
+        "create_user_profile/",
+        create_user_profile_view,
+        name="create_user_profile",
     ),
 ]
