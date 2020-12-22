@@ -28,7 +28,9 @@ class TestRegisterViews:
         """Fixture for baked User model."""
         return baker.make(User)
 
-    def test_view_url_register_page_exists_at_desired_location(self, client):
+    def test_view_url_create_user_profile_exists_at_desired_location(
+        self, client
+    ):
         """Register page should exist at desired location."""
         response = client.get("/members/register/")
         assert response.status_code == 200
@@ -38,7 +40,7 @@ class TestRegisterViews:
         response = client.get(reverse("register"))
         assert response.status_code == 200
 
-    def test_view_register_page_uses_correct_template(self, client):
+    def test_view_create_user_profile_uses_correct_template(self, client):
         """Home page should use registration/register.html template."""
         response = client.get(reverse("register"))
         assert response.status_code == 200
@@ -393,3 +395,58 @@ class TestEditUserProfileViews:
         )
         assert response.status_code == 200
         assertTemplateUsed(response, "registration/edit_user_profile.html")
+
+
+class TestCreateUserProfileViews:
+    """Group multiple tests for create user profile views"""
+
+    @pytest.fixture
+    def proto_user(self):
+        """Fixture for baked User model."""
+        self.proto_user = baker.make(User)
+        self.proto_user.set_password("m=9UaK^C,Tbq9N=T")
+        self.proto_user.save()
+        return self.proto_user
+
+    @pytest.fixture
+    def proto_profile(self):
+        """Fixture for baked User model."""
+        proto_user = baker.make(User)
+        self.proto_profile = baker.make(Profile, user=proto_user)
+        return self.proto_profile
+
+    def test_view_url_create_user_profile_exists_at_desired_location(
+        self, client
+    ):
+        """Register page should exist at desired location."""
+        response = client.get("/members/register/")
+        assert response.status_code == 200
+
+    def test_view_url_register_accessible_by_name(self, client):
+        """Register page should be accessible by name."""
+        response = client.get(reverse("register"))
+        assert response.status_code == 200
+
+    def test_view_create_user_profile_uses_correct_template(self, client):
+        """Home page should use registration/register.html template."""
+        response = client.get(reverse("register"))
+        assert response.status_code == 200
+        assertTemplateUsed(response, "registration/register.html")
+
+    def test_valid_profile_exists_after_creation(self, client, proto_user):
+        """Register if prototype user is in db after registration."""
+        response = client.post(
+            reverse("register"),
+            {
+                "username": proto_user.username,
+                "first_name": proto_user.first_name,
+                "last_name": proto_user.last_name,
+                "email": proto_user.email,
+                "password1": "dhjO0iZxt}!;",
+                "password2": "dhjO0iZxt}!;",
+                "robot": True,
+            },
+            follow=True,
+        )
+        assert response.status_code == 200
+        assert User.objects.filter(username=proto_user.username).exists()
