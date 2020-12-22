@@ -7,6 +7,7 @@ from django.views import generic
 from mutadi.posts.models import Profile
 
 from .forms import (
+    CreateUserProfileForm,
     EditUserSettingsForm,
     PasswordChangingForm,
     SignUpForm,
@@ -84,3 +85,18 @@ class UserProfileEditView(SuccessMessageMixin, generic.UpdateView):
 
 
 user_profile_edit_view = UserProfileEditView.as_view()
+
+
+class CreateUserProfileView(generic.CreateView):
+    """Create user profile view"""
+
+    model = Profile
+    form_class = CreateUserProfileForm
+    template_name = "registration/create_user_profile.html"
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+create_user_profile_view = CreateUserProfileView.as_view()
