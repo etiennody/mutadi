@@ -41,6 +41,7 @@
     </div>
   </div>
 </section>
+<!-- Featured Posts -->
 <section class="featured-posts no-padding-top">
   <div class="container">
     <!-- Post-->
@@ -78,14 +79,19 @@
               {{ post.overview|slice:":200" }}
             </p>
             <footer class="post-footer d-flex align-items-center">
-              <a href="#" class="author d-flex align-items-center flex-wrap">
+              <a href="{% url "show_profile_page" post.author.profile.id %}"
+                class="author d-flex align-items-center flex-wrap">
                 <div class="avatar">
-                  <img src="{{ post.author.profile_picture.url }}" alt="..." class="img-fluid" />
+                  {% if post.author.profile.profile_pic %}
+                  <img src="{{ post.author.profile.profile_pic.url }}" alt="..." class="img-fluid" />
+                  {% else %}
+                  <img src={% static 'img/default_profile_icon.jpg' %} alt="..." class="img-fluid" />
+                  {% endif %}
                 </div>
                 <div class="title"><span>{{ post.author }}</span></div>
               </a>
               <div class="date"><i class="icon-clock"></i> {{ post.created_on|timesince }}</div>
-              <div class="comments"><i class="icon-comment"></i>12</div>
+              <div class="comments"><i class="icon-comment"></i>{{ post.comments.count }}</div>
             </footer>
           </div>
         </div>
@@ -202,108 +208,35 @@
 <section class="latest-posts">
   <div class="container">
     <header>
-      <h2>Latest from the blog</h2>
+      <h2>Dernières publications</h2>
       <p class="text-big">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+        Soutenez quelqu'un ou demandez de l'aide à la communauté.
       </p>
     </header>
     <div class="row">
+      {% for post in most_recent %}
       <div class="post col-md-4">
         <div class="post-thumbnail">
-          <a href="post.html"><img src="{% static 'img/blog-1.jpg' %}" alt="..." class="img-fluid" /></a>
+          <a href="{% url "post_detail" post.pk %}"><img src="{{ post.thumbnail.url}}" alt="..."
+              class="img-fluid" /></a>
         </div>
         <div class="post-details">
           <div class="post-meta d-flex justify-content-between">
-            <div class="date">20 May | 2016</div>
-            <div class="category"><a href="#">Business</a></div>
+            <div class="category">
+              {% for cat in post.categories.all %}
+              <a href="{% url "category" cat %}">{{ cat }}</a>
+              {% endfor %}
+            </div>
           </div>
-          <a href="post.html">
-            <h3 class="h4">Ways to remember your important ideas</h3>
+          <a href="{% url "post_detail" post.pk %}">
+            <h3 class="h4">{{post.title}}</h3>
           </a>
           <p class="text-muted">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-            eiusmod tempor incididunt ut labore.
+            {{ post.overview|slice:":200" }}
           </p>
         </div>
       </div>
-      <div class="post col-md-4">
-        <div class="post-thumbnail">
-          <a href="post.html"><img src="{% static 'img/blog-2.jpg' %}" alt="..." class="img-fluid" /></a>
-        </div>
-        <div class="post-details">
-          <div class="post-meta d-flex justify-content-between">
-            <div class="date">20 May | 2016</div>
-            <div class="category"><a href="#">Technology</a></div>
-          </div>
-          <a href="post.html">
-            <h3 class="h4">Diversity in Engineering: Effect on Questions</h3>
-          </a>
-          <p class="text-muted">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-            eiusmod tempor incididunt ut labore.
-          </p>
-        </div>
-      </div>
-      <div class="post col-md-4">
-        <div class="post-thumbnail">
-          <a href="post.html"><img src="{% static 'img/blog-3.jpg' %}" alt="..." class="img-fluid" /></a>
-        </div>
-        <div class="post-details">
-          <div class="post-meta d-flex justify-content-between">
-            <div class="date">20 May | 2016</div>
-            <div class="category"><a href="#">Financial</a></div>
-          </div>
-          <a href="post.html">
-            <h3 class="h4">Alberto Savoia Can Teach You About Interior</h3>
-          </a>
-          <p class="text-muted">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-            eiusmod tempor incididunt ut labore.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> {% endcomment %}
-{% comment %}
-<!-- Gallery Section-->
-<section class="gallery no-padding">
-  <div class="row">
-    <div class="mix col-lg-3 col-md-3 col-sm-6">
-      <div class="item">
-        <a href="img/gallery-1.jpg" data-fancybox="gallery" class="image"><img src="{% static 'img/gallery-1.jpg' %}"
-            alt="..." class="img-fluid" />
-          <div class="overlay d-flex align-items-center justify-content-center">
-            <i class="icon-search"></i></div>
-        </a>
-      </div>
-    </div>
-    <div class="mix col-lg-3 col-md-3 col-sm-6">
-      <div class="item">
-        <a href="img/gallery-2.jpg" data-fancybox="gallery" class="image"><img src="{% static 'img/gallery-2.jpg' %}"
-            alt="..." class="img-fluid" />
-          <div class="overlay d-flex align-items-center justify-content-center">
-            <i class="icon-search"></i></div>
-        </a>
-      </div>
-    </div>
-    <div class="mix col-lg-3 col-md-3 col-sm-6">
-      <div class="item">
-        <a href="img/gallery-3.jpg" data-fancybox="gallery" class="image"><img src="{% static 'img/gallery-3.jpg' %}"
-            alt="..." class="img-fluid" />
-          <div class="overlay d-flex align-items-center justify-content-center">
-            <i class="icon-search"></i></div>
-        </a>
-      </div>
-    </div>
-    <div class="mix col-lg-3 col-md-3 col-sm-6">
-      <div class="item">
-        <a href="img/gallery-4.jpg" data-fancybox="gallery" class="image"><img src="{% static 'img/gallery-4.jpg' %}"
-            alt="..." class="img-fluid" />
-          <div class="overlay d-flex align-items-center justify-content-center">
-            <i class="icon-search"></i></div>
-        </a>
-      </div>
+      {% endfor %}
     </div>
   </div>
 </section> {% endcomment %}

@@ -50,18 +50,16 @@
                 <div class="date">
                   <i class="icon-clock"></i> {{ post.created_on|timesince}}
                 </div>
-                <div class="views">
-                  <i class="icon-eye"></i> 500
-                </div>
                 <div class="comments meta-last">
-                  <i class="icon-comment"></i>12
+                  <i class="icon-comment"></i>{{ post.comments.count }}
                 </div>
               </div>
             </div>
             <div class="post-body">
               {{ post.content|safe}}
             </div>
-            <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
+            {% comment %} <div
+              class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
               <a href="#" class="prev-post text-left d-flex align-items-center">
                 <div class="icon prev"><i class="fa fa-angle-left"></i></div>
                 <div class="text">
@@ -75,96 +73,62 @@
                 </div>
                 <div class="icon next"><i class="fa fa-angle-right"> </i></div>
               </a>
-            </div>
+            </div> {% endcomment %}
             <div class="post-comments">
               <header>
                 <h3 class="h6">
-                  Post Comments<span class="no-of-comments">(3)</span>
+                  Commentaires de publication<span class="no-of-comments">({{ post.comments.count }})</span>
                 </h3>
               </header>
+              {% for comment in post.get_comments %}
               <div class="comment">
                 <div class="comment-header d-flex justify-content-between">
                   <div class="user d-flex align-items-center">
                     <div class="image">
-                      <img src="{% static 'img/user.svg' %}" alt="..." class="img-fluid rounded-circle" />
+                      {% if comment.user.profile.profile_pic %}
+                      <img src="{{ comment.user.profile.profile_pic.url }}" alt="..."
+                        class="img-fluid rounded-circle" />
+                      {% else %}
+                      <img src="{% static 'img/default_profile_icon.jpg' %}" alt="..."
+                        class="img-fluid rounded-circle" />
+                      {% endif %}
                     </div>
                     <div class="title">
-                      <strong>Jabi Hernandiz</strong><span class="date">May 2016</span>
+                      <strong>{{ comment.user.username }}</strong>
+                      <span class="date">Il y a {{ comment.timestamp|timesince }}</span>
                     </div>
                   </div>
                 </div>
                 <div class="comment-body">
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam.
+                    {{ comment.content }}
                   </p>
                 </div>
               </div>
-              <div class="comment">
-                <div class="comment-header d-flex justify-content-between">
-                  <div class="user d-flex align-items-center">
-                    <div class="image">
-                      <img src="{% static 'img/user.svg' %}" alt="..." class="img-fluid rounded-circle" />
-                    </div>
-                    <div class="title">
-                      <strong>Nikolas</strong><span class="date">May 2016</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="comment-body">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam.
-                  </p>
-                </div>
-              </div>
-              <div class="comment">
-                <div class="comment-header d-flex justify-content-between">
-                  <div class="user d-flex align-items-center">
-                    <div class="image">
-                      <img src="{% static 'img/user.svg' %}" alt="..." class="img-fluid rounded-circle" />
-                    </div>
-                    <div class="title">
-                      <strong>John Doe</strong><span class="date">May 2016</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="comment-body">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam.
-                  </p>
-                </div>
-              </div>
+              {% endfor %}
             </div>
+            {% if user.is_authenticated %}
             <div class="add-comment">
               <header>
-                <h3 class="h6">Leave a reply</h3>
+                <h3 class="h6">Laisser une réponse</h3>
               </header>
-              <form action="#" class="commenting-form">
+              <form method="POST" class="commenting-form">
+                {% csrf_token %}
                 <div class="row">
-                  <div class="form-group col-md-6">
-                    <input type="text" name="username" id="username" placeholder="Name" class="form-control" />
-                  </div>
-                  <div class="form-group col-md-6">
-                    <input type="email" name="username" id="useremail"
-                      placeholder="Email Address (will not be published)" class="form-control" />
-                  </div>
                   <div class="form-group col-md-12">
-                    <textarea name="usercomment" id="usercomment" placeholder="Type your comment"
-                      class="form-control"></textarea>
+                    {{ form }}
                   </div>
                   <div class="form-group col-md-12">
                     <button type="submit" class="btn btn-secondary">
-                      Submit Comment
+                      Envoyer le commentaire
                     </button>
                   </div>
                 </div>
               </form>
             </div>
+            {% else %}
+            <a href="{% url "login" %}" class="btn btn-primary">Se connecter pour commenter</a>
+            {% endif %}
           </div>
         </div>
       </div>
