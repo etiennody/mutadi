@@ -4,8 +4,8 @@ import pytest
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from model_bakery import baker
-from mutadi.posts.forms import EditForm, PostForm
-from mutadi.posts.models import Category, Post
+from mutadi.posts.forms import CommentForm, EditForm, PostForm
+from mutadi.posts.models import Category, Comment, Post
 
 pytestmark = pytest.mark.django_db
 
@@ -405,3 +405,56 @@ class TestUpdatePostForm:
             },
         )
         assert form.is_valid()
+
+
+class TestCommentForm:
+    """Group multiple tests for CommentForm"""
+
+    @pytest.fixture()
+    def proto_user(self):
+        """Fixture for baked User model."""
+        return baker.make(User)
+
+    @pytest.fixture()
+    def proto_category(self):
+        """Fixture for baked Category model."""
+        categories_set = baker.prepare(Category, _quantity=5)
+        return categories_set
+
+    @pytest.fixture()
+    def proto_post(self, proto_category):
+        """Fixture for baked Post model."""
+        return baker.make(
+            Post,
+            content="Aute non ex nostrud amet ipsum.",
+            categories=proto_category,
+            make_m2m=True,
+            _create_files=True,
+        )
+
+    @pytest.fixture()
+    def proto_comment(self, proto_user, proto_post):
+        """Fixture for baked Comment model."""
+        return baker.make(Comment, user=proto_user, post=proto_post)
+
+    def test_valid_add_comment_form(self, proto_comment):
+        """Add comment form should be valid for new user."""
+        data = {
+            "content": proto_comment.content,
+        }
+        form = CommentForm(
+            data,
+        )
+        assert form.is_valid()
+
+    def test_invalid_add_comment_form(self, proto_comment):
+        """Add post form should be invalid for blank content."""
+        data = {
+            "content": "",
+        }
+        form = CommentForm(
+            data,
+        )
+        assert not form.is_valid()
+        assert len(form.errors) == 1
+        assert "content" in form.errors

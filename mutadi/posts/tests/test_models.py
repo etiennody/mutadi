@@ -3,8 +3,11 @@
 import pytest
 from model_bakery import baker
 from mutadi.posts.models import Category, Comment, Post, Profile
+from django.contrib.auth import get_user_model
 
 pytestmark = pytest.mark.django_db
+
+User = get_user_model()
 
 
 class TestCategoryModel:
@@ -73,7 +76,15 @@ class TestPostModel:
     """Group multiple tests in Post Model"""
 
     @pytest.fixture
-    def post(self):
+    def proto_user(self):
+        """Fixture for baked User model."""
+        self.proto_user = baker.make(User)
+        self.proto_user.set_password("m=9UaK^C,Tbq9N=T")
+        self.proto_user.save()
+        return self.proto_user
+
+    @pytest.fixture
+    def proto_post(self):
         """Fixture for baked Post model."""
         return baker.make(
             Post,
@@ -81,28 +92,49 @@ class TestPostModel:
             content="Amet amet ea excepteur veniam et do elit irure.",
         )
 
-    def test_using_post(self, post):
+    @pytest.fixture
+    def proto_comment(self, proto_post, proto_user):
+        """Fixture for baked Category model."""
+        return baker.make(Comment, post=proto_post, user=proto_user)
+
+    def test_using_post(self, proto_post):
         """Function should be using fixture of Post baked model."""
-        assert isinstance(post, Post)
+        assert isinstance(proto_post, Post)
 
-    def test__str__post_model(self, post):
+    def test__str__post_model(self, proto_post):
         """__str__() method should be title and author of a post."""
-        assert post.__str__() == post.title + " | " + str(post.author)
-        assert str(post) == post.title + " | " + str(post.author)
+        assert proto_post.__str__() == proto_post.title + " | " + str(
+            proto_post.author
+        )
+        assert str(proto_post) == proto_post.title + " | " + str(
+            proto_post.author
+        )
 
-    def test_title_label(self, post):
+    def test_title_label(self, proto_post):
         """Title label name should be title."""
-        field_label = post._meta.get_field("title").verbose_name
+        field_label = proto_post._meta.get_field("title").verbose_name
         assert field_label == "title"
 
-    def test_title_max_length(self, post):
+    def test_title_max_length(self, proto_post):
         """Max length for title field should be 100."""
-        max_length = post._meta.get_field("title").max_length
+        max_length = proto_post._meta.get_field("title").max_length
         assert max_length == 100
 
-    def test_get_absolute_url(self, post):
-        """get_absolute_url() should be reirected to home page."""
-        assert post.get_absolute_url() == "/"
+    def test_get_absolute_url(self, proto_post):
+        """get_absolute_url() should be redirected to home page."""
+        assert proto_post.get_absolute_url() == "/"
+
+    def test_get_comments(self, proto_post, proto_comment):
+        """get_comments method should return all comments for a post."""
+        assert proto_post.get_comments
+        assert Post.objects.count() == 1
+        assert Comment.objects.count() == 1
+
+    def test_comment_count(self, proto_post, proto_comment):
+        """comment_count method should all comments counted for a post."""
+        assert proto_post.comment_count
+        assert Post.objects.count() == 1
+        assert Comment.objects.count() == 1
 
 
 class TestProfileModel:
@@ -122,6 +154,10 @@ class TestProfileModel:
         assert profile.__str__() == str(profile.user)
         assert str(profile) == str(profile.user)
 
+    def test_get_absolute_url(self, profile):
+        """get_absolute_url() should be reirected to home page."""
+        assert profile.get_absolute_url() == "/"
+
     def test_verbose_name_plural_profiles(self, profile):
         """verbose_name_plural should be categories."""
         assert profile._meta.verbose_name_plural == "profiles"
@@ -140,3 +176,7 @@ class TestProfileModel:
         """Nullable for profile picture field should be True."""
         null = profile._meta.get_field("profile_pic").null
         assert null
+
+    def test_profile_exists(self, profile):
+        """Profile should exists with baked Profile model."""
+        assert Profile.objects.count() == 1
