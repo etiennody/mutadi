@@ -245,23 +245,3 @@ class TestCreateUserProfileForm:
         assert not form.is_valid()
         assert len(form.errors) == 1
         assert "bio" in form.errors
-
-    # def test_invalid_create_user_profile_form_with_personal_informations(self):
-    #     """
-    #     create_user_profile form should inform for personal informations entries
-    #     and user cannot be created twice.
-    #     """
-
-    #     form = CreateUserProfileForm(
-    #         {
-    #             "username": "Alice123",
-    #             "first_name": "Alice",
-    #             "last_name": "Robert",
-    #             "email": "alicerobert@test.fr",
-    #             "password1": "Alice",
-    #             "password2": "Alice",
-    #         }
-    #     )
-    #     assert not form.is_valid()
-    #     assert len(form.errors) == 1
-    #     assert "password2" in form.errors
