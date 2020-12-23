@@ -1,6 +1,6 @@
 """posts Forms Configuration"""
 from django import forms
-from .models import Post
+from .models import Comment, Post
 
 
 class PostForm(forms.ModelForm):
@@ -70,4 +70,25 @@ class EditForm(forms.ModelForm):
             "thumbnail": "Image",
             "featured": "Mise en avant",
             "status": "Statut",
+        }
+
+
+class CommentForm(forms.ModelForm):
+    """Comment form"""
+
+    class Meta:
+        model = Comment
+        fields = ("content",)
+        widgets = {
+            "content": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Ajouter un commentaire",
+                    "id": "usercomment",
+                    "rows": "4",
+                }
+            ),
+        }
+        labels = {
+            "content": "Contenu",
         }
