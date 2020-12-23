@@ -65,3 +65,15 @@ class Post(models.Model):
     def get_absolute_url(self):
         """get_absolute_url function allows to redirect to the home page."""
         return reverse("home")
+
+    @property
+    def get_comments(self):
+        """
+        get_comments is a function to get comments
+        and return an object ordering by timestamp
+        """
+        return self.comments.all().order_by("-timestamp")
+
+    @property
+    def comment_count(self):
+        return Comment.objects.filter(post=self).count()

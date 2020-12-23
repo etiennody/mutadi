@@ -1,10 +1,10 @@
 """posts Views Configuration"""
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.urls import reverse_lazy
-from django.contrib import messages
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -13,7 +13,7 @@ from django.views.generic import (
     UpdateView,
 )
 
-from .forms import EditForm, PostForm
+from .forms import CommentForm, EditForm, PostForm
 from .models import Post
 
 
@@ -49,6 +49,7 @@ class PostDetailView(DetailView):
     model = Post
     template_name = "post_detail.html"
     context_object_name = "post"
+    form_class = CommentForm
 
     def get_context_data(self, **kwargs):
         category_count = get_category_count()
@@ -56,7 +57,17 @@ class PostDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["most_recent"] = most_recent
         context["category_count"] = category_count
+        context["form"] = self.form_class
         return context
+
+    def post(self, request, pk, *args, **kwargs):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            post = get_object_or_404(Post, pk=pk)
+            form.instance.user = request.user
+            form.instance.post = post
+            form.save()
+            return redirect(reverse("post_detail", kwargs={"pk": post.pk}))
 
 
 post_detail_view = PostDetailView.as_view()
