@@ -4,7 +4,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.urls import resolve, reverse
 from model_bakery import baker
-from mutadi.posts.models import Profile
+from mutadi.members.models import Profile
 
 pytestmark = pytest.mark.django_db
 
@@ -15,11 +15,9 @@ class TestMembersUrls:
     """Group multiple tests for Members urls"""
 
     @pytest.fixture
-    def proto_profile(self):
+    def proto_user(self):
         """Fixture for baked User model."""
-        proto_user = baker.make(User)
-        self.proto_profile = baker.make(Profile, user=proto_user)
-        return self.proto_profile
+        return baker.make(User)
 
     def test_register_reverse(self):
         """register should reverse to /members/register/."""
@@ -78,58 +76,40 @@ class TestMembersUrls:
             == "change_password_success"
         )
 
-    def test_show_profile_page_reverse(self, proto_profile):
-        """show_profile_page should reverse to /members/{profile.pk}/profile/."""
+    def test_show_profile_page_reverse(self, proto_user):
+        """show_profile_page should reverse to /members/{proto_user.pk}/profile/."""
         assert (
             reverse(
                 "show_profile_page",
                 args=[
-                    f"{proto_profile.pk}",
+                    f"{proto_user.pk}",
                 ],
             )
-            == f"/members/{proto_profile.pk}/profile/"
+            == f"/members/{proto_user.pk}/profile/"
         )
 
-    def test_show_profile_page_resolve(self, proto_profile):
-        """/members/{profile.pk}/profile/ should resolve to show_profile_page."""
+    def test_show_profile_page_resolve(self, proto_user):
+        """/members/{proto_user.pk}/profile/ should resolve to show_profile_page."""
         assert (
-            resolve(f"/members/{proto_profile.pk}/profile/").view_name
+            resolve(f"/members/{proto_user.pk}/profile/").view_name
             == "show_profile_page"
         )
 
-    def test_edit_user_profile_reverse(self, proto_profile):
-        """edit_user_profile should reverse to /members/{profile.pk}/edit_user_profile/."""
+    def test_edit_user_profile_reverse(self, proto_user):
+        """edit_user_profile should reverse to /members/{proto_user.pk}/edit_user_profile/."""
         assert (
             reverse(
                 "edit_user_profile",
                 args=[
-                    f"{proto_profile.pk}",
+                    f"{proto_user.pk}",
                 ],
             )
-            == f"/members/{proto_profile.pk}/edit_user_profile/"
+            == f"/members/{proto_user.pk}/edit_user_profile/"
         )
 
-    def test_edit_user_profile_resolve(self, proto_profile):
-        """/members/{profile.pk}/edit_user_profile/ should resolve to edit_user_profile."""
+    def test_edit_user_profile_resolve(self, proto_user):
+        """/members/{proto_user.pk}/edit_user_profile/ should resolve to edit_user_profile."""
         assert (
-            resolve(
-                f"/members/{proto_profile.pk}/edit_user_profile/"
-            ).view_name
+            resolve(f"/members/{proto_user.pk}/edit_user_profile/").view_name
             == "edit_user_profile"
-        )
-
-    def test_create_user_profile_reverse(self):
-        """create_user_profile should reverse to /members/create_user_profile/."""
-        assert (
-            reverse(
-                "create_user_profile",
-            )
-            == "/members/create_user_profile/"
-        )
-
-    def test_create_user_profile_resolve(self):
-        """/members/create_user_profile/ should resolve to create_user_profile."""
-        assert (
-            resolve("/members/create_user_profile/").view_name
-            == "create_user_profile"
         )
