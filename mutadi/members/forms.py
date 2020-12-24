@@ -6,7 +6,8 @@ from django.contrib.auth.forms import (
     UserChangeForm,
     UserCreationForm,
 )
-from mutadi.posts.models import Profile
+
+from .models import Profile
 
 User = get_user_model()
 

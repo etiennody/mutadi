@@ -1,16 +1,18 @@
 """Unit tests for posts app views
 """
 import pytest
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory
 from django.urls import reverse
 from model_bakery import baker
-from mutadi.posts.models import Category, Post, Profile
+from mutadi.posts.models import Category, Post
 from mutadi.posts.views import add_post_view
 from pytest_django.asserts import assertRedirects, assertTemplateUsed
 
 pytestmark = pytest.mark.django_db
+
+User = get_user_model()
 
 factory = RequestFactory()
 
@@ -46,18 +48,16 @@ class TestPostDetailViews:
     """Group multiple tests in PostDetail views"""
 
     @pytest.fixture
-    def proto_profile(self):
+    def proto_user(self):
         """Fixture for baked User model."""
-        proto_user = baker.make(User)
-        self.proto_profile = baker.make(Profile, user=proto_user)
-        return self.proto_profile
+        return baker.make(User)
 
     @pytest.fixture
-    def proto_post(self, proto_profile):
+    def proto_post(self, proto_user):
         """Fixture for baked Post model."""
         return baker.make(
             Post,
-            author=proto_profile.user,
+            author=proto_user,
             content=(
                 "Ipsum nulla aute irure sint consequat "
                 "consequat proident irure voluptate."
