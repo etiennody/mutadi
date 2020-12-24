@@ -17,21 +17,6 @@ class Category(models.Model):
         verbose_name_plural = "categories"
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    bio = models.TextField()
-    profile_pic = models.ImageField(
-        null=True, blank=True, upload_to="images/profile/"
-    )
-
-    def __str__(self):
-        return str(self.user)
-
-    def get_absolute_url(self):
-        """get_absolute_url function allows to redirect to the home page."""
-        return reverse("home")
-
-
 class Comment(models.Model):
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
