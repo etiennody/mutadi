@@ -10,7 +10,9 @@ class HomeView(ListView):
     template_name = "pages/home.html"
 
     def get_context_data(self, **kwargs):
-        featured_posts = Post.objects.filter(featured=True)[:3]
+        featured_posts = Post.objects.filter(featured=True).order_by(
+            "-created_on"
+        )[:3]
         latest_posts = Post.objects.order_by("-created_on")[:3]
         context = super().get_context_data(**kwargs)
         context["featured_posts"] = featured_posts
