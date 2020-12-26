@@ -19,7 +19,7 @@
             <h3 class="h6">Dernières publications</h3>
         </header>
         <div class="blog-posts">
-            {% for post in most_recent %}
+            {% for post in latest_posts %}
             <a href="{% url "post_detail" post.pk %}">
                 <div class="item d-flex align-items-center">
                     <div class="image">

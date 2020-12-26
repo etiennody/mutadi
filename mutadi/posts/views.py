@@ -33,10 +33,12 @@ class PostListView(ListView):
 
     def get_context_data(self, **kwargs):
         category_count = get_category_count()
+        latest_posts = Post.objects.order_by("-created_on")[:3]
         most_recent = Post.objects.order_by("-created_on")
         context = super().get_context_data(**kwargs)
         context["most_recent"] = most_recent
         context["category_count"] = category_count
+        context["latest_posts"] = latest_posts
         return context
 
 
@@ -53,9 +55,9 @@ class PostDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         category_count = get_category_count()
-        most_recent = Post.objects.order_by("-created_on")[:3]
+        latest_posts = Post.objects.order_by("-created_on")[:3]
         context = super().get_context_data(**kwargs)
-        context["most_recent"] = most_recent
+        context["latest_posts"] = latest_posts
         context["category_count"] = category_count
         context["form"] = self.form_class
         return context

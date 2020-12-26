@@ -6,7 +6,6 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory
 from django.urls import reverse
 from model_bakery import baker
-from model_bakery.recipe import Recipe
 from mutadi.posts.models import Category, Post
 from mutadi.posts.views import add_post_view
 from pytest_django.asserts import assertRedirects, assertTemplateUsed
