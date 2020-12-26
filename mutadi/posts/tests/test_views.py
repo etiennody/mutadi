@@ -6,6 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory
 from django.urls import reverse
 from model_bakery import baker
+from model_bakery.recipe import Recipe
 from mutadi.posts.models import Category, Post
 from mutadi.posts.views import add_post_view
 from pytest_django.asserts import assertRedirects, assertTemplateUsed
@@ -454,3 +455,62 @@ class TestCategoryViews:
         response = client.get(url)
         assert response.status_code == 200
         assertTemplateUsed(response, "categories.html")
+
+
+class TestSearchResultsViews:
+    """Group multiple tests in search results views"""
+
+    @pytest.fixture
+    def proto_post(self):
+        """Fixture for baked Post model."""
+        return baker.make(
+            Post,
+            title=baker.seq("Post-"),
+            content="Consequat aliqua non qui veniam sit voluptate.",
+            _create_files=True,
+            _quantity=6,
+        )
+
+    def test_view_url_search_results_page_exists_at_desired_location(
+        self, client, proto_post
+    ):
+        """search_results page should exist at desired location."""
+        response = client.get(f"/posts/search/?q={proto_post[1].title}")
+        assert response.status_code == 200
+
+    def test_view_url_accessible_by_name(self, client, proto_post):
+        """search_results page should be accessible by name."""
+        url = reverse("search_results")
+        response = client.get(url, {"q": f"{proto_post[1].title}"})
+        assert response.status_code == 200
+
+    def test_valid_search_results_page_title_with_client(
+        self, client, proto_post
+    ):
+        """search_results page should contain "Résultats de recherche"."""
+        url = reverse("search_results")
+        response = client.get(url, {"q": f"{proto_post[1].title}"})
+        print(response.content)
+        assert proto_post[1].title in str(response.content)
+
+    def test_view_search_results_page_uses_correct_template(
+        self, client, proto_post
+    ):
+        """search_results page should use search_results.html template."""
+        response = client.get(
+            reverse("search_results"), {"q": f"{proto_post[1].title}"}
+        )
+        assert response.status_code == 200
+        assertTemplateUsed(response, "search_results.html")
+
+    def test_search_results_product_is_ko(self, client):
+        """Valid if search results can be down"""
+        response = client.get(reverse("search_results"), {"q": "Moutarde"})
+        assert response.context_data["post_searches"].count() == 0
+
+    def test_valid_search_pagination_is_four(self, client, proto_post):
+        """Valid if search results pagination have six products on page"""
+        response = client.get(reverse("search_results"), {"q": "Post"})
+        assert response.status_code == 200
+        assert "is_paginated" in response.context
+        assert (len(response.context_data["post_searches"])) == 4

@@ -5,7 +5,6 @@ from django.urls import include, path
 from .views import (
     change_password_success,
     change_password_view,
-    # create_user_profile_view,
     show_profile_page_view,
     user_profile_edit_view,
     user_register_view,

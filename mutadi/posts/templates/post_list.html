@@ -40,9 +40,7 @@
               </div>
               {% endif %}
               {% endif %}
-              <p class="text-muted">
-                {{ post.overview|slice:":200" }}
-              </p>
+              <p class="text-muted">{{ post.overview|slice:":200" }}</p>
               <footer class="post-footer d-flex align-items-center">
                 <a href="{% url "show_profile_page" post.author.profile.id %}"
                   class="author d-flex align-items-center flex-wrap">

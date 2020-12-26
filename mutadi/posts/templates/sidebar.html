@@ -4,9 +4,9 @@
         <header>
             <h3 class="h6">Rechercher</h3>
         </header>
-        <form action="#" class="search-form">
+        <form action="{% url "search_results" %}" class="search-form" method="GET">
             <div class="form-group">
-                <input type="search" placeholder="What are you looking for?" />
+                <input type="text" name="q" placeholder="Que recherchez-vous ?" />
                 <button type="submit" class="submit">
                     <i class="icon-search"></i>
                 </button>

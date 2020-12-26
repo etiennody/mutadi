@@ -2,7 +2,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -124,3 +124,38 @@ def category_view(request, cats):
         "categories.html",
         {"cats": cats, "category_posts": category_posts},
     )
+
+
+class SearchResultsView(ListView):
+    """Limit the search results page to filter the results outputted based upon a search query
+    Args:
+        ListView (generic class-based views): render some list of objects
+    Returns:
+        list: return the list of items for search results view
+    """
+
+    model = Post
+    template_name = "search_results.html"
+    context_object_name = "post_searches"
+    paginate_by = 4
+
+    def get_queryset(self):
+        """Retrieving specific objects with icontains filters
+        Returns:
+            list: objects by products name
+        """
+        query = self.request.GET.get("q")
+        if query:
+            object_list = (
+                Post.objects.filter(
+                    Q(title__icontains=query)
+                    | Q(overview__icontains=query)
+                    | Q(categories__title__icontains=query)
+                )
+                .distinct()
+                .order_by("-created_on")
+            )
+        return object_list
+
+
+search_results_view = SearchResultsView.as_view()
