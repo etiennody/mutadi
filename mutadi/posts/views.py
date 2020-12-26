@@ -148,7 +148,9 @@ class SearchResultsView(ListView):
         if query:
             object_list = (
                 Post.objects.filter(
-                    Q(title__icontains=query) | Q(overview__icontains=query)
+                    Q(title__icontains=query)
+                    | Q(overview__icontains=query)
+                    | Q(categories__title__icontains=query)
                 )
                 .distinct()
                 .order_by("-created_on")
