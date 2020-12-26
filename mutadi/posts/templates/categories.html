@@ -12,7 +12,7 @@
         <main class="post-listing col-lg-8">
             <div class="container">
                 <div class="row">
-                    <h1>Publications pour : {{ cats }}</h1>
+                    <h1 class="title mb-5">Publications pour : {{ cats }}</h1>
                     <!-- category post -->
                     {% for post in category_posts %}
                     <div class="post col-xl-6">
@@ -29,8 +29,9 @@
                             </a>
                             {% if user.is_authenticated %}
                             {% if user.id == post.author.id %}
-                            <div class="d-grid gap-2 d-flex justify-content-around">
-                                <a href="{% url "update_post" post.pk %}"><i class="fas fa-edit"></i></a>
+                            <div class="d-grid gap-2 d-flex justify-content-end">
+                                <a href="{% url "update_post" post.pk %}" class="mr-5">
+                                    <i class="fas fa-edit"></i></a>
                                 <a href="{% url "delete_post" post.pk %}"><i class="fas fa-trash"></i></a>
                             </div>
                             {% endif %}
@@ -51,31 +52,31 @@
                                     <i class="icon-clock"></i> {{ post.created_on|timesince }}
                                 </div>
                                 <div class="comments meta-last">
-                                    <i class="icon-comment"></i>12
+                                    <i class="icon-comment"></i>{{ post.comments.count }}
                                 </div>
                             </footer>
                         </div>
                     </div>
                     {% endfor %}
-                    <!-- Pagination -->
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination pagination-template d-flex justify-content-center">
-                            <li class="page-item">
-                                <a href="#" class="page-link">
-                                    <i class="fa fa-angle-left"></i></a>
-                            </li>
-                            <li class="page-item">
-                                <a href="#" class="page-link active">1</a>
-                            </li>
-                            <li class="page-item"><a href="#" class="page-link">2</a></li>
-                            <li class="page-item"><a href="#" class="page-link">3</a></li>
-                            <li class="page-item">
-                                <a href="#" class="page-link">
-                                    <i class="fa fa-angle-right"></i></a>
-                            </li>
-                        </ul>
-                    </nav>
                 </div>
+                <!-- Pagination -->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination pagination-template d-flex justify-content-center">
+                        <li class="page-item">
+                            <a href="#" class="page-link">
+                                <i class="fa fa-angle-left"></i></a>
+                        </li>
+                        <li class="page-item">
+                            <a href="#" class="page-link active">1</a>
+                        </li>
+                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                        <li class="page-item"><a href="#" class="page-link">3</a></li>
+                        <li class="page-item">
+                            <a href="#" class="page-link">
+                                <i class="fa fa-angle-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </main>
     </div>
