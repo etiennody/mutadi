@@ -8,6 +8,7 @@ from .views import (
     delete_post_view,
     post_detail_view,
     post_list_view,
+    search_results_view,
     update_post_view,
 )
 
@@ -18,4 +19,5 @@ urlpatterns = [
     path("post_detail/edit/<int:pk>", update_post_view, name="update_post"),
     path("post_detail/<int:pk>/remove", delete_post_view, name="delete_post"),
     path("category/<str:cats>/", category_view, name="category"),
+    path("search/", search_results_view, name="search_results"),
 ]
