@@ -44,8 +44,14 @@
 <!-- Featured Posts -->
 <section class="featured-posts no-padding-top">
   <div class="container">
+    <header>
+      <h2>Publications mises en avant</h2>
+      <p class="text-big">
+        Soutenez quelqu'un ou demandez de l'aide à la communauté.
+      </p>
+    </header>
     <!-- Post-->
-    {% for post in object_list %}
+    {% for post in featured_posts %}
     <div class="row d-flex align-items-stretch">
       {% if not forloop.first and not forloop.last %}
       <div class="image col-lg-5">
@@ -99,85 +105,6 @@
       {% endif %}
     </div>
     {% endfor %}
-
-
-    {% comment %}
-    <!-- Post        -->
-    <div class="row d-flex align-items-stretch">
-      <div class="image col-lg-5">
-        <img src="{% static 'img/featured-pic-2.jpeg' %}" alt="..." />
-      </div>
-      <div class="text col-lg-7">
-        <div class="text-inner d-flex align-items-center">
-          <div class="content">
-            <header class="post-header">
-              <div class="category">
-                <a href="#">Business</a><a href="#">Technology</a>
-              </div>
-              <a href="post.html">
-                <h2 class="h4">
-                  Alberto Savoia Can Teach You About Interior
-                </h2>
-              </a>
-            </header>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrude consectetur adipisicing elit,
-              sed do eiusmod tempor incididunt.
-            </p>
-            <footer class="post-footer d-flex align-items-center">
-              <a href="#" class="author d-flex align-items-center flex-wrap">
-                <div class="avatar">
-                  <img src="{% static 'img/avatar-2.jpg' %}" alt="..." class="img-fluid" />
-                </div>
-                <div class="title"><span>John Doe</span></div>
-              </a>
-              <div class="date"><i class="icon-clock"></i> 2 months ago</div>
-              <div class="comments"><i class="icon-comment"></i>12</div>
-            </footer>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Post                            -->
-    <div class="row d-flex align-items-stretch">
-      <div class="text col-lg-7">
-        <div class="text-inner d-flex align-items-center">
-          <div class="content">
-            <header class="post-header">
-              <div class="category">
-                <a href="#">Business</a><a href="#">Technology</a>
-              </div>
-              <a href="post.html">
-                <h2 class="h4">
-                  Alberto Savoia Can Teach You About Interior
-                </h2>
-              </a>
-            </header>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrude consectetur adipisicing elit,
-              sed do eiusmod tempor incididunt.
-            </p>
-            <footer class="post-footer d-flex align-items-center">
-              <a href="#" class="author d-flex align-items-center flex-wrap">
-                <div class="avatar">
-                  <{% static 'img/avatar-3.jpg' %}" alt="..." class="img-fluid" />
-                </div>
-                <div class="title"><span>John Doe</span></div>
-              </a>
-              <div class="date"><i class="icon-clock"></i> 2 months ago</div>
-              <div class="comments"><i class="icon-comment"></i>12</div>
-            </footer>
-          </div>
-        </div>
-      </div>
-      <div class="image col-lg-5">
-        <img src="{% static 'img/featured-pic-3.jpeg' %}" alt="..." />
-      </div>
-    </div> {% endcomment %}
   </div>
 </section>
 <!-- Divider Section-->
@@ -199,7 +126,6 @@
     </div>
   </div>
 </section>
-{% comment %}
 <!-- Latest Posts -->
 <section class="latest-posts">
   <div class="container">
@@ -210,7 +136,7 @@
       </p>
     </header>
     <div class="row">
-      {% for post in most_recent %}
+      {% for post in latest_posts %}
       <div class="post col-md-4">
         <div class="post-thumbnail">
           <a href="{% url "post_detail" post.pk %}"><img src="{{ post.thumbnail.url}}" alt="..."
@@ -235,6 +161,6 @@
       {% endfor %}
     </div>
   </div>
-</section> {% endcomment %}
+</section>
 
 {% endblock content %}
