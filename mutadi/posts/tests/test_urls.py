@@ -124,3 +124,15 @@ class TestPostsUrls:
             resolve(f"/posts/category/{proto_category.title}/").view_name
             == "category"
         )
+
+    def test_search_results_posts_reverse(self):
+        """
+        search_results should reverse to /posts/search/.
+        """
+        assert (reverse("search_results")) == "/posts/search/"
+
+    def test_search_posts_resolve(self):
+        """
+        /posts/search/ should resolve to search_results.
+        """
+        assert resolve("/posts/search/").view_name == "search_results"
