@@ -10,6 +10,7 @@ urlpatterns = [
     path("", include("mutadi.pages.urls")),
     path("members/", include("mutadi.members.urls")),
     path("posts/", include("mutadi.posts.urls")),
+    path("messages/", include("mutadi.private_messages.urls")),
 ]
 
 if settings.DEBUG:
