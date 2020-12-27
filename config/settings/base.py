@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     "mutadi.pages",
     "mutadi.posts",
     "mutadi.members",
-    "mutadi.messages",
+    "mutadi.private_messages",
     "ckeditor",
 ]
 
