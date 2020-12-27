@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+​
+{% block title %}Messagerie privée{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="table-responsive">
+            <div class="title text-center mt-5">
+                <h1>Messagerie privée</h1>
+                <br>
+                <h3>Mes messages reçus</h3>
+            </div>
+            {% if message_list %}
+            <table class="table table-hover mt-5 mb-5">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Expéditeur</th>
+                        <th>Sujet</th>
+                        <th>Reçu</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for message in message_list %}
+                    <tr>
+                        <td>{{ message.sender }}</td>
+                        <td><a href="{{ message.get_absolute_url }}">{{ message.subject }}</a></td>
+                        <td>il y a {{ message.sent_at|timesince }}</td>
+                        <td><a href="#">Supprimer</a></td>
+                        {% comment %} <td><a href="{% url 'messages_delete' message.id %}">Supprimer</a></td>
+                        {% endcomment %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="text text-center mt-5 mb-5">
+                <h3>Vous n'avez aucun nouveau message</h3>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
