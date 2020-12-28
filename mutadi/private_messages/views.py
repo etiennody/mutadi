@@ -44,7 +44,7 @@ class OutboxView(LoginRequiredMixin, ListView):
 outbox_view = OutboxView.as_view()
 
 
-class DeleteMessageView(SuccessMessageMixin, DeleteView):
+class DeleteMessageView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     """Delete message view"""
 
     model = PrivateMessage
