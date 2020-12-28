@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from ckeditor.fields import RichTextField
 
 User = get_user_model()
 
@@ -16,7 +17,7 @@ class PrivateMessage(models.Model):
         User, related_name="received_messages", on_delete=models.CASCADE
     )
     sent_at = models.DateTimeField(default=timezone.now)
-    content = models.TextField()
+    content = RichTextField()
 
     class Meta:
         ordering = ["sent_at"]
