@@ -27,7 +27,13 @@ class TestPrivateMessageUrls:
     def proto_private_message(self, proto_user):
         """Fixture for baked PrivateMessage model."""
         return baker.make(
-            PrivateMessage, sender=proto_user[0], recipient=proto_user[1]
+            PrivateMessage,
+            sender=proto_user[0],
+            recipient=proto_user[1],
+            content=(
+                "Proident nisi cillum sit tempor "
+                "reprehenderit proident in non fugiat ex id."
+            ),
         )
 
     def test_inbox_reverse(self):
@@ -71,4 +77,31 @@ class TestPrivateMessageUrls:
                 f"/messages/message_detail/{proto_private_message.pk}/delete"
             ).view_name
             == "delete_message"
+        )
+
+    def test_message_detail_reverse(self, proto_private_message):
+        """
+        message_detail should reverse to
+        /messages/message_detail/{proto_private_message.pk}.
+        """
+        assert (
+            reverse(
+                "message_detail",
+                args=[
+                    f"{proto_private_message.pk}",
+                ],
+            )
+            == f"/messages/message_detail/{proto_private_message.pk}"
+        )
+
+    def test_message_detail_resolve(self, proto_private_message):
+        """
+        /messages/message_detail/{proto_private_message.pk}
+        should resolve to message_detail.
+        """
+        assert (
+            resolve(
+                f"/messages/message_detail/{proto_private_message.pk}"
+            ).view_name
+            == "message_detail"
         )

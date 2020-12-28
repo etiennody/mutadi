@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, ListView
+from django.views.generic import DeleteView, DetailView, ListView
 
 from .models import PrivateMessage
 
@@ -44,7 +44,7 @@ class OutboxView(LoginRequiredMixin, ListView):
 outbox_view = OutboxView.as_view()
 
 
-class DeleteMessageView(SuccessMessageMixin, DeleteView):
+class DeleteMessageView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     """Delete message view"""
 
     model = PrivateMessage
@@ -59,3 +59,14 @@ class DeleteMessageView(SuccessMessageMixin, DeleteView):
 
 
 delete_message_view = DeleteMessageView.as_view()
+
+
+class MessageDetailView(DetailView):
+    """Message detail view"""
+
+    model = PrivateMessage
+    template_name = "message_detail.html"
+    context_object_name = "message"
+
+
+message_detail_view = MessageDetailView.as_view()

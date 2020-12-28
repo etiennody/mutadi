@@ -141,32 +141,63 @@ class TestDeleteMessageViews:
     """Group multiple tests in DeleteMessage views"""
 
     @pytest.fixture
-    def proto_user(self):
+    def proto_user_a(self):
         """Fixture for baked User model."""
-        return baker.make(
-            User,
-            username=baker.seq("User-"),
-            _quantity=3,
-        )
+        self.proto_user_a = baker.make(User)
+        self.proto_user_a.set_password("m=9UaK^C,Tbq9N=T")
+        self.proto_user_a.save()
+        return self.proto_user_a
 
     @pytest.fixture
-    def proto_private_message(self, proto_user):
+    def proto_user_b(self):
+        """Fixture for baked User model."""
+        self.proto_user_b = baker.make(User)
+        self.proto_user_b.set_password("3$0aF/gxFsinR'6k")
+        self.proto_user_b.save()
+        return self.proto_user_b
+
+    @pytest.fixture
+    def proto_user_c(self):
+        """Fixture for baked User model."""
+        self.proto_user_c = baker.make(User)
+        self.proto_user_c.set_password("BJw_KkB&asjX_#B3")
+        self.proto_user_c.save()
+        return self.proto_user_c
+
+    @pytest.fixture
+    def proto_private_message(self, proto_user_a, proto_user_b):
         """Fixture for baked PrivateMessage model."""
         return baker.make(
-            PrivateMessage, sender=proto_user[0], recipient=proto_user[1]
+            PrivateMessage,
+            sender=proto_user_a,
+            recipient=proto_user_b,
+            content=(
+                "Proident nisi cillum sit tempor "
+                "reprehenderit proident in non fugiat ex id."
+            ),
         )
 
     def test_view_url_delete_message_page_exists_at_desired_location(
-        self, client, proto_private_message
+        self, client, proto_user_a, proto_private_message
     ):
         """delete_message page should exist at desired location."""
+        client.login(
+            username=f"{proto_user_a.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
         response = client.get(
             f"/messages/message_detail/{proto_private_message.id}/delete"
         )
         assert response.status_code == 200
 
-    def test_view_url_accessible_by_name(self, client, proto_private_message):
+    def test_view_url_accessible_by_name(
+        self, client, proto_user_a, proto_private_message
+    ):
         """delete_message page should be accessible by name."""
+        client.login(
+            username=f"{proto_user_a.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
         url = reverse(
             "delete_message",
             args=[
@@ -176,32 +207,48 @@ class TestDeleteMessageViews:
         response = client.get(url)
         assert response.status_code == 200
 
-    def test_invalid_delete_message_page_with_wrong_user(
-        self, client, proto_user
+    def test_valid_delete_message_page_with_correct_user(
+        self, client, proto_user_a, proto_private_message
     ):
-        """delete_message page should contain the title of the message."""
-        proto_user_a = baker.make(User)
-        proto_private_message_c = baker.make(
-            PrivateMessage,
-            sender=proto_user_a,
-        )
+        """delete_message page should contain the subject of the message."""
         client.login(
-            username=f"{proto_user[2].username}",
+            username=f"{proto_user_a.username}",
             password="m=9UaK^C,Tbq9N=T",
         )
         url = reverse(
             "delete_message",
             args=[
-                f"{proto_private_message_c.pk}",
+                f"{proto_private_message.pk}",
             ],
         )
         response = client.get(url)
-        assert proto_private_message_c.subject not in str(response.content)
+        assert proto_private_message.subject in str(response.content)
+
+    def test_invalid_delete_message_page_with_wrong_user(
+        self, client, proto_user_c, proto_private_message
+    ):
+        """delete_message page should contain the title of the message."""
+        client.login(
+            username=f"{proto_user_c.username}",
+            password="BJw_KkB&asjX_#B3",
+        )
+        url = reverse(
+            "delete_message",
+            args=[
+                f"{proto_private_message.pk}",
+            ],
+        )
+        response = client.get(url)
+        assert proto_private_message.subject not in str(response.content)
 
     def test_view_delete_message_page_uses_correct_template(
-        self, client, proto_private_message
+        self, client, proto_user_a, proto_private_message
     ):
         """delete_message page should use delete_message.html template."""
+        client.login(
+            username=f"{proto_user_a.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
         url = reverse(
             "delete_message",
             args=[
@@ -212,10 +259,114 @@ class TestDeleteMessageViews:
         assert response.status_code == 200
         assertTemplateUsed(response, "delete_message.html")
 
-    def test_delete_message_success_url(self, client, proto_private_message):
+    def test_delete_message_success_url(
+        self, client, proto_user_a, proto_private_message
+    ):
         """delete_message page should redirect to home page template."""
+        client.login(
+            username=f"{proto_user_a.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
         response = client.post(
             f"/messages/message_detail/{proto_private_message.pk}/delete"
         )
         assert response.status_code == 302
         assert response.url == "/messages/inbox/"
+
+
+class TestMessageDetailViews:
+    """Group multiple tests in MessageDetail views"""
+
+    @pytest.fixture
+    def proto_user_a(self):
+        """Fixture for baked User model."""
+        self.proto_user_a = baker.make(User)
+        self.proto_user_a.set_password("m=9UaK^C,Tbq9N=T")
+        self.proto_user_a.save()
+        return self.proto_user_a
+
+    @pytest.fixture
+    def proto_user_b(self):
+        """Fixture for baked User model."""
+        self.proto_user_b = baker.make(User)
+        self.proto_user_b.set_password("m=9UaK^C,Tbq9N=T")
+        self.proto_user_b.save()
+        return self.proto_user_b
+
+    @pytest.fixture
+    def proto_private_message(self, proto_user_a, proto_user_b):
+        """Fixture for baked PrivateMessage model."""
+        return baker.make(
+            PrivateMessage,
+            sender=proto_user_a,
+            recipient=proto_user_b,
+            content=(
+                "Proident nisi cillum sit tempor "
+                "reprehenderit proident in non fugiat ex id."
+            ),
+        )
+
+    def test_view_url_message_detail_page_exists_at_desired_location(
+        self, client, proto_private_message, proto_user_a
+    ):
+        """message_detail page should exist at desired location."""
+        client.login(
+            username=f"{proto_user_a.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
+        response = client.get(
+            f"/messages/message_detail/{proto_private_message.pk}"
+        )
+        assert response.status_code == 200
+
+    def test_view_url_accessible_by_name(
+        self, client, proto_private_message, proto_user_a
+    ):
+        """message_detail page should be accessible by name."""
+        client.login(
+            username=f"{proto_user_a.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
+        url = reverse(
+            "message_detail",
+            args=[
+                f"{proto_private_message.pk}",
+            ],
+        )
+        response = client.get(url)
+        assert response.status_code == 200
+
+    def test_valid_message_detail_page_subject_with_client(
+        self, client, proto_private_message, proto_user_a
+    ):
+        """message_detail page should contain the subject of the message."""
+        client.login(
+            username=f"{proto_user_a.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
+        url = reverse(
+            "message_detail",
+            args=[
+                f"{proto_private_message.pk}",
+            ],
+        )
+        response = client.get(url)
+        assert proto_private_message.subject in str(response.content)
+
+    def test_view_message_detail_page_uses_correct_template(
+        self, client, proto_private_message, proto_user_a
+    ):
+        """message_detail page should use message_detail.html template."""
+        client.login(
+            username=f"{proto_user_a.username}",
+            password="m=9UaK^C,Tbq9N=T",
+        )
+        url = reverse(
+            "message_detail",
+            args=[
+                f"{proto_private_message.pk}",
+            ],
+        )
+        response = client.get(url)
+        assert response.status_code == 200
+        assertTemplateUsed(response, "message_detail.html")

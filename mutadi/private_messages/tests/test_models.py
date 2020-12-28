@@ -26,7 +26,13 @@ class TestPrivateMessageModel:
     def proto_private_message(self, proto_user):
         """Fixture for baked PrivateMessage model."""
         return baker.make(
-            PrivateMessage, sender=proto_user[0], recipient=proto_user[1]
+            PrivateMessage,
+            sender=proto_user[0],
+            recipient=proto_user[1],
+            content=(
+                "Proident nisi cillum sit tempor "
+                "reprehenderit proident in non fugiat ex id."
+            ),
         )
 
     def test_using_private_message(self, proto_private_message):
