@@ -2,7 +2,12 @@
 """
 from django.urls import path
 
-from .views import delete_message_view, inbox_view, outbox_view
+from .views import (
+    delete_message_view,
+    inbox_view,
+    message_detail_view,
+    outbox_view,
+)
 
 urlpatterns = [
     path("inbox/", inbox_view, name="inbox"),
@@ -11,5 +16,10 @@ urlpatterns = [
         "message_detail/<int:pk>/delete",
         delete_message_view,
         name="delete_message",
+    ),
+    path(
+        "message_detail/<int:pk>",
+        message_detail_view,
+        name="message_detail",
     ),
 ]
