@@ -16,3 +16,11 @@ class TestPrivateMessageUrls:
     def test_inbox_resolve(self):
         """/messages/inbox/ should resolve to inbox."""
         assert resolve("/messages/inbox/").view_name == "inbox"
+
+    def test_outbox_reverse(self):
+        """outbox should reverse to /messages/outbox/."""
+        assert reverse("outbox") == "/messages/outbox/"
+
+    def test_outbox_resolve(self):
+        """/messages/outbox/ should resolve to outbox."""
+        assert resolve("/messages/outbox/").view_name == "outbox"
