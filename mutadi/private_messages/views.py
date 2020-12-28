@@ -1,6 +1,9 @@
 """Private Messages Views Configuration"""
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
+from django.views.generic import DeleteView, ListView
 
 from .models import PrivateMessage
 
@@ -39,3 +42,20 @@ class OutboxView(LoginRequiredMixin, ListView):
 
 
 outbox_view = OutboxView.as_view()
+
+
+class DeleteMessageView(SuccessMessageMixin, DeleteView):
+    """Delete message view"""
+
+    model = PrivateMessage
+    template_name = "delete_message.html"
+    context_object_name = "message"
+    success_url = reverse_lazy("inbox")
+    success_message = "Le message a été supprimé avec succès !"
+
+    def delete(self, request, *args, **kwargs):
+        messages.warning(self.request, self.success_message)
+        return super(DeleteMessageView, self).delete(request, *args, **kwargs)
+
+
+delete_message_view = DeleteMessageView.as_view()

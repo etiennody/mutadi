@@ -28,9 +28,7 @@
                         <td>{{ message.sender }}</td>
                         <td><a href="{{ message.get_absolute_url }}">{{ message.subject }}</a></td>
                         <td>il y a {{ message.sent_at|timesince }}</td>
-                        <td><a href="#">Supprimer</a></td>
-                        {% comment %} <td><a href="{% url 'messages_delete' message.id %}">Supprimer</a></td>
-                        {% endcomment %}
+                        <td><a href="{% url "delete_message" message.pk %}">Supprimer</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

@@ -1,13 +1,34 @@
 """Unit tests for posts app urls
 """
 import pytest
+from django.contrib.auth import get_user_model
 from django.urls import resolve, reverse
+from model_bakery import baker
+from mutadi.private_messages.models import PrivateMessage
 
 pytestmark = pytest.mark.django_db
+
+User = get_user_model()
 
 
 class TestPrivateMessageUrls:
     """Group multiple tests for Private Message urls"""
+
+    @pytest.fixture
+    def proto_user(self):
+        """Fixture for baked User model."""
+        return baker.make(
+            User,
+            username=baker.seq("User-"),
+            _quantity=3,
+        )
+
+    @pytest.fixture
+    def proto_private_message(self, proto_user):
+        """Fixture for baked PrivateMessage model."""
+        return baker.make(
+            PrivateMessage, sender=proto_user[0], recipient=proto_user[1]
+        )
 
     def test_inbox_reverse(self):
         """inbox should reverse to /messages/inbox/."""
@@ -24,3 +45,30 @@ class TestPrivateMessageUrls:
     def test_outbox_resolve(self):
         """/messages/outbox/ should resolve to outbox."""
         assert resolve("/messages/outbox/").view_name == "outbox"
+
+    def test_delete_message_reverse(self, proto_private_message):
+        """
+        delete_message should reverse to
+        /messages/message_detail/{proto_private_message.pk}/delete.
+        """
+        assert (
+            reverse(
+                "delete_message",
+                args=[
+                    f"{proto_private_message.pk}",
+                ],
+            )
+            == f"/messages/message_detail/{proto_private_message.pk}/delete"
+        )
+
+    def test_delete_message_resolve(self, proto_private_message):
+        """
+        /messages/message_detail/{proto_private_message.pk}/delete
+        should resolve to delete_message.
+        """
+        assert (
+            resolve(
+                f"/messages/message_detail/{proto_private_message.pk}/delete"
+            ).view_name
+            == "delete_message"
+        )
