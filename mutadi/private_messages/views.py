@@ -3,8 +3,9 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, DetailView, ListView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
 
+from .forms import ComposeForm
 from .models import PrivateMessage
 
 
@@ -19,7 +20,7 @@ class InboxView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         message_list = PrivateMessage.objects.filter(
             recipient=self.request.user
-        )
+        ).order_by("-sent_at")
         context["message_list"] = message_list
         return context
 
@@ -36,7 +37,9 @@ class OutboxView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        message_list = PrivateMessage.objects.filter(sender=self.request.user)
+        message_list = PrivateMessage.objects.filter(
+            sender=self.request.user
+        ).order_by("-sent_at")
         context["message_list"] = message_list
         return context
 
@@ -61,7 +64,7 @@ class DeleteMessageView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 delete_message_view = DeleteMessageView.as_view()
 
 
-class MessageDetailView(DetailView):
+class MessageDetailView(LoginRequiredMixin, DetailView):
     """Message detail view"""
 
     model = PrivateMessage
@@ -70,3 +73,20 @@ class MessageDetailView(DetailView):
 
 
 message_detail_view = MessageDetailView.as_view()
+
+
+class ComposeMessageView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    """Compose message view"""
+
+    model = PrivateMessage
+    template_name = "compose_message.html"
+    form_class = ComposeForm
+    success_url = reverse_lazy("inbox")
+    success_message = "Le message a été envoyé avec succès !"
+
+    def form_valid(self, form):
+        form.instance.sender = self.request.user
+        return super().form_valid(form)
+
+
+compose_message_view = ComposeMessageView.as_view()
