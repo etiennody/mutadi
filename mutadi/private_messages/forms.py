@@ -23,3 +23,16 @@ class ComposeForm(forms.ModelForm):
             "recipient": "Destinataire",
             "content": "Contenu",
         }
+
+
+class ReplyForm(forms.ModelForm):
+    """Reply message form"""
+
+    class Meta:
+        model = PrivateMessage
+        fields = ("subject", "content")
+        widgets = {
+            "subject": forms.TextInput(attrs={"class": "form-control"}),
+            "content": forms.Textarea(attrs={"class": "form-control"}),
+        }
+        labels = {"subject": "Sujet", "content": "Contenu"}
