@@ -3,6 +3,7 @@
 from django.urls import path
 
 from .views import (
+    compose_message_view,
     delete_message_view,
     inbox_view,
     message_detail_view,
@@ -21,5 +22,10 @@ urlpatterns = [
         "message_detail/<int:pk>",
         message_detail_view,
         name="message_detail",
+    ),
+    path(
+        "compose_message/",
+        compose_message_view,
+        name="compose_message",
     ),
 ]
