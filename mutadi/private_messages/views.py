@@ -3,9 +3,9 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, ListView
+from django.views.generic import CreateView, DeleteView, ListView
 
-from .forms import ComposeForm
+from .forms import ComposeForm, ReplyForm
 from .models import PrivateMessage
 
 
@@ -64,12 +64,28 @@ class DeleteMessageView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 delete_message_view = DeleteMessageView.as_view()
 
 
-class MessageDetailView(LoginRequiredMixin, DetailView):
-    """Message detail view"""
-
+class MessageDetailView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = PrivateMessage
     template_name = "message_detail.html"
-    context_object_name = "message"
+    form_class = ReplyForm
+    success_message = "La réponse a été envoyé avec succès !"
+
+    def dispatch(self, request, pk, *args, **kwargs):
+        self.message = PrivateMessage.objects.get(pk=pk)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_initial(self):
+        return {"subject": f"Re: {self.message.subject}"}
+
+    def form_valid(self, form):
+        form.instance.sender = self.request.user
+        form.instance.recipient = self.message.sender
+        return super().form_valid(form)
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["private_message"] = self.message
+        return context
 
 
 message_detail_view = MessageDetailView.as_view()
