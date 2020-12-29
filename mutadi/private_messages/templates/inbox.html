@@ -7,8 +7,13 @@
 <div class="container">
     <div class="row">
         <div class="table-responsive">
-            <div class="title text-center mt-5">
-                <h1>Mes messages reçus</h1>
+            <div class="title mt-5 d-grid gap-2 d-flex justify-content-between">
+                <h2>Mes messages reçus
+                </h2>
+                <a class="btn btn-primary" href="{% url "compose_message" %}">
+                    <i class="fas fa-envelope"></i>
+                    Nouveau message
+                </a>
             </div>
             {% if message_list %}
             <table class="table table-hover mt-5 mb-5">
