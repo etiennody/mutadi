@@ -105,3 +105,18 @@ class TestPrivateMessageUrls:
             ).view_name
             == "message_detail"
         )
+
+    def test_compose_message_reverse(self):
+        """
+        compose_message should reverse to /messages/compose_message/.
+        """
+        assert reverse("compose_message") == "/messages/compose_message/"
+
+    def test_compose_message_resolve(self):
+        """
+        /messages/compose_message/ should resolve to compose_message.
+        """
+        assert (
+            resolve("/messages/compose_message/").view_name
+            == "compose_message"
+        )
