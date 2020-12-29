@@ -9,7 +9,12 @@
         {% if user.id == message.sender.id or user.id == message.recipient.id %}
         <div class="dl-horizontal">
             <div class="title text-center mt-5">
-                <h1>Détails du message</h1>
+                <div class="title mt-5 d-grid gap-2 d-flex justify-content-between">
+                    <h2>Détails du message</h2>
+                    <a class="btn btn-outline-danger" href="{% url "delete_message" message.pk %}">
+                        Supprimer message
+                    </a>
+                </div>
                 <br>
             </div>
             <dl class="row">
