@@ -48,6 +48,7 @@ change_password_view = ChangePasswordView.as_view()
 
 
 def change_password_success(request):
+    """Returns to confirm change password template file."""
     return render(request, "registration/change_password_success.html", {})
 
 
