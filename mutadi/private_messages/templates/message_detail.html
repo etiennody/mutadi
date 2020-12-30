@@ -20,15 +20,16 @@
             <dl class="row">
                 <dt class="col-sm-3">Sujet</dt>
                 <dd class="col-sm-9">{{ private_message.subject }}</dd>
-                <dt class="col-sm-3">Expéditeur</dt>
+                <dt class="col-sm-3">De</dt>
                 <dd class="col-sm-9">{{ private_message.sender }}</dd>
                 <dt class="col-sm-3">Date</dt>
                 <dd class="col-sm-9">Il y a {{ private_message.sent_at|timesince }}</dd>
-                <dt class="col-sm-3">Destinataire</dt>
+                <dt class="col-sm-3">Pour</dt>
                 <dd class="col-sm-9">{{ private_message.recipient }}</dd>
                 <dt class="col-sm-3">Contenu</dt>
                 <dd class="col-sm-9 mb-5">{{ private_message.content|safe }}</dd>
             </dl>
+            {% if not user.id == private_message.sender.id %}
             <main class="post reply_message col-lg-8">
                 <h3>Répondre à {{ private_message.sender }}</h3>
                 <div class="form-group">
@@ -44,6 +45,7 @@
                     </form>
                 </div>
             </main>
+            {% endif %}
         </div>
         {% else %}
         <div class="col-lg-12 align-self-center">
