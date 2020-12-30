@@ -75,7 +75,10 @@ class MessageDetailView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_initial(self):
-        return {"subject": f"Re: {self.message.subject}"}
+        return {
+            "subject": f"Re: {self.message.subject}",
+            "content": f"-- {self.message.sender} : {self.message.content}",
+        }
 
     def form_valid(self, form):
         form.instance.sender = self.request.user
