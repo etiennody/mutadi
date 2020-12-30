@@ -19,9 +19,6 @@ class PrivateMessage(models.Model):
     sent_at = models.DateTimeField(default=timezone.now)
     content = RichTextField()
 
-    class Meta:
-        ordering = ["sent_at"]
-
     def __str__(self):
         return f"{self.sender} to {self.recipient} : {self.content}"
 
