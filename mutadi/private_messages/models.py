@@ -9,6 +9,8 @@ User = get_user_model()
 
 
 class PrivateMessage(models.Model):
+    """A private message from user to user."""
+
     subject = models.CharField(max_length=150)
     sender = models.ForeignKey(
         User, related_name="sent_messages", on_delete=models.CASCADE
@@ -18,9 +20,12 @@ class PrivateMessage(models.Model):
     )
     sent_at = models.DateTimeField(default=timezone.now)
     content = RichTextField()
+    sender_deleted_at = models.DateTimeField(null=True, blank=True)
+    recipient_deleted_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.sender} to {self.recipient} : {self.content}"
 
     def get_absolute_url(self):
+        """Return to homepage."""
         return reverse("inbox")

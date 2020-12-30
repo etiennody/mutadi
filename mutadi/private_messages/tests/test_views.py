@@ -57,7 +57,7 @@ class TestInboxViews:
         )
         url = reverse("inbox")
         response = client.get(url)
-        assert "Mes messages" in str(response.content)
+        assert b"Mes messages re\xc3\xa7us" in response.content
 
     def test_view_inbox_page_uses_correct_template(self, client, proto_user):
         """Inbox page should use inbox.html template."""
@@ -119,7 +119,7 @@ class TestOutboxViews:
         )
         url = reverse("outbox")
         response = client.get(url)
-        assert "Mes messages" in str(response.content)
+        assert b"Mes messages envoy\xc3\xa9s" in response.content
 
     def test_view_outbox_page_uses_correct_template(self, client, proto_user):
         """Outbox page should use outbox.html template."""
@@ -226,7 +226,9 @@ class TestDeleteMessageViews:
             ],
         )
         response = client.get(url)
-        assert proto_private_message.subject in str(response.content)
+        assert (
+            b"Message supprim\xc3\xa9 avec succ\xc3\xa8s !" in response.content
+        )
 
     def test_invalid_delete_message_page_with_wrong_user(
         self, client, proto_user_c, proto_private_message
@@ -243,39 +245,10 @@ class TestDeleteMessageViews:
             ],
         )
         response = client.get(url)
-        assert proto_private_message.subject not in str(response.content)
-
-    def test_view_delete_message_page_uses_correct_template(
-        self, client, proto_user_a, proto_private_message
-    ):
-        """delete_message page should use delete_message.html template."""
-        client.login(
-            username=f"{proto_user_a.username}",
-            password="m=9UaK^C,Tbq9N=T",
+        assert (
+            b"Message supprim\xc3\xa9 avec succ\xc3\xa8s !"
+            not in response.content
         )
-        url = reverse(
-            "delete_message",
-            args=[
-                f"{proto_private_message.pk}",
-            ],
-        )
-        response = client.get(url)
-        assert response.status_code == 200
-        assertTemplateUsed(response, "delete_message.html")
-
-    def test_delete_message_success_url(
-        self, client, proto_user_a, proto_private_message
-    ):
-        """delete_message page should redirect to home page template."""
-        client.login(
-            username=f"{proto_user_a.username}",
-            password="m=9UaK^C,Tbq9N=T",
-        )
-        response = client.post(
-            f"/messages/message_detail/{proto_private_message.pk}/delete"
-        )
-        assert response.status_code == 302
-        assert response.url == "/messages/inbox/"
 
 
 class TestMessageDetailViews:
@@ -446,7 +419,6 @@ class TestMessageDetailViews:
             )
             url = reverse("compose_message")
             response = client.get(url)
-            print(response.content)
             assert "Envoyer" in str(response.content)
 
         def test_invalid_compose_message_page_with_anonymous_user(
@@ -456,11 +428,10 @@ class TestMessageDetailViews:
             url = reverse("compose_message")
             response = client.get(url)
             assert proto_private_message.subject not in str(response.content)
-            print(response.content)
             assert response.status_code == 302
             assert (
                 response.url
-                == "/accounts/login/?next=/messages/compose_message/"
+                == "/members/login/?next=/messages/compose_message/"
             )
 
         def test_view_compose_message_page_uses_correct_template(
