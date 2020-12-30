@@ -122,6 +122,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_ROOT = os.path.join(APPS_DIR, "media")
 
 LOGIN_REDIRECT_URL = "home"
+LOGIN_URL = "login"
 LOGOUT_REDIRECT_URL = "home"
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
