@@ -28,27 +28,6 @@ class TestComposeForm:
         self.proto_user_b.save()
         return self.proto_user_b
 
-    @pytest.fixture
-    def proto_user_c(self):
-        """Fixture for baked User model."""
-        self.proto_user_c = baker.make(User)
-        self.proto_user_c.set_password("BJw_KkB&asjX_#B3")
-        self.proto_user_c.save()
-        return self.proto_user_c
-
-    @pytest.fixture
-    def proto_private_message(self, proto_user_a, proto_user_b):
-        """Fixture for baked PrivateMessage model."""
-        return baker.make(
-            PrivateMessage,
-            sender=proto_user_a,
-            recipient=proto_user_b,
-            content=(
-                "Proident nisi cillum sit tempor "
-                "reprehenderit proident in non fugiat ex id."
-            ),
-        )
-
     def test_valid_compose_message_form(self, proto_user_b):
         """Compose message form should be valid for a member."""
         data = {
@@ -111,43 +90,6 @@ class TestComposeForm:
 
 class TestReplyForm:
     """Group multiple tests for ReplyForm"""
-
-    @pytest.fixture
-    def proto_user_a(self):
-        """Fixture for baked User model."""
-        self.proto_user_a = baker.make(User)
-        self.proto_user_a.set_password("m=9UaK^C,Tbq9N=T")
-        self.proto_user_a.save()
-        return self.proto_user_a
-
-    @pytest.fixture
-    def proto_user_b(self):
-        """Fixture for baked User model."""
-        self.proto_user_b = baker.make(User)
-        self.proto_user_b.set_password("3$0aF/gxFsinR'6k")
-        self.proto_user_b.save()
-        return self.proto_user_b
-
-    @pytest.fixture
-    def proto_user_c(self):
-        """Fixture for baked User model."""
-        self.proto_user_c = baker.make(User)
-        self.proto_user_c.set_password("BJw_KkB&asjX_#B3")
-        self.proto_user_c.save()
-        return self.proto_user_c
-
-    @pytest.fixture
-    def proto_private_message(self, proto_user_a, proto_user_b):
-        """Fixture for baked PrivateMessage model."""
-        return baker.make(
-            PrivateMessage,
-            sender=proto_user_a,
-            recipient=proto_user_b,
-            content=(
-                "Proident nisi cillum sit tempor "
-                "reprehenderit proident in non fugiat ex id."
-            ),
-        )
 
     def test_valid_reply_message_form(self):
         """Reply message form should be valid for a member."""
