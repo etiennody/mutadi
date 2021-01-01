@@ -2,6 +2,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.urls import reverse_lazy
@@ -27,16 +28,15 @@ def get_category_count():
 class PostListView(ListView):
     """Post list view"""
 
-    model = Post
     template_name = "post_list.html"
-    context_object_name = "queryset"
+    queryset = Post.objects.all()
+    paginate_by = 4
+    ordering = ["-created_on"]
 
     def get_context_data(self, **kwargs):
         category_count = get_category_count()
         latest_posts = Post.objects.order_by("-created_on")[:3]
-        most_recent = Post.objects.order_by("-created_on")
         context = super().get_context_data(**kwargs)
-        context["most_recent"] = most_recent
         context["category_count"] = category_count
         context["latest_posts"] = latest_posts
         return context
@@ -120,11 +120,16 @@ delete_post_view = DeletePostView.as_view()
 
 
 def category_view(request, cats):
-    category_posts = Post.objects.filter(categories__title=cats)
+    category_posts = Post.objects.filter(categories__title=cats).order_by(
+        "created_on"
+    )
+    paginator = Paginator(category_posts, 4)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
     return render(
         request,
         "categories.html",
-        {"cats": cats, "category_posts": category_posts},
+        {"cats": cats, "page_obj": page_obj},
     )
 
 
