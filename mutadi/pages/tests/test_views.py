@@ -24,6 +24,7 @@ class TestPagesViews:
             _quantity=6,
         )
 
+    # Home page section
     def test_view_url_home_page_exists_at_desired_location(self, client):
         """Home page should exist at desired location."""
         response = client.get("/")
@@ -54,6 +55,7 @@ class TestPagesViews:
         assert (len(response.context_data["featured_posts"])) == 3
         assert (len(response.context_data["latest_posts"])) == 3
 
+    # Terms of service section
     def test_tos_view_url_accessible_by_name(self, client):
         """Terms of service should be accessible by name."""
         url = reverse("tos")
@@ -64,7 +66,6 @@ class TestPagesViews:
         """Terms of service should contain Conditions générales."""
         url = reverse("tos")
         response = client.get(url)
-        print(response.content)
         assert b"Mentions l\xc3\xa9gales" in response.content
 
     def test_view_tos_page_uses_correct_template(self, client):
@@ -72,3 +73,23 @@ class TestPagesViews:
         response = client.get(reverse("tos"))
         assert response.status_code == 200
         assertTemplateUsed(response, "pages/tos.html")
+
+    # How it works section
+    def test_how_view_url_accessible_by_name(self, client):
+        """How it works should be accessible by name."""
+        url = reverse("how")
+        response = client.get(url)
+        assert response.status_code == 200
+
+    def test_valid_how_page_title_with_client(self, client):
+        """How it works should contain Conditions générales."""
+        url = reverse("how")
+        response = client.get(url)
+        print(response.content)
+        assert b"Comment \xc3\xa7a marche ?" in response.content
+
+    def test_view_how_page_uses_correct_template(self, client):
+        """How it works should use pages/how.html template."""
+        response = client.get(reverse("how"))
+        assert response.status_code == 200
+        assertTemplateUsed(response, "pages/how.html")

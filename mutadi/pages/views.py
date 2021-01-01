@@ -31,3 +31,12 @@ def tos(request):
     """
     context = {}
     return render(request, "pages/tos.html", context)
+
+
+def how(request):
+    """
+    Here’s a view that returns the current how it works,
+    as an HTML document
+    """
+    context = {}
+    return render(request, "pages/how.html", context)
