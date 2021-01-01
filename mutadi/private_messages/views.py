@@ -16,6 +16,7 @@ class InboxView(LoginRequiredMixin, ListView):
     """Returns all messages that were received by the given user"""
 
     template_name = "inbox.html"
+    paginate_by = 25
 
     def get_queryset(self):
         self.message_list = PrivateMessage.objects.filter(
@@ -37,6 +38,7 @@ class OutboxView(LoginRequiredMixin, ListView):
     """Returns all messages that were sent by the given user"""
 
     template_name = "outbox.html"
+    paginate_by = 25
 
     def get_queryset(self):
         self.message_list = PrivateMessage.objects.filter(

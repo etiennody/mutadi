@@ -21,124 +21,257 @@ class TestInboxViews:
     """Group multiple tests in Inbox views"""
 
     @pytest.fixture
-    def proto_user(self):
+    def proto_user_a(self):
         """Fixture for baked User model."""
-        self.proto_user = baker.make(User)
-        self.proto_user.set_password("m=9UaK^C,Tbq9N=T")
-        self.proto_user.save()
-        return self.proto_user
+        self.proto_user_a = baker.make(User)
+        self.proto_user_a.set_password("m=9UaK^C,Tbq9N=T")
+        self.proto_user_a.save()
+        return self.proto_user_a
+
+    @pytest.fixture
+    def proto_user_b(self):
+        """Fixture for baked User model."""
+        self.proto_user_b = baker.make(User)
+        self.proto_user_b.set_password("3$0aF/gxFsinR'6k")
+        self.proto_user_b.save()
+        return self.proto_user_b
+
+    @pytest.fixture
+    def proto_user_c(self):
+        """Fixture for baked User model."""
+        self.proto_user_c = baker.make(User)
+        self.proto_user_c.set_password("BJw_KkB&asjX_#B3")
+        self.proto_user_c.save()
+        return self.proto_user_c
+
+    @pytest.fixture
+    def proto_private_message(self, proto_user_a, proto_user_b):
+        """Fixture for baked PrivateMessage model."""
+        return baker.make(
+            PrivateMessage,
+            sender=proto_user_a,
+            recipient=proto_user_b,
+            content=(
+                "Proident nisi cillum sit tempor "
+                "reprehenderit proident in non fugiat ex id."
+            ),
+            _quantity=26,
+        )
 
     def test_view_url_inbox_page_exists_at_desired_location(
-        self, client, proto_user
+        self, client, proto_user_a
     ):
         """Inbox page should exist at desired location."""
         client.login(
-            username=f"{proto_user.username}",
+            username=f"{proto_user_a.username}",
             password="m=9UaK^C,Tbq9N=T",
         )
         response = client.get("/messages/inbox/")
         assert response.status_code == 200
 
-    def test_view_url_accessible_by_name(self, client, proto_user):
+    def test_view_url_accessible_by_name(self, client, proto_user_a):
         """Inbox page should be accessible by name."""
         client.login(
-            username=f"{proto_user.username}",
+            username=f"{proto_user_a.username}",
             password="m=9UaK^C,Tbq9N=T",
         )
         url = reverse("inbox")
         response = client.get(url)
         assert response.status_code == 200
 
-    def test_valid_inbox_page_title_with_client(self, client, proto_user):
+    def test_valid_inbox_page_title_with_client(self, client, proto_user_a):
         """Inbox page should contain "Mes messages"."""
         client.login(
-            username=f"{proto_user.username}",
+            username=f"{proto_user_a.username}",
             password="m=9UaK^C,Tbq9N=T",
         )
         url = reverse("inbox")
         response = client.get(url)
         assert b"Mes messages re\xc3\xa7us" in response.content
 
-    def test_view_inbox_page_uses_correct_template(self, client, proto_user):
+    def test_view_inbox_page_uses_correct_template(self, client, proto_user_a):
         """Inbox page should use inbox.html template."""
         client.login(
-            username=f"{proto_user.username}",
+            username=f"{proto_user_a.username}",
             password="m=9UaK^C,Tbq9N=T",
         )
         response = client.get(reverse("inbox"))
         assert response.status_code == 200
         assertTemplateUsed(response, "inbox.html")
 
-    def test_view_message_list_context_is_ko(self, client, proto_user):
+    def test_view_message_list_context_inbox_is_ok(
+        self, client, proto_private_message, proto_user_b
+    ):
+        """Inbox should have a message."""
+        client.login(
+            username=f"{proto_user_b.username}",
+            password="3$0aF/gxFsinR'6k",
+        )
+        response = client.get(reverse("inbox"))
+        assert response.context["message_list"].count() == 26
+
+    def test_view_message_list_context_is_ko(
+        self, client, proto_private_message, proto_user_c
+    ):
         """Inbox should have no messages."""
         client.login(
-            username=f"{proto_user.username}",
-            password="m=9UaK^C,Tbq9N=T",
+            username=f"{proto_user_c.username}",
+            password="BJw_KkB&asjX_#B3",
         )
         response = client.get(reverse("inbox"))
         assert response.context_data["message_list"].count() == 0
+
+    def test_valid_private_massage_inbox_pagination_is_25(
+        self, client, proto_private_message, proto_user_b
+    ):
+        """Valid if inbox page pagination have 25 messages on page"""
+        client.login(
+            username=f"{proto_user_b.username}",
+            password="3$0aF/gxFsinR'6k",
+        )
+        response = client.get(reverse("inbox"))
+        assert response.status_code == 200
+        assert "is_paginated" in response.context
+        assert (len(response.context["page_obj"])) == 25
 
 
 class TestOutboxViews:
     """Group multiple tests in Outbox views"""
 
     @pytest.fixture
-    def proto_user(self):
+    def proto_user_a(self):
         """Fixture for baked User model."""
-        self.proto_user = baker.make(User)
-        self.proto_user.set_password("m=9UaK^C,Tbq9N=T")
-        self.proto_user.save()
-        return self.proto_user
+        self.proto_user_a = baker.make(User)
+        self.proto_user_a.set_password("m=9UaK^C,Tbq9N=T")
+        self.proto_user_a.save()
+        return self.proto_user_a
+
+    @pytest.fixture
+    def proto_user_b(self):
+        """Fixture for baked User model."""
+        self.proto_user_b = baker.make(User)
+        self.proto_user_b.set_password("3$0aF/gxFsinR'6k")
+        self.proto_user_b.save()
+        return self.proto_user_b
+
+    @pytest.fixture
+    def proto_user_c(self):
+        """Fixture for baked User model."""
+        self.proto_user_c = baker.make(User)
+        self.proto_user_c.set_password("BJw_KkB&asjX_#B3")
+        self.proto_user_c.save()
+        return self.proto_user_c
+
+    @pytest.fixture
+    def proto_user_d(self):
+        """Fixture for baked User model."""
+        self.proto_user_d = baker.make(User)
+        self.proto_user_d.set_password("BJw_KkB&asjX_#B3")
+        self.proto_user_d.save()
+        return self.proto_user_d
+
+    @pytest.fixture
+    def proto_private_message(self, proto_user_a, proto_user_b):
+        """Fixture for baked PrivateMessage model."""
+        return baker.make(
+            PrivateMessage,
+            sender=proto_user_a,
+            recipient=proto_user_b,
+            content=(
+                "Proident nisi cillum sit tempor "
+                "reprehenderit proident in non fugiat ex id."
+            ),
+        )
+
+    @pytest.fixture
+    def proto_private_message_bis(self, proto_user_d, proto_user_a):
+        """Fixture for baked PrivateMessage model."""
+        return baker.make(
+            PrivateMessage,
+            sender=proto_user_d,
+            recipient=proto_user_a,
+            content=(
+                "Proident nisi cillum sit tempor "
+                "reprehenderit proident in non fugiat ex id."
+            ),
+            _quantity=26,
+        )
 
     def test_view_url_outbox_page_exists_at_desired_location(
-        self, client, proto_user
+        self, client, proto_user_a
     ):
         """Outbox page should exist at desired location."""
         client.login(
-            username=f"{proto_user.username}",
+            username=f"{proto_user_a.username}",
             password="m=9UaK^C,Tbq9N=T",
         )
         response = client.get("/messages/outbox/")
         assert response.status_code == 200
 
-    def test_view_url_accessible_by_name(self, client, proto_user):
+    def test_view_url_accessible_by_name(self, client, proto_user_a):
         """Outbox page should be accessible by name."""
         client.login(
-            username=f"{proto_user.username}",
+            username=f"{proto_user_a.username}",
             password="m=9UaK^C,Tbq9N=T",
         )
         url = reverse("outbox")
         response = client.get(url)
         assert response.status_code == 200
 
-    def test_valid_outbox_page_title_with_client(self, client, proto_user):
+    def test_valid_outbox_page_title_with_client(self, client, proto_user_a):
         """Outbox page should contain "Mes messages"."""
         client.login(
-            username=f"{proto_user.username}",
+            username=f"{proto_user_a.username}",
             password="m=9UaK^C,Tbq9N=T",
         )
         url = reverse("outbox")
         response = client.get(url)
         assert b"Mes messages envoy\xc3\xa9s" in response.content
 
-    def test_view_outbox_page_uses_correct_template(self, client, proto_user):
+    def test_view_outbox_page_uses_correct_template(
+        self, client, proto_user_a
+    ):
         """Outbox page should use outbox.html template."""
         client.login(
-            username=f"{proto_user.username}",
+            username=f"{proto_user_a.username}",
             password="m=9UaK^C,Tbq9N=T",
         )
         response = client.get(reverse("outbox"))
         assert response.status_code == 200
         assertTemplateUsed(response, "outbox.html")
 
-    def test_view_message_list_context_is_ko(self, client, proto_user):
-        """Outbox should have no messages."""
+    def test_view_message_list_context_outbox_is_ok(
+        self, client, proto_private_message, proto_user_a
+    ):
+        """Outbox should have a message."""
         client.login(
-            username=f"{proto_user.username}",
+            username=f"{proto_user_a.username}",
             password="m=9UaK^C,Tbq9N=T",
         )
         response = client.get(reverse("outbox"))
+        assert response.context["message_list"].count() == 1
+
+    def test_view_message_list_context_is_ko(self, client, proto_user_c):
+        """Outbox should have no messages."""
+        client.login(
+            username=f"{proto_user_c.username}",
+            password="BJw_KkB&asjX_#B3",
+        )
+        response = client.get(reverse("outbox"))
         assert response.context_data["message_list"].count() == 0
+
+    def test_valid_private_massage_outbox_pagination_is_25(
+        self, client, proto_private_message_bis, proto_user_d
+    ):
+        """Valid if outbox page pagination have 25 messages on single page"""
+        client.login(
+            username=f"{proto_user_d.username}",
+            password="BJw_KkB&asjX_#B3",
+        )
+        response = client.get(reverse("outbox"))
+        assert response.status_code == 200
+        assert "is_paginated" in response.context
+        assert (len(response.context["page_obj"])) == 25
 
 
 class TestDeleteMessageViews:
@@ -366,14 +499,6 @@ class TestMessageDetailViews:
             self.proto_user_b.set_password("3$0aF/gxFsinR'6k")
             self.proto_user_b.save()
             return self.proto_user_b
-
-        @pytest.fixture
-        def proto_user_c(self):
-            """Fixture for baked User model."""
-            self.proto_user_c = baker.make(User)
-            self.proto_user_c.set_password("BJw_KkB&asjX_#B3")
-            self.proto_user_c.save()
-            return self.proto_user_c
 
         @pytest.fixture
         def proto_private_message(self, proto_user_a, proto_user_b):

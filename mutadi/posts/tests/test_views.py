@@ -20,6 +20,26 @@ factory = RequestFactory()
 class TestPostlistViews:
     """Group multiple tests in Postlist views"""
 
+    @pytest.fixture
+    def proto_user(self):
+        """Fixture for baked User model."""
+        return baker.make(User)
+
+    @pytest.fixture
+    def proto_post(self, proto_user):
+        """Fixture for baked Post model."""
+        return baker.make(
+            Post,
+            author=proto_user,
+            content=(
+                "Ipsum nulla aute irure sint consequat "
+                "consequat proident irure voluptate."
+            ),
+            make_m2m=True,
+            _create_files=True,
+            _quantity=6,
+        )
+
     def test_view_url_post_list_page_exists_at_desired_location(self, client):
         """post_list page should exist at desired location."""
         response = client.get("/posts/post_list/")
@@ -42,6 +62,13 @@ class TestPostlistViews:
         response = client.get(reverse("post_list"))
         assert response.status_code == 200
         assertTemplateUsed(response, "post_list.html")
+
+    def test_valid_search_pagination_is_four(self, client, proto_post):
+        """Valid if search results pagination have six products on page"""
+        response = client.get(reverse("post_list"))
+        assert response.status_code == 200
+        assert "is_paginated" in response.context
+        assert (len(response.context_data["object_list"])) == 4
 
 
 class TestPostDetailViews:
@@ -407,7 +434,19 @@ class TestCategoryViews:
     @pytest.fixture
     def proto_category(self):
         """Fixture for baked Category model."""
-        return baker.make(Category)
+        return baker.prepare(Category, title="Test")
+
+    @pytest.fixture
+    def proto_post(self, proto_category):
+        """Fixture for baked Post model."""
+        return baker.make(
+            Post,
+            # make_m2m=True,
+            categories__title=proto_category.title,
+            # categories=[baker.make(Category)],
+            content="Consequat aliqua non qui veniam sit voluptate.",
+            _create_files=True,
+        )
 
     def test_view_url_category_page_exists_at_desired_location(
         self, client, proto_category
@@ -427,10 +466,17 @@ class TestCategoryViews:
         response = client.get(url)
         assert response.status_code == 200
 
-    def test_valid_categories_page_title_with_client(
-        self, client, proto_category
+    def test_field_lookup_for_m2m_relationship(self):
+        post = baker.make(Post, categories__title="M", content="S")
+        categories = post.categories.all()
+        assert categories
+        for cat in categories:
+            assert "M" == cat.title
+
+    def test_valid_categories_page_with_post_category_title(
+        self, client, proto_category, proto_post
     ):
-        """category page should contain the title of the category."""
+        """category page should contain the title of post category."""
         url = reverse(
             "category",
             args=[
@@ -438,8 +484,9 @@ class TestCategoryViews:
             ],
         )
         response = client.get(url)
-        print(str(response.content))
-        assert proto_category.title in str(response.content)
+        assert response.status_code == 200
+        assert b"Test" in response.content
+        assert proto_post.categories.all().count() == 5
 
     def test_view_categories_page_uses_correct_template(
         self, client, proto_category
@@ -454,6 +501,19 @@ class TestCategoryViews:
         response = client.get(url)
         assert response.status_code == 200
         assertTemplateUsed(response, "categories.html")
+
+    def test_valid_search_pagination_is_four(self, client, proto_category):
+        """Valid if search results pagination have six products on page"""
+        response = client.get(
+            reverse(
+                "category",
+                args=[
+                    f"{proto_category.title}",
+                ],
+            )
+        )
+        assert response.status_code == 200
+        assert (len(response.context["cats"])) == 4
 
 
 class TestSearchResultsViews:
