@@ -53,3 +53,22 @@ class TestPagesViews:
         assert response.status_code == 200
         assert (len(response.context_data["featured_posts"])) == 3
         assert (len(response.context_data["latest_posts"])) == 3
+
+    def test_tos_view_url_accessible_by_name(self, client):
+        """Terms of service should be accessible by name."""
+        url = reverse("tos")
+        response = client.get(url)
+        assert response.status_code == 200
+
+    def test_valid_tos_page_title_with_client(self, client):
+        """Terms of service should contain Conditions générales."""
+        url = reverse("tos")
+        response = client.get(url)
+        print(response.content)
+        assert b"Mentions l\xc3\xa9gales" in response.content
+
+    def test_view_tos_page_uses_correct_template(self, client):
+        """Terms of service should use pages/tos.html template."""
+        response = client.get(reverse("tos"))
+        assert response.status_code == 200
+        assertTemplateUsed(response, "pages/tos.html")

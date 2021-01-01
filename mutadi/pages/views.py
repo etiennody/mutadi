@@ -1,4 +1,5 @@
 """pages Views Configuration"""
+from django.shortcuts import render
 from django.views.generic import ListView
 from mutadi.posts.models import Post
 
@@ -21,3 +22,12 @@ class HomeView(ListView):
 
 
 home_view = HomeView.as_view()
+
+
+def tos(request):
+    """
+    Here’s a view that returns the current terms of service,
+    as an HTML document
+    """
+    context = {}
+    return render(request, "pages/tos.html", context)
