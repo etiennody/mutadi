@@ -73,17 +73,21 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <a class="dropdown-item" href="{% url "inbox" %}">Messages reçus</a>
+                  <a class="dropdown-item" href="{% url "inbox" %}">
+                    <i class="fas fa-envelope"></i> Messages reçus
+                  </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="{% url "outbox" %}">Messages envoyés</a>
+                  <a class="dropdown-item" href="{% url "outbox" %}">
+                    <i class="far fa-envelope"></i> Messages envoyés
+                  </a>
                 </li>
               </ul>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                 aria-expanded="false">
-                Mon profil
+                {{ user.first_name}} {{user.last_name}}
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
@@ -99,10 +103,15 @@
                 <li>
                   <a class="dropdown-item" href="{% url "show_profile_page" user.profile.id %}">Voir mon profil</a>
                 </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'logout' %}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Se déconnecter
+                  </a>
+                </li>
               </ul>
-            </li>
-            <li class="nav-item">
-              <a href="{% url 'logout' %}" class="nav-link">Se déconnecter</a>
             </li>
             {% else %}
             <li class="nav-item">
