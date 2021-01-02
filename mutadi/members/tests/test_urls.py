@@ -4,7 +4,6 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.urls import resolve, reverse
 from model_bakery import baker
-from mutadi.members.models import Profile
 
 pytestmark = pytest.mark.django_db
 

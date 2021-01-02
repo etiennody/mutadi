@@ -1,12 +1,13 @@
 """Unit tests for private messages form
 """
 import pytest
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from model_bakery import baker
 from mutadi.private_messages.forms import ComposeForm, ReplyForm
-from mutadi.private_messages.models import PrivateMessage
 
 pytestmark = pytest.mark.django_db
+
+User = get_user_model()
 
 
 class TestComposeForm:

@@ -3,7 +3,6 @@
 import pytest
 from django.contrib.auth import get_user_model
 from model_bakery import baker
-from mutadi.members.models import Profile
 from mutadi.posts.models import Category, Comment, Post
 
 pytestmark = pytest.mark.django_db
