@@ -26,4 +26,5 @@ before_script:
   - psql -c 'create database db_test;' -U postgres
 
 script:
+  - pipenv run flake8
   - pipenv run pytest -vv
