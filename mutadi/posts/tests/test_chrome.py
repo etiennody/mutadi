@@ -1,5 +1,4 @@
-"""Functional tests for posts app
-"""
+"""Functional tests for posts app"""
 import time
 
 import pytest
@@ -18,7 +17,7 @@ User = get_user_model()
 
 
 class TestDeletePostsSelenium(LiveServerTestCase):
-    """Selenium functional tests for deletion of post"""
+    """Selenium functional tests for deletion of post."""
 
     serialized_rollback = True
 
@@ -44,7 +43,7 @@ class TestDeletePostsSelenium(LiveServerTestCase):
     def test_valid_live_delete_post_page(self):
         """
         After confirmation of the deletion of a post,
-        it should send a message of success on home page
+        it should send a message of success on home page.
         """
         self.driver.get("%s%s" % (self.live_server_url, "/members/login/"))
         username = self.driver.find_element(By.ID, "id_username")

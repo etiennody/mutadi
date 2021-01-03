@@ -1,5 +1,4 @@
-"""private_messages URL Configuration
-"""
+"""private_messages URL configuration"""
 from django.urls import path
 
 from .views import (

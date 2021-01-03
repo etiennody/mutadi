@@ -1,10 +1,11 @@
-"""Private messages Forms Configuration"""
+"""Private messages forms configuration"""
 from django import forms
+
 from .models import PrivateMessage
 
 
 class ComposeForm(forms.ModelForm):
-    """Compose message form"""
+    """Compose message form."""
 
     class Meta:
         model = PrivateMessage
@@ -26,7 +27,7 @@ class ComposeForm(forms.ModelForm):
 
 
 class ReplyForm(forms.ModelForm):
-    """Reply message form"""
+    """Reply message form."""
 
     class Meta:
         model = PrivateMessage

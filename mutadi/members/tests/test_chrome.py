@@ -1,5 +1,4 @@
-"""Functional tests for users app
-"""
+"""Functional tests for members app"""
 import time
 import urllib.parse
 
@@ -17,7 +16,9 @@ pytestmark = pytest.mark.django_db
 User = get_user_model()
 
 
-class TestRegisterSeleniumNew(LiveServerTestCase):
+class TestRegisterSelenium(LiveServerTestCase):
+    """Selenium functional tests for user registration."""
+
     serialized_rollback = True
 
     def setUp(self):
@@ -34,6 +35,7 @@ class TestRegisterSeleniumNew(LiveServerTestCase):
         super().tearDown()
 
     def test_valid_live_register_page(self):
+        """Register page should redirect to login page after sign up validation."""
         url = urllib.parse.urljoin(self.live_server_url, "/members/register/")
         self.driver.get(url)
         username = self.driver.find_element(By.ID, "id_username")
@@ -65,6 +67,8 @@ class TestRegisterSeleniumNew(LiveServerTestCase):
 
 
 class TestLoginSelenium(LiveServerTestCase):
+    """Selenium functional tests for user login."""
+
     serialized_rollback = True
 
     def setUp(self):
@@ -84,6 +88,7 @@ class TestLoginSelenium(LiveServerTestCase):
         super().tearDown()
 
     def test_valid_live_login_page(self):
+        """Login page shoud redirect to home page after sign in validation."""
         self.driver.get("%s%s" % (self.live_server_url, "/members/login/"))
         username = self.driver.find_element(By.ID, "id_username")
         password = self.driver.find_element(By.ID, "id_password")
@@ -103,6 +108,8 @@ class TestLoginSelenium(LiveServerTestCase):
 
 
 class TestChangePasswordSelenium(LiveServerTestCase):
+    """Selenium functional tests for user chenge password process"""
+
     serialized_rollback = True
 
     def setUp(self):

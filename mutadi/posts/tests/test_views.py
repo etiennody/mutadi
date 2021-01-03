@@ -1,5 +1,4 @@
-"""Unit tests for posts app views
-"""
+"""Unit tests for posts app views"""
 import pytest
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -18,7 +17,7 @@ factory = RequestFactory()
 
 
 class TestPostlistViews:
-    """Group multiple tests in Postlist views"""
+    """Group multiple tests in Postlist views."""
 
     @pytest.fixture
     def proto_user(self):
@@ -64,7 +63,7 @@ class TestPostlistViews:
         assertTemplateUsed(response, "post_list.html")
 
     def test_valid_search_pagination_is_four(self, client, proto_post):
-        """Valid if search results pagination have six products on page"""
+        """Valid if search results pagination have six products on page."""
         response = client.get(reverse("post_list"))
         assert response.status_code == 200
         assert "is_paginated" in response.context
@@ -72,7 +71,7 @@ class TestPostlistViews:
 
 
 class TestPostDetailViews:
-    """Group multiple tests in PostDetail views"""
+    """Group multiple tests in PostDetail views."""
 
     @pytest.fixture
     def proto_user(self):
@@ -139,7 +138,7 @@ class TestPostDetailViews:
 
 
 class TestAddPostViews:
-    """Group multiple tests in AddPost views"""
+    """Group multiple tests in AddPost views."""
 
     @pytest.fixture
     def proto_user(self):
@@ -194,7 +193,7 @@ class TestAddPostViews:
         assertTemplateUsed(response, "add_post.html")
 
     def test_form_valid_on_add_post_view(self, proto_user):
-        """form_valid function should be valid the add post view"""
+        """form_valid function should be valid the add post view."""
         testfile = (
             b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04"
             b"\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02"
@@ -224,7 +223,7 @@ class TestAddPostViews:
 
 
 class TestUpdatePostViews:
-    """Group multiple tests in UpdatePost views"""
+    """Group multiple tests in UpdatePost views."""
 
     @pytest.fixture
     def proto_user(self):
@@ -324,7 +323,7 @@ class TestUpdatePostViews:
 
 
 class TestDeletePostViews:
-    """Group multiple tests in DeletePost views"""
+    """Group multiple tests in DeletePost."""
 
     @pytest.fixture
     def proto_user(self):
@@ -429,7 +428,7 @@ class TestDeletePostViews:
 
 
 class TestCategoryViews:
-    """Group multiple tests in Category views"""
+    """Group multiple tests in Category views."""
 
     @pytest.fixture
     def proto_category(self):
@@ -441,9 +440,7 @@ class TestCategoryViews:
         """Fixture for baked Post model."""
         return baker.make(
             Post,
-            # make_m2m=True,
             categories__title=proto_category.title,
-            # categories=[baker.make(Category)],
             content="Consequat aliqua non qui veniam sit voluptate.",
             _create_files=True,
         )
@@ -465,13 +462,6 @@ class TestCategoryViews:
         )
         response = client.get(url)
         assert response.status_code == 200
-
-    def test_field_lookup_for_m2m_relationship(self):
-        post = baker.make(Post, categories__title="M", content="S")
-        categories = post.categories.all()
-        assert categories
-        for cat in categories:
-            assert "M" == cat.title
 
     def test_valid_categories_page_with_post_category_title(
         self, client, proto_category, proto_post
@@ -503,7 +493,7 @@ class TestCategoryViews:
         assertTemplateUsed(response, "categories.html")
 
     def test_valid_search_pagination_is_four(self, client, proto_category):
-        """Valid if search results pagination have six products on page"""
+        """Valid if search results pagination have six products on page."""
         response = client.get(
             reverse(
                 "category",
@@ -517,7 +507,7 @@ class TestCategoryViews:
 
 
 class TestSearchResultsViews:
-    """Group multiple tests in search results views"""
+    """Group multiple tests in search results views."""
 
     @pytest.fixture
     def proto_post(self):
@@ -563,12 +553,12 @@ class TestSearchResultsViews:
         assertTemplateUsed(response, "search_results.html")
 
     def test_search_results_product_is_ko(self, client):
-        """Valid if search results can be down"""
+        """Valid if search results can be down."""
         response = client.get(reverse("search_results"), {"q": "Moutarde"})
         assert response.context_data["post_searches"].count() == 0
 
     def test_valid_search_pagination_is_four(self, client, proto_post):
-        """Valid if search results pagination have six products on page"""
+        """Valid if search results pagination have six products on page."""
         response = client.get(reverse("search_results"), {"q": "Post"})
         assert response.status_code == 200
         assert "is_paginated" in response.context

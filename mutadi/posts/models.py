@@ -1,13 +1,15 @@
-"""posts Models Configuration"""
+"""Posts models configuration"""
+from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
-from ckeditor.fields import RichTextField
 
 User = get_user_model()
 
 
 class Category(models.Model):
+    """A category for post."""
+
     title = models.CharField(max_length=20)
 
     def __str__(self):
@@ -18,6 +20,8 @@ class Category(models.Model):
 
 
 class Comment(models.Model):
+    """A comment for post."""
+
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -33,6 +37,8 @@ STATUS = ((0, "Non publié"), (1, "Publié"))
 
 
 class Post(models.Model):
+    """A post for user."""
+
     title = models.CharField(max_length=100)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     categories = models.ManyToManyField(Category)
@@ -61,4 +67,8 @@ class Post(models.Model):
 
     @property
     def comment_count(self):
+        """
+        comment_count is a function to count comments
+        per post and return an object
+        """
         return Comment.objects.filter(post=self).count()

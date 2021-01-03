@@ -1,5 +1,4 @@
-"""Unit tests for posts app models
-"""
+"""Unit tests for posts app models"""
 import pytest
 from django.contrib.auth import get_user_model
 from model_bakery import baker
@@ -11,7 +10,7 @@ User = get_user_model()
 
 
 class TestCategoryModel:
-    """Group multiple tests in Category model"""
+    """Group multiple tests in Category model."""
 
     @pytest.fixture
     def category(self):
@@ -43,7 +42,7 @@ class TestCategoryModel:
 
 
 class TestCommentModel:
-    """Group multiple tests in Comment Model"""
+    """Group multiple tests in Comment Model."""
 
     @pytest.fixture
     def post(self):
@@ -73,7 +72,7 @@ class TestCommentModel:
 
 
 class TestPostModel:
-    """Group multiple tests in Post Model"""
+    """Group multiple tests in Post."""
 
     @pytest.fixture
     def proto_user(self):

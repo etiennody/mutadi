@@ -1,4 +1,4 @@
-"""Private Messages Views Configuration"""
+"""Private messages views configuration"""
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,7 +13,10 @@ from .models import PrivateMessage
 
 
 class InboxView(LoginRequiredMixin, ListView):
-    """Returns all messages that were received by the given user"""
+    """
+    Returns all messages that were received
+    by the given user.
+    """
 
     template_name = "inbox.html"
     paginate_by = 25
@@ -35,7 +38,10 @@ inbox_view = InboxView.as_view()
 
 
 class OutboxView(LoginRequiredMixin, ListView):
-    """Returns all messages that were sent by the given user"""
+    """
+    Returns all messages that were sent
+    by the given user.
+    """
 
     template_name = "outbox.html"
     paginate_by = 25
@@ -82,7 +88,7 @@ def delete_message(request, pk, success_url=None):
 
 
 class MessageDetailView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
-    """Message detail view and processing reply message"""
+    """Message detail view and processing reply."""
 
     model = PrivateMessage
     template_name = "message_detail.html"
@@ -114,7 +120,7 @@ message_detail_view = MessageDetailView.as_view()
 
 
 class ComposeMessageView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
-    """Compose message view"""
+    """Compose message view."""
 
     model = PrivateMessage
     template_name = "compose_message.html"
