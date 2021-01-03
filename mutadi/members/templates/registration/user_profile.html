@@ -7,32 +7,28 @@
 {% block content %}
 
 <div class="container">
-    <div class="row">
-        <!-- User profile -->
-        <main class="post user-profile col-lg-12">
-            <h3>Profil utilisateur</h3>
-            <br>
-            <div class="card mb-3">
-                <div class="row g-0">
-                    <div class="col-md-2">
-                        {% if page_user.profile_pic %}
-                        <img src="{{ page_user.profile_pic.url }}" alt="..." class="card-img" />
-                        {% else %}
-                        <img src={% static 'img/default_profile_icon.jpg' %} alt="..." class="card-img" />
-                        {% endif %}
-                    </div>
-                    <div class="col-md-10">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                {{ page_user.user.first_name }} {{ page_user.user.last_name }}
-                            </h5>
-                            <p class="card-text">{{ page_user.bio }}</p>
-                        </div>
-                    </div>
-                </div>
+  <div class="row">
+    <!-- User profile -->
+    <main class="post user-profile col-lg-12">
+      <h3>Profil utilisateur</h3>
+      <br>
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-2">
+            <img src="{{ page_user.profile_pic.url }}" alt="..." class="card-img" />
+          </div>
+          <div class="col-md-10">
+            <div class="card-body">
+              <h5 class="card-title">
+                {{ page_user.user.first_name }} {{ page_user.user.last_name }}
+              </h5>
+              <p class="card-text">{{ page_user.bio }}</p>
             </div>
-        </main>
-    </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 </div>
 
 {% endblock content %}

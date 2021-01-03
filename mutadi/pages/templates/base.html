@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
   <meta charset="utf-8" />
@@ -67,11 +67,11 @@
               <a href="{% url "add_post" %}" class="nav-link">Ajouter une publication</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMessage" role="button"
+                data-toggle="dropdown" aria-expanded="false">
                 Mes messages
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMessage">
                 <li>
                   <a class="dropdown-item" href="{% url "inbox" %}">
                     <i class="fas fa-envelope"></i> Messages reçus
@@ -85,29 +85,34 @@
               </ul>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-toggle="dropdown"
                 aria-expanded="false">
                 {{ user.first_name}} {{user.last_name}}
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
                 <li>
-                  <a class="dropdown-item" href="{% url "edit_user_settings" %}">Réglages utilisateur</a>
+                  <a class="dropdown-item" href="{% url "edit_user_settings" %}">
+                    Réglages utilisateur
+                  </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="{% url "edit_user_profile" user.profile.id %}">Modifier mon
-                    profil</a>
-                </li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li>
-                  <a class="dropdown-item" href="{% url "show_profile_page" user.profile.id %}">Voir mon profil</a>
+                  <a class="dropdown-item" href="{% url "edit_user_profile" user.profile.id %}">
+                    Modifier mon profil
+                  </a>
                 </li>
                 <li>
                   <hr class="dropdown-divider">
                 </li>
                 <li>
-                  <a class="dropdown-item" href="{% url 'logout' %}" class="nav-link">
+                  <a class="dropdown-item" href="{% url "show_profile_page" user.profile.id %}">
+                    Voir mon profil
+                  </a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'logout' %}">
                     <i class="fas fa-sign-out-alt"></i> Se déconnecter
                   </a>
                 </li>
@@ -115,8 +120,9 @@
             </li>
             {% else %}
             <li class="nav-item">
-              <a href="{% url 'login' %}" class="btn btn-outline-primary" role="button" data-bs-toggle="button">Se
-                connecter</a>
+              <a href="{% url 'login' %}" class="btn btn-outline-primary" role="button" data-bs-toggle="button">
+                Se connecter
+              </a>
             </li>
             {% endif %}
           </ul>
@@ -140,7 +146,6 @@
     {% endfor %}
   </div>
   {% endif %}
-
 
   {% block content %}
   {% endblock content %}

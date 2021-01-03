@@ -7,38 +7,38 @@
 {% block content %}
 
 <div class="container">
-    <div class="row">
-        {% if user.is_authenticated %}
-        <!-- Add Post -->
-        <main class="post add_post col-lg-8">
-            <h1>Ajouter une publication</h1>
-            <br>
-            <div class="form-group">
-                <form method="POST" action="." enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form.media }}
-                    {{ form.as_p }}
-                    <button class="btn btn-primary">Ajouter</button>
-                </form>
-            </div>
-        </main>
-        {% else %}
-        <div class="col-lg-12 align-self-center">
-            <div class="jumbotron text-center">
-                <h5>Désolé, vous n'avez pas accès à l'ajout de publication...</h5>
-                <div class="option text-center">
-                    <span>
-                        <a href="{% url 'login' %}" class="btn btn-primary btn-rounded waves-effect" role="button"
-                            aria-pressed="true">Se connecter</a>
-                    </span>
-                    <span>
-                        <a href="{% url 'register' %}" class="btn btn-outline-secondary btn-rounded waves-effect"
-                            role="button" aria-pressed="true">S'inscrire maintenant</a>
-                    </span>
-                </div>
-            </div>
+  <div class="row">
+    {% if user.is_authenticated %}
+    <!-- Add Post -->
+    <main class="post add_post col-lg-8">
+      <h1>Ajouter une publication</h1>
+      <br>
+      <div class="form-group">
+        <form method="POST" action="." enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ form.media }}
+          {{ form.as_p }}
+          <button class="btn btn-primary">Ajouter</button>
+        </form>
+      </div>
+    </main>
+    {% else %}
+    <div class="col-lg-12 align-self-center">
+      <div class="jumbotron text-center">
+        <h5>Désolé, vous n'avez pas accès à l'ajout de publication...</h5>
+        <div class="option text-center">
+          <span>
+            <a href="{% url 'login' %}" class="btn btn-primary btn-rounded waves-effect" role="button"
+              aria-pressed="true">Se connecter</a>
+          </span>
+          <span>
+            <a href="{% url 'register' %}" class="btn btn-outline-secondary btn-rounded waves-effect" role="button"
+              aria-pressed="true">S'inscrire maintenant</a>
+          </span>
         </div>
-        {% endif %}
+      </div>
     </div>
+    {% endif %}
+  </div>
 </div>
 {% endblock content %}

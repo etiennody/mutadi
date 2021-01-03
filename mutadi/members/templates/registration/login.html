@@ -4,44 +4,46 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <div class="card card-signin my-5">
-                <div class="card-body">
-                    <h4 class="card-title text-center">Ha, vous revoilà !</h4>
-                    <h6 class="card-title text-center">Nous sommes heureux de vous revoir !</h6>
-                    <form class="was-validated" method="POST">
-                        {% csrf_token %}
-                        <fieldset class="form-group">
-                            <div class="mt-3 mb-3">
-                                <input type="text" class="form-control" name="username" placeholder="Nom d'utilisateur"
-                                    id="id_username" required>
-                                <div id="id_username" class="valid-feedback">
-                                    Semble bon !
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <input type="password" class="form-control" name="password" placeholder="Mot de passe"
-                                    id="id_password" required>
-                                <div id="id_password" class="valid-feedback">
-                                    Semble bon !
-                                </div>
-                            </div>
-                        </fieldset>
-                        <div class="form-group">
-                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit"
-                                id="submit-button">Se connecter</button>
-                        </div>
-                    </form>
-                    <div class="card-info border-top pt-3">
-                        <small class="text-muted">
-                            Besoin d'un compte ?
-                            <a href="{% url 'register' %}" class="ml-2">S'inscrire maintenant</a>
-                        </small>
-                    </div>
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <h4 class="card-title text-center">Ha, vous revoilà !</h4>
+          <h6 class="card-title text-center">Nous sommes heureux de vous revoir !</h6>
+          <form class="was-validated" method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+              {{ form.non_field_errors }}
+              <div class="fieldWrapper">
+                {{ form.username.errors }}
+                <div class="mt-3 mb-3">
+                  <input type="text" class="form-control" name="username" placeholder="Nom d'utilisateur"
+                    id="id_username" required>
                 </div>
+              </div>
+              <div class="fieldWrapper">
+                {{ form.password.errors }}
+                <div class="mb-3">
+                  <input type="password" class="form-control" name="password" placeholder="Mot de passe"
+                    id="id_password" required>
+                </div>
+              </div>
+            </fieldset>
+            <div class="form-group">
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" id="submit-button">
+                Se connecter
+              </button>
             </div>
+          </form>
+          <div class="card-info border-top pt-3">
+            <small class="text-muted">
+              Besoin d'un compte ?
+              <a href="{% url 'register' %}" class="ml-2">S'inscrire maintenant</a>
+            </small>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock content %}

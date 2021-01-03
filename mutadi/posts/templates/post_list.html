@@ -13,11 +13,12 @@
       <div class="container">
         <div class="row">
           {% for post in object_list %}
-          <!-- post -->
+          <!-- Post list -->
           <div class="post col-xl-6">
             <div class="post-thumbnail">
-              <a href="{% url "post_detail" post.pk %}"><img src="{{ post.thumbnail.url}}" alt="..."
-                  class="img-fluid" /></a>
+              <a href="{% url "post_detail" post.pk %}">
+                <img src="{{ post.thumbnail.url}}" alt="..." class="img-fluid" />
+              </a>
             </div>
             <div class="post-details">
               <div class="post-meta d-flex justify-content-between">
