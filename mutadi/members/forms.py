@@ -131,3 +131,18 @@ class CreateUserProfileForm(forms.ModelForm):
             "bio": "Présentez-vous",
             "profile_pic": "Photo de profil",
         }
+
+
+class EditUserProfileForm(forms.ModelForm):
+    """Edit user profile form"""
+
+    class Meta:
+        model = Profile
+        fields = ("bio", "profile_pic")
+        widgets = {
+            "bio": forms.TextInput(attrs={"class": "form-control"}),
+        }
+        labels = {
+            "bio": "Présentez-vous",
+            "profile_pic": "Photo de profil",
+        }

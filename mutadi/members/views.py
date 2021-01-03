@@ -5,7 +5,12 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views import generic
 
-from .forms import EditUserSettingsForm, PasswordChangingForm, SignUpForm
+from .forms import (
+    EditUserProfileForm,
+    EditUserSettingsForm,
+    PasswordChangingForm,
+    SignUpForm,
+)
 from .models import Profile
 
 
@@ -75,7 +80,7 @@ class UserProfileEditView(SuccessMessageMixin, generic.UpdateView):
 
     model = Profile
     template_name = "registration/edit_user_profile.html"
-    fields = ["bio", "profile_pic"]
+    form_class = EditUserProfileForm
     success_url = reverse_lazy("home")
     success_message = "Le profil utilisateur a été modifié avec succès !"
 
