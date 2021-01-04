@@ -10,6 +10,8 @@ pillow = "*"
 pytest-django = "*"
 django-ckeditor = "*"
 selenium = "*"
+boto3 = "*"
+django-storages = "*"
 
 [dev-packages]
 pylint = "*"
