@@ -46,7 +46,7 @@ class Post(models.Model):
     overview = models.CharField(max_length=255)
     content = RichTextField()
     created_on = models.DateTimeField(auto_now_add=True)
-    thumbnail = models.ImageField()
+    thumbnail = models.ImageField(upload_to="images/")
     featured = models.BooleanField()
     status = models.IntegerField(choices=STATUS, default=0)
 

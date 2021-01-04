@@ -12,7 +12,7 @@ Originally, Mutadi is a Latin contraction of "mutuum adiutorium" which means mut
 
 
 ## Online application
-In progress...
+https://mutadi.herokuapp.com/
 
 ## Requirements
 * Python 3
@@ -22,6 +22,9 @@ In progress...
 * PostgreSQL
 * Requests
 * Pillow
+* AWS S3
+* Django-heroku
+* Gunicorn
 
 ## Setup
 To run this application locally:
@@ -34,11 +37,21 @@ To run this application locally:
 * Clone / create the application repository:
     ```
     git clone https://github.com/etiennody/mutadi.git && cd mutadi
+    ```
 
 
 * Copy and update environment variables values in .env:
     ```
-     cp .env.example .env
+    cp .env.example .env
+    ```
+
+* Add your aws s3 credentials on .env:
+    ```
+    AWS_ACCESS_KEY_ID="your_aws_access_key_id"
+    AWS_SECRET_ACCESS_KEY="your_aws_secret_access_key"
+    AWS_STORAGE_BUCKET_NAME="your_aws_storage_bucket_name"
+    AWS_S3_REGION_NAME="your_aws_region_name"
+    AWS_S3_SIGNATURE_VERSION="your_aws_s3_signature_version"
     ```
 
 * Install the requirements:
@@ -52,7 +65,6 @@ To run this application locally:
     ```
 
 * Create a database with PostgreSQL
-    ```
 
 * Run Mutadi application:
     ```
