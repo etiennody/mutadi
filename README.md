@@ -39,7 +39,16 @@ To run this application locally:
 
 * Copy and update environment variables values in .env:
     ```
-     cp .env.example .env
+    cp .env.example .env
+    ```
+
+* Add your aws s3 credentials on .env:
+    ```
+    AWS_ACCESS_KEY_ID="your_aws_access_key_id"
+    AWS_SECRET_ACCESS_KEY="your_aws_secret_access_key"
+    AWS_STORAGE_BUCKET_NAME="your_aws_storage_bucket_name"
+    AWS_S3_REGION_NAME="your_aws_region_name"
+    AWS_S3_SIGNATURE_VERSION="your_aws_s3_signature_version"
     ```
 
 * Install the requirements:
