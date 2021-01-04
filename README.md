@@ -12,7 +12,7 @@ Originally, Mutadi is a Latin contraction of "mutuum adiutorium" which means mut
 
 
 ## Online application
-In progress...
+https://mutadi.herokuapp.com/
 
 ## Requirements
 * Python 3
@@ -22,6 +22,9 @@ In progress...
 * PostgreSQL
 * Requests
 * Pillow
+* AWS S3
+* Django-heroku
+* Gunicorn
 
 ## Setup
 To run this application locally:

@@ -12,6 +12,9 @@ django-ckeditor = "*"
 selenium = "*"
 boto3 = "*"
 django-storages = "*"
+gunicorn = "*"
+django-heroku = "*"
+sentry-sdk = "*"
 
 [dev-packages]
 pylint = "*"
