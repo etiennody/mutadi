@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Comment ça marche{% endblock title %}
+
+{% block content %}
+<!-- How it works -->
+<section class="page-section" id="terms-of-service">
+  <div class="container">
+    <div class="col-md-8 content-editorial">
+      <h2>Comment ça marche ?</h2>
+      <h2 class="help mt-5"><i class="fas fa-grin-beam"></i> Je veux aider</h2>
+      <div class="list-group how-it-works">
+        <div class="list-group-item">1) <a href="{% url "post_list" %}">Je
+            cherche des publications</a> correspondant à mes critères sur le site pour proposer mon aide. Je
+          commente la publication pour notifier de ma proposition d’aide et nous échangeons via la messagerie
+          interne du site pour convenir ensemble des conditions d'entreaide.
+        </div>
+        <div class="list-group-item">2) Ou bien <a href="{% url "add_post" %}">je crée ma
+            publication</a> pour proposer de l’aide : m’occuper d’enfants, donner
+          des
+          cours particuliers, rendre visite à des personnes âgées, coacher à distance… Je suis sollicité par
+          les
+          personnes intéressées soit par le biais des commentaires avant d’échanger avec eux via la messagerie
+          interne.
+        </div>
+      </div>
+      <h2 class="help mt-5"><i class="far fa-grin-beam"></i> Je demande de l'aide</h2>
+      <div class="list-group how-it-works">
+        <div class="list-group-item">1) Je suis un particulier, une association ou une
+          collectivité et j’ai besoin d’un service ou de personnes pour m’aider ?
+        </div>
+        <div class="list-group-item">2) <a href="{% url "add_post" %}">
+            Je crée ma publication</a> en détaillant ce dont j’ai besoin : faire garder mon animal,
+          effectuer du covoiturage, rendre visite à une personne, m’aider à bricoler, trouver
+          des bénévoles pour une collecte alimentaire… Je reçois des propositions d’aide par le biais des
+          commentaires avant d'échanger via la messagerie avant d’accepter l’aide d’un ou plusieurs personnes.
+        </div>
+        <div class="list-group-item">3) Ou bien <a href="{% url "post_list" %}">je cherche des
+            propositions d’aide</a> qui correspondent à mes besoins sur le
+          site.
+          Je choisis l’annonce qui me convient et je notifie de mon intérêt dans un commentaire avant de
+          rentrer
+          en contact par le biais de la messagerie interne.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

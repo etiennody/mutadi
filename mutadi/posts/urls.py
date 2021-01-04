@@ -1,10 +1,9 @@
-"""posts URL Configuration
-"""
+"""Posts URL configuration"""
 from django.urls import path
 
 from .views import (
-    category_view,
     add_post_view,
+    category_view,
     delete_post_view,
     post_detail_view,
     post_list_view,

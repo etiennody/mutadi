@@ -6,7 +6,7 @@ from django.test import RequestFactory
 from django.urls import reverse
 from model_bakery import baker
 from mutadi.private_messages.models import PrivateMessage
-from pytest_django.asserts import assertRedirects, assertTemplateUsed
+from pytest_django.asserts import assertTemplateUsed
 
 from mutadi.private_messages.views import compose_message_view
 

@@ -1,10 +1,11 @@
-"""posts Forms Configuration"""
+"""Posts forms configuration"""
 from django import forms
+
 from .models import Comment, Post
 
 
 class PostForm(forms.ModelForm):
-    """Add post form"""
+    """Add post form."""
 
     class Meta:
         model = Post
@@ -39,7 +40,7 @@ class PostForm(forms.ModelForm):
 
 
 class EditForm(forms.ModelForm):
-    """Update post form"""
+    """Update post form."""
 
     class Meta:
         model = Post
@@ -74,7 +75,7 @@ class EditForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-    """Comment form"""
+    """Comment form."""
 
     class Meta:
         model = Comment

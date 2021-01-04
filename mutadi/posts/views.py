@@ -1,4 +1,4 @@
-"""posts Views Configuration"""
+"""Posts views configuration"""
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -19,6 +19,10 @@ from .models import Post
 
 
 def get_category_count():
+    """
+    Queryset to find post according titles of categories
+    and count of posts in a category.
+    """
     queryset = Post.objects.values("categories__title").annotate(
         Count("categories__title")
     )
@@ -26,7 +30,7 @@ def get_category_count():
 
 
 class PostListView(ListView):
-    """Post list view"""
+    """Post list view."""
 
     template_name = "post_list.html"
     queryset = Post.objects.all()
@@ -120,6 +124,7 @@ delete_post_view = DeletePostView.as_view()
 
 
 def category_view(request, cats):
+    """Display posts of caegories dselected by users."""
     category_posts = Post.objects.filter(categories__title=cats).order_by(
         "created_on"
     )
@@ -134,11 +139,9 @@ def category_view(request, cats):
 
 
 class SearchResultsView(ListView):
-    """Limit the search results page to filter the results outputted based upon a search query
-    Args:
-        ListView (generic class-based views): render some list of objects
-    Returns:
-        list: return the list of items for search results view
+    """
+    Limit the search results page
+    to filter the results outputted based upon a search query
     """
 
     model = Post

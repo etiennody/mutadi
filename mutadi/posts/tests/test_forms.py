@@ -1,7 +1,6 @@
-"""Unit tests for posts form
-"""
+"""Unit tests for posts form"""
 import pytest
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from model_bakery import baker
 from mutadi.posts.forms import CommentForm, EditForm, PostForm
@@ -9,9 +8,11 @@ from mutadi.posts.models import Category, Comment, Post
 
 pytestmark = pytest.mark.django_db
 
+User = get_user_model()
+
 
 class TestPostForm:
-    """Group multiple tests for PostForm"""
+    """Group multiple tests for PostForm."""
 
     @pytest.fixture()
     def proto_user(self):
@@ -211,7 +212,7 @@ class TestPostForm:
 
 
 class TestUpdatePostForm:
-    """Group multiple tests for UpdatePostForm"""
+    """Group multiple tests for UpdatePostForm."""
 
     @pytest.fixture()
     def proto_user(self):
@@ -226,6 +227,7 @@ class TestUpdatePostForm:
 
     @pytest.fixture()
     def proto_post(self, proto_category):
+        """Fixture for baked Post model."""
         return baker.make(
             Post,
             content=(
@@ -408,7 +410,7 @@ class TestUpdatePostForm:
 
 
 class TestCommentForm:
-    """Group multiple tests for CommentForm"""
+    """Group multiple tests for CommentForm."""
 
     @pytest.fixture()
     def proto_user(self):

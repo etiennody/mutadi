@@ -1,5 +1,4 @@
-"""Unit tests for posts app urls
-"""
+"""Unit tests for posts app urls"""
 import pytest
 from django.urls import resolve, reverse
 from model_bakery import baker
@@ -9,7 +8,7 @@ pytestmark = pytest.mark.django_db
 
 
 class TestPostsUrls:
-    """Group multiple tests for Posts urls"""
+    """Group multiple tests for Posts urls."""
 
     @pytest.fixture
     def proto_category(self):

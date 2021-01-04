@@ -1,9 +1,9 @@
-"""private_messages Models Configuration"""
+"""Private messages models configuration"""
+from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from ckeditor.fields import RichTextField
 
 User = get_user_model()
 
