@@ -34,6 +34,11 @@ To run this application locally:
 * Clone / create the application repository:
     ```
     git clone https://github.com/etiennody/mutadi.git && cd mutadi
+
+
+* Copy and update environment variables values in .env:
+    ```
+     cp .env.example .env
     ```
 
 * Install the requirements:
@@ -47,11 +52,6 @@ To run this application locally:
     ```
 
 * Create a database with PostgreSQL
-
-
-* Copy and update environment variables values in .env:
-    ```
-     cp .env.example .env
     ```
 
 * Run Mutadi application:
