@@ -34,7 +34,7 @@
             </td>
             <td>il y a {{ message.sent_at|timesince }}</td>
             <td>
-              <a href="{% url "delete_message" message.pk %}">Supprimer</a>
+              <a href="{% url "delete_message" message.pk %}" id="id_delete_message">Supprimer</a>
             </td>
           </tr>
           {% endfor %}
