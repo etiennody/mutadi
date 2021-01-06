@@ -7,9 +7,12 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.views.generic import CreateView, ListView
+from django.contrib.auth import get_user_model
 
 from .forms import ComposeForm, ReplyForm
 from .models import PrivateMessage
+
+User = get_user_model()
 
 
 class InboxView(LoginRequiredMixin, ListView):
@@ -131,6 +134,13 @@ class ComposeMessageView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         form.instance.sender = self.request.user
         return super().form_valid(form)
+
+    def get_initial(self):
+        initial = super().get_initial()
+        if self.request.GET.get("destinataire"):
+            user = User.objects.get(pk=self.request.GET.get("destinataire"))
+            initial["recipient"] = user
+        return initial
 
 
 compose_message_view = ComposeMessageView.as_view()

@@ -32,6 +32,13 @@
               <a href="{% url "delete_post" post.pk %}"><i class="fas fa-trash"></i></a>
             </div>
             {% endif %}
+            {% if user.id != post.author.id %}
+            <div class="d-grid gap-2 d-flex justify-content-end">
+              <a href="{% url "compose_message" %}?destinataire={{ post.author.pk }}" title="Envoyer un message">
+                <i class="fas fa-2x fa-envelope"></i>
+              </a>
+            </div>
+            {% endif %}
             {% endif %}
             <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
               <a href="{% url "show_profile_page" post.author.profile.id %}"
