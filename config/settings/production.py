@@ -7,7 +7,7 @@ from .base import *
 
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
-DEBUG = os.environ.get("DJANGO_DEBUG", False)
+DEBUG = False
 
 ALLOWED_HOSTS = os.environ["DJANGO_ALLOWED_HOSTS"]
 
