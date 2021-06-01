@@ -39,7 +39,6 @@ To run this application locally:
     git clone https://github.com/etiennody/mutadi.git && cd mutadi
     ```
 
-
 * Copy and update environment variables values in .env:
     ```
     cp .env.example .env
